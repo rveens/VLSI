@@ -25,13 +25,21 @@ module filter #(parameter NR_STAGES = 32,
     // Accumulator (assigned to output directly)
     reg signed [0:DWIDTH-1] sum;
     assign data_out = sum;
+	 
+	 // Busy register to indicate that filter is busy
+	 reg busy_buf;
+	 reg [4:0] cnt; 
+	 
+	 initial
+		cnt = 0;
   
     always @(posedge clk) begin
         // Reset => initialize
         if (rst) begin
-            req_in_buf <= 0;
+            req_in_buf 	<= 0;
             req_out_buf <= 0;
-            sum <= 0;
+				busy_buf		<= 0;
+            sum 			<= 0;
         end
         // !Reset => run
         else begin
@@ -39,8 +47,20 @@ module filter #(parameter NR_STAGES = 32,
             if (req_in && ack_in) begin
                 sum <= data_in;
                 req_in_buf <= 0;
-                req_out_buf <= 1;
+					 busy_buf 	<= 1;
             end
+				
+				// Data processing loop
+				if (busy_buf == 1) begin
+					// todo: calculate next tap
+					cnt <= cnt + 1;
+					if (cnt == 31) begin
+						busy_buf 	<= 0;
+						cnt 			<= 0;
+						req_out_buf <= 1;
+					end
+				end
+				
             // Output request & acknowledge => go back to computation a.s.a.p.
             if (req_out && ack_out) begin
                 req_out_buf <= 0;

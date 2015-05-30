@@ -117,6 +117,7 @@ Parsing module <firwrapper>.
 Elaborating module <firwrapper>.
 
 Elaborating module <filter(NR_STAGES=32,DWIDTH=16,DDWIDTH=32,CWIDTH=512)>.
+WARNING:HDLCompiler:413 - "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3\filter.v" Line 56: Result of 11-bit expression is truncated to fit in 10-bit target.
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -652,20 +653,30 @@ Synthesizing Unit <filter>.
         CWIDTH = 512
 WARNING:Xst:647 - Input <h_in> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
     Found 1-bit register for signal <req_out_buf>.
+    Found 1-bit register for signal <busy_buf>.
     Found 16-bit register for signal <sum>.
+    Found 10-bit register for signal <cnt>.
     Found 1-bit register for signal <req_in_buf>.
+    Found 10-bit adder for signal <cnt[9]_GND_2_o_add_4_OUT> created at line 56.
     Summary:
-	inferred  18 D-type flip-flop(s).
+	inferred   1 Adder/Subtractor(s).
+	inferred  29 D-type flip-flop(s).
+	inferred   1 Multiplexer(s).
 Unit <filter> synthesized.
 
 =========================================================================
 HDL Synthesis Report
 
 Macro Statistics
-# Registers                                            : 4
- 1-bit register                                        : 2
+# Adders/Subtractors                                   : 1
+ 10-bit adder                                          : 1
+# Registers                                            : 6
+ 1-bit register                                        : 3
+ 10-bit register                                       : 1
  16-bit register                                       : 1
  512-bit register                                      : 1
+# Multiplexers                                         : 1
+ 1-bit 2-to-1 multiplexer                              : 1
 
 =========================================================================
 
@@ -674,12 +685,18 @@ Macro Statistics
 =========================================================================
 
 
+Synthesizing (advanced) Unit <filter>.
+The following registers are absorbed into counter <cnt>: 1 register on signal <cnt>.
+Unit <filter> synthesized (advanced).
+
 =========================================================================
 Advanced HDL Synthesis Report
 
 Macro Statistics
-# Registers                                            : 530
- Flip-Flops                                            : 530
+# Counters                                             : 1
+ 10-bit up counter                                     : 1
+# Registers                                            : 531
+ Flip-Flops                                            : 531
 
 =========================================================================
 
@@ -1202,6 +1219,11 @@ WARNING:Xst:2677 - Node <h_in_3> of sequential type is unconnected in block <fir
 WARNING:Xst:2677 - Node <h_in_2> of sequential type is unconnected in block <firwrapper>.
 WARNING:Xst:2677 - Node <h_in_1> of sequential type is unconnected in block <firwrapper>.
 WARNING:Xst:2677 - Node <h_in_0> of sequential type is unconnected in block <firwrapper>.
+WARNING:Xst:1293 - FF/Latch <firfilter/cnt_9> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_8> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_7> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_6> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_5> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
 
 Mapping all equations...
 Building and optimizing final netlist ...
@@ -1213,8 +1235,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 18
- Flip-Flops                                            : 18
+# Registers                                            : 24
+ Flip-Flops                                            : 24
 
 =========================================================================
 
@@ -1237,10 +1259,19 @@ Top Level Output File Name         : firwrapper.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 18
-#      LUT3                        : 16
-#      LUT4                        : 2
-# FlipFlops/Latches                : 18
+# BELS                             : 41
+#      GND                         : 1
+#      INV                         : 1
+#      LUT1                        : 4
+#      LUT3                        : 17
+#      LUT4                        : 1
+#      LUT5                        : 6
+#      LUT6                        : 1
+#      MUXCY                       : 4
+#      VCC                         : 1
+#      XORCY                       : 5
+# FlipFlops/Latches                : 24
+#      FD                          : 6
 #      FDR                         : 2
 #      FDRE                        : 16
 # Clock Buffers                    : 1
@@ -1256,16 +1287,16 @@ Selected Device : 6slx45csg324-3
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:              18  out of  54576     0%  
- Number of Slice LUTs:                   18  out of  27288     0%  
-    Number used as Logic:                18  out of  27288     0%  
+ Number of Slice Registers:              24  out of  54576     0%  
+ Number of Slice LUTs:                   30  out of  27288     0%  
+    Number used as Logic:                30  out of  27288     0%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:     18
-   Number with an unused Flip Flop:       0  out of     18     0%  
-   Number with an unused LUT:             0  out of     18     0%  
-   Number of fully used LUT-FF pairs:    18  out of     18   100%  
-   Number of unique control sets:         2
+ Number of LUT Flip Flop pairs used:     30
+   Number with an unused Flip Flop:       6  out of     30    20%  
+   Number with an unused LUT:             0  out of     30     0%  
+   Number of fully used LUT-FF pairs:    24  out of     30    80%  
+   Number of unique control sets:         3
 
 IO Utilization: 
  Number of IOs:                          40
@@ -1295,7 +1326,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-clk                                | BUFGP                  | 18    |
+clk                                | BUFGP                  | 24    |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -1306,8 +1337,8 @@ Timing Summary:
 ---------------
 Speed Grade: -3
 
-   Minimum period: 1.840ns (Maximum Frequency: 543.478MHz)
-   Minimum input arrival time before clock: 2.824ns
+   Minimum period: 2.746ns (Maximum Frequency: 364.179MHz)
+   Minimum input arrival time before clock: 3.044ns
    Maximum output required time after clock: 4.089ns
    Maximum combinational path delay: No path found
 
@@ -1317,44 +1348,46 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'clk'
-  Clock period: 1.840ns (frequency: 543.478MHz)
-  Total number of paths / destination ports: 36 / 34
+  Clock period: 2.746ns (frequency: 364.179MHz)
+  Total number of paths / destination ports: 104 / 40
 -------------------------------------------------------------------------
-Delay:               1.840ns (Levels of Logic = 0)
-  Source:            firfilter/req_in_buf (FF)
-  Destination:       firfilter/sum_0 (FF)
+Delay:               2.746ns (Levels of Logic = 2)
+  Source:            firfilter/cnt_4 (FF)
+  Destination:       firfilter/req_out_buf (FF)
   Source Clock:      clk rising
   Destination Clock: clk rising
 
-  Data Path: firfilter/req_in_buf to firfilter/sum_0
+  Data Path: firfilter/cnt_4 to firfilter/req_out_buf
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDR:C->Q             19   0.447   1.071  firfilter/req_in_buf (firfilter/req_in_buf)
-     FDRE:CE                   0.322          firfilter/sum_15
+     FD:C->Q               3   0.447   1.015  firfilter/cnt_4 (firfilter/cnt_4)
+     LUT6:I0->O            7   0.203   0.774  firfilter/req_in_ack_in_AND_1_o111 (firfilter/req_in_ack_in_AND_1_o11)
+     LUT5:I4->O            1   0.205   0.000  firfilter/busy_buf_rstpot1 (firfilter/busy_buf_rstpot1)
+     FD:D                      0.102          firfilter/busy_buf
     ----------------------------------------
-    Total                      1.840ns (0.769ns logic, 1.071ns route)
-                                       (41.8% logic, 58.2% route)
+    Total                      2.746ns (0.957ns logic, 1.789ns route)
+                                       (34.9% logic, 65.1% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'clk'
-  Total number of paths / destination ports: 54 / 36
+  Total number of paths / destination ports: 60 / 42
 -------------------------------------------------------------------------
-Offset:              2.824ns (Levels of Logic = 2)
-  Source:            ack_in (PAD)
-  Destination:       firfilter/req_out_buf (FF)
+Offset:              3.044ns (Levels of Logic = 2)
+  Source:            rst (PAD)
+  Destination:       firfilter/cnt_4 (FF)
   Destination Clock: clk rising
 
-  Data Path: ack_in to firfilter/req_out_buf
+  Data Path: rst to firfilter/cnt_4
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            18   1.222   1.297  ack_in_IBUF (ack_in_IBUF)
-     LUT4:I0->O            1   0.203   0.000  firfilter/req_out_buf_glue_set (firfilter/req_out_buf_glue_set)
-     FDR:D                     0.102          firfilter/req_out_buf
+     IBUF:I->O            24   1.222   1.517  rst_IBUF (rst_IBUF)
+     LUT5:I0->O            1   0.203   0.000  firfilter/cnt_1_rstpot (firfilter/cnt_1_rstpot)
+     FD:D                      0.102          firfilter/cnt_1
     ----------------------------------------
-    Total                      2.824ns (1.527ns logic, 1.297ns route)
-                                       (54.1% logic, 45.9% route)
+    Total                      3.044ns (1.527ns logic, 1.517ns route)
+                                       (50.2% logic, 49.8% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'clk'
@@ -1385,20 +1418,20 @@ Clock to Setup on destination clock clk
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-clk            |    1.840|         |         |         |
+clk            |    2.746|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
 Total REAL time to Xst completion: 10.00 secs
-Total CPU time to Xst completion: 10.78 secs
+Total CPU time to Xst completion: 9.97 secs
  
 --> 
 
-Total memory usage is 257056 kilobytes
+Total memory usage is 256352 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :  513 (   0 filtered)
+Number of warnings :  519 (   0 filtered)
 Number of infos    :    0 (   0 filtered)
 

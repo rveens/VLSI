@@ -8,10 +8,10 @@ module filter #(parameter NR_STAGES = 32,
                 input  rst,
                 output req_in,
                 input  ack_in,
-                input  [0:DWIDTH-1] data_in,
+                input  [0:DDWIDTH-1] data_in,
                 output req_out,
                 input  ack_out,
-                output [0:DWIDTH-1] data_out,
+                output [0:DDWIDTH-1] data_out,
                 input  [0:CWIDTH-1] h_in);
 
     // Output request register
@@ -23,7 +23,7 @@ module filter #(parameter NR_STAGES = 32,
     assign req_in = req_in_buf;
   
     // Accumulator (assigned to output directly)
-    reg signed [0:DWIDTH-1] sum;
+    reg signed [0:DDWIDTH-1] sum;
     assign data_out = sum;
 	 
 	 // Busy register to indicate that filter is busy
@@ -65,8 +65,9 @@ module filter #(parameter NR_STAGES = 32,
             if (req_out && ack_out) begin
                 req_out_buf <= 0;
             end
+				
             // If we need no inputs and have no outputs ready, then proceed with the computation
-            if (!req_in && !req_out && !ack_in && !ack_out) begin   
+            if (!req_in && !req_out && !ack_in && !ack_out && !busy_buf) begin   
                 req_in_buf <= 1;
             end
         end

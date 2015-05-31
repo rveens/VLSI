@@ -18,12 +18,12 @@ wire [0:CWIDTH-1] h_in;
 // Input port
 wire in_req;
 wire in_ack;
-wire [0:DDWIDTH-1] in_data;
+wire [0:DWIDTH-1] in_data;
 
 // Output port
 wire out_req;
 wire out_ack;
-wire [0:DDWIDTH-1] out_data;
+wire [0:DWIDTH-1] out_data;
 
 // Instantiation of the filter
 filter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
@@ -33,7 +33,7 @@ filter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWID
 // Input port buffers
 reg in_ack_buf = 0;
 assign in_ack = in_ack_buf;
-reg signed [0:DDWIDTH-1] in_data_buf;
+reg signed [0:DWIDTH-1] in_data_buf;
 assign in_data = in_data_buf;
 
 // Output port buffers
@@ -67,10 +67,10 @@ reg random_out = 0;
 // Process that reads the input samples from a file
 always @(posedge clk) begin
     if (in_req && !in_ack) begin
-        //in_data_buf[0:7] = $fgetc(input_file);
-        //in_data_buf[8:15] = $fgetc(input_file);
-        in_data_buf[16:23] = $fgetc(input_file);
-        in_data_buf[24:31] = $fgetc(input_file);
+        in_data_buf[0:7] = $fgetc(input_file);
+        in_data_buf[8:15] = $fgetc(input_file);
+        //in_data_buf[16:23] = $fgetc(input_file);
+        //in_data_buf[24:31] = $fgetc(input_file);
         io_error <= $ferror(input_file, io_error_str);
         in_ack_buf <= 1;
     end
@@ -82,10 +82,10 @@ end
 // Process that writes the 8 MSBs of the output to a file
 always @(posedge clk) begin
     if (out_req && !out_ack) begin
-        //$fwrite(output_file, "%c", out_data[0:7]);
-        //$fwrite(output_file, "%c", out_data[8:15]);
-        $fwrite(output_file, "%c", out_data[16:23]);
-        $fwrite(output_file, "%c", out_data[24:31]);
+        $fwrite(output_file, "%c", out_data[0:7]);
+        $fwrite(output_file, "%c", out_data[8:15]);
+        //$fwrite(output_file, "%c", out_data[16:23]);
+        //$fwrite(output_file, "%c", out_data[24:31]);
         out_ack_buf <= 1;
     end
     else if (!out_req && out_ack) begin

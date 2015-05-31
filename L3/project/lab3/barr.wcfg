@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/BarrydeBruin/Documents/GitHub/VLSI/L3/project/lab3/filtertest_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="filtertest" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="9" />
+   <wvobject fp_name="/filtertest/h_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">h_in[0:511]</obj_property>
+      <obj_property name="ObjectShortName">h_in[0:511]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/in_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">in_data[0:31]</obj_property>
+      <obj_property name="ObjectShortName">in_data[0:31]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/out_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_data[0:31]</obj_property>
+      <obj_property name="ObjectShortName">out_data[0:31]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/h" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">h[0:31,0:15]</obj_property>
+      <obj_property name="ObjectShortName">h[0:31,0:15]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/my_filter/sum" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">sum[0:15]</obj_property>
+      <obj_property name="ObjectShortName">sum[0:15]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/my_filter/subsum" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">subsum[0:31]</obj_property>
+      <obj_property name="ObjectShortName">subsum[0:31]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/my_filter/cnt" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">cnt[4:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/my_filter/mem" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">mem[0:31,0:15]</obj_property>
+      <obj_property name="ObjectShortName">mem[0:31,0:15]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject fp_name="/filtertest/my_filter/mem[0]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[0,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[0,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[1]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[1,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[1,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[2]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[2,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[2,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[3]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[3,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[3,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[4]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[4,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[4,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[5]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[5,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[5,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[6]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[6,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[6,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[7]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[7,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[7,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[8]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[8,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[8,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[9]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[9,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[9,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[10]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[10,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[10,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[11]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[11,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[11,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[12]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[12,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[12,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[13]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[13,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[13,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[14]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[14,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[14,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[15]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[15,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[15,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[16]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[16,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[16,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[17]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[17,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[17,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[18]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[18,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[18,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[19]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[19,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[19,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[20]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[20,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[20,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[21]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[21,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[21,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[22]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[22,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[22,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[23]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[23,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[23,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[24]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[24,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[24,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[25]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[25,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[25,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[26]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[26,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[26,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[27]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[27,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[27,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[28]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[28,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[28,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[29]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[29,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[29,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[30]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[30,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[30,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/filtertest/my_filter/mem[31]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[31,0:15]</obj_property>
+         <obj_property name="ObjectShortName">mem[31,0:15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

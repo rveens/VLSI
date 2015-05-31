@@ -67,8 +67,8 @@ reg random_out = 0;
 // Process that reads the input samples from a file
 always @(posedge clk) begin
     if (in_req && !in_ack) begin
-        in_data_buf[0:7] = $fgetc(input_file);
-        in_data_buf[8:15] = $fgetc(input_file);
+        //in_data_buf[0:7] = $fgetc(input_file);
+        //in_data_buf[8:15] = $fgetc(input_file);
         in_data_buf[16:23] = $fgetc(input_file);
         in_data_buf[24:31] = $fgetc(input_file);
         io_error <= $ferror(input_file, io_error_str);
@@ -82,8 +82,8 @@ end
 // Process that writes the 8 MSBs of the output to a file
 always @(posedge clk) begin
     if (out_req && !out_ack) begin
-        $fwrite(output_file, "%c", out_data[0:7]);
-        $fwrite(output_file, "%c", out_data[8:15]);
+        //$fwrite(output_file, "%c", out_data[0:7]);
+        //$fwrite(output_file, "%c", out_data[8:15]);
         $fwrite(output_file, "%c", out_data[16:23]);
         $fwrite(output_file, "%c", out_data[24:31]);
         out_ack_buf <= 1;

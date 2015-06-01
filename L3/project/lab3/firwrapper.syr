@@ -10,7 +10,7 @@ Total CPU time to Xst completion: 0.08 secs
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.09 secs
+Total CPU time to Xst completion: 0.08 secs
  
 --> Reading design: firwrapper.prj
 
@@ -117,6 +117,7 @@ Parsing module <firwrapper>.
 Elaborating module <firwrapper>.
 
 Elaborating module <filter(NR_STAGES=32,DWIDTH=16,DDWIDTH=32,CWIDTH=512)>.
+WARNING:HDLCompiler:413 - "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3\filter.v" Line 59: Result of 32-bit expression is truncated to fit in 5-bit target.
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -653,7 +654,7 @@ Synthesizing Unit <filter>.
     Found 1-bit register for signal <req_in_buf>.
     Found 1-bit register for signal <req_out_buf>.
     Found 32-bit register for signal <sum>.
-    Found 32-bit register for signal <cnt>.
+    Found 5-bit register for signal <cnt>.
     Found 1-bit register for signal <mem<0><0>>.
     Found 1-bit register for signal <mem<0><1>>.
     Found 1-bit register for signal <mem<0><2>>.
@@ -1678,24 +1679,22 @@ Synthesizing Unit <filter>.
     Found 1-bit register for signal <mem<31><29>>.
     Found 1-bit register for signal <mem<31><30>>.
     Found 1-bit register for signal <mem<31><31>>.
+    Found 10-bit register for signal <cnt_idx_reg>.
     Found 1-bit register for signal <state_busy>.
-    Found 32-bit subtractor for signal <cnt[31]_GND_2_o_sub_44_OUT> created at line 62.
-    Found 10-bit subtractor for signal <n1296> created at line 60.
-    Found 32-bit adder for signal <cnt[31]_GND_2_o_add_3_OUT> created at line 59.
-    Found 32-bit adder for signal <sum[0]_cnt[5]_add_42_OUT> created at line 60.
-    Found 512-bit shifter logical left for signal <n1298> created at line 60
-    Found 32x16-bit multiplier for signal <n1213> created at line 60.
-    Found 512-bit shifter logical right for signal <n1297> created at line 60
-    Found 32-bit 32-to-1 multiplexer for signal <cnt[5]_X_2_o_wide_mux_2_OUT> created at line 60.
-    Found 32-bit comparator lessequal for signal <n0041> created at line 59
-    Found 32-bit comparator lessequal for signal <n0043> created at line 59
+    Found 6-bit adder for signal <n1227> created at line 54.
+    Found 32-bit adder for signal <sum[0]_cnt[4]_add_41_OUT> created at line 55.
+    Found 5-bit subtractor for signal <GND_2_o_GND_2_o_sub_43_OUT<4:0>> created at line 59.
+    Found 512-bit shifter logical left for signal <n1213> created at line 55
+    Found 32x16-bit multiplier for signal <n1214> created at line 55.
+    Found 32-bit 32-to-1 multiplexer for signal <cnt[4]_mem[31][0]_wide_mux_2_OUT> created at line 55.
+    Found 6-bit comparator lessequal for signal <n0041> created at line 54
     Summary:
 	inferred   1 Multiplier(s).
-	inferred   4 Adder/Subtractor(s).
-	inferred 1091 D-type flip-flop(s).
-	inferred   2 Comparator(s).
+	inferred   3 Adder/Subtractor(s).
+	inferred 1074 D-type flip-flop(s).
+	inferred   1 Comparator(s).
 	inferred  67 Multiplexer(s).
-	inferred   2 Combinational logic shifter(s).
+	inferred   1 Combinational logic shifter(s).
 Unit <filter> synthesized.
 
 =========================================================================
@@ -1704,23 +1703,24 @@ HDL Synthesis Report
 Macro Statistics
 # Multipliers                                          : 1
  32x16-bit multiplier                                  : 1
-# Adders/Subtractors                                   : 4
- 10-bit subtractor                                     : 1
- 32-bit adder                                          : 2
- 32-bit subtractor                                     : 1
-# Registers                                            : 69
+# Adders/Subtractors                                   : 3
+ 32-bit adder                                          : 1
+ 5-bit subtractor                                      : 1
+ 6-bit adder                                           : 1
+# Registers                                            : 70
  1-bit register                                        : 35
- 32-bit register                                       : 33
+ 10-bit register                                       : 1
+ 32-bit register                                       : 32
+ 5-bit register                                        : 1
  512-bit register                                      : 1
-# Comparators                                          : 2
- 32-bit comparator lessequal                           : 2
+# Comparators                                          : 1
+ 6-bit comparator lessequal                            : 1
 # Multiplexers                                         : 67
  1-bit 2-to-1 multiplexer                              : 65
- 32-bit 2-to-1 multiplexer                             : 1
  32-bit 32-to-1 multiplexer                            : 1
-# Logic shifters                                       : 2
+ 5-bit 2-to-1 multiplexer                              : 1
+# Logic shifters                                       : 1
  512-bit shifter logical left                          : 1
- 512-bit shifter logical right                         : 1
 
 =========================================================================
 
@@ -1728,6 +1728,10 @@ Macro Statistics
 *                       Advanced HDL Synthesis                          *
 =========================================================================
 
+INFO:Xst:2261 - The FF/Latch <cnt_idx_reg_0> in Unit <firfilter> is equivalent to the following 3 FFs/Latches, which will be removed : <cnt_idx_reg_1> <cnt_idx_reg_2> <cnt_idx_reg_3> 
+WARNING:Xst:1710 - FF/Latch <cnt_idx_reg_0> (without init value) has a constant value of 0 in block <firfilter>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2677 - Node <cnt_idx_reg_9> of sequential type is unconnected in block <firfilter>.
+WARNING:Xst:2404 -  FFs/Latches <cnt_idx_reg<9:9>> (without init value) have a constant value of 0 in block <filter>.
 
 Synthesizing (advanced) Unit <filter>.
 The following registers are absorbed into accumulator <sum>: 1 register on signal <sum>.
@@ -1740,59 +1744,36 @@ Advanced HDL Synthesis Report
 Macro Statistics
 # Multipliers                                          : 1
  32x16-bit multiplier                                  : 1
-# Adders/Subtractors                                   : 2
- 10-bit subtractor                                     : 1
- 32-bit adder                                          : 1
+# Adders/Subtractors                                   : 1
+ 6-bit adder                                           : 1
 # Counters                                             : 1
- 32-bit down counter                                   : 1
+ 5-bit down counter                                    : 1
 # Accumulators                                         : 1
  32-bit up accumulator                                 : 1
-# Registers                                            : 1539
- Flip-Flops                                            : 1539
-# Comparators                                          : 2
- 32-bit comparator lessequal                           : 2
-# Multiplexers                                         : 66
- 1-bit 2-to-1 multiplexer                              : 65
+# Registers                                            : 1548
+ Flip-Flops                                            : 1548
+# Comparators                                          : 1
+ 6-bit comparator lessequal                            : 1
+# Multiplexers                                         : 65
+ 1-bit 2-to-1 multiplexer                              : 64
  32-bit 32-to-1 multiplexer                            : 1
-# Logic shifters                                       : 2
+# Logic shifters                                       : 1
  512-bit shifter logical left                          : 1
- 512-bit shifter logical right                         : 1
 
 =========================================================================
 
 =========================================================================
 *                         Low Level Synthesis                           *
 =========================================================================
+WARNING:Xst:1710 - FF/Latch <cnt_idx_reg_0> (without init value) has a constant value of 0 in block <filter>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <cnt_idx_reg_1> (without init value) has a constant value of 0 in block <filter>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <cnt_idx_reg_2> (without init value) has a constant value of 0 in block <filter>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <cnt_idx_reg_3> (without init value) has a constant value of 0 in block <filter>. This FF/Latch will be trimmed during the optimization process.
 
 Optimizing unit <firwrapper> ...
 
 Optimizing unit <filter> ...
-WARNING:Xst:1293 - FF/Latch <firfilter/cnt_6> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_7> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_8> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_9> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_10> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_11> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_12> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_13> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_16> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_14> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_15> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_17> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_18> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_19> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_20> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_21> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_22> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_23> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_24> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_25> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_26> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_27> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_28> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_29> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_30> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_31> has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
+INFO:Xst:2261 - The FF/Latch <mem<0>_1> in Unit <filter> is equivalent to the following 16 FFs/Latches, which will be removed : <mem<0>_2> <mem<0>_3> <mem<0>_4> <mem<0>_5> <mem<0>_6> <mem<0>_9> <mem<0>_7> <mem<0>_8> <mem<0>_10> <mem<0>_11> <mem<0>_12> <mem<0>_13> <mem<0>_14> <mem<0>_15> <mem<0>_16> <mem<0>_0> 
 INFO:Xst:2261 - The FF/Latch <firfilter/mem_0> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem_1> <firfilter/mem_2> <firfilter/mem_3> <firfilter/mem_4> <firfilter/mem_5> <firfilter/mem_6> <firfilter/mem_7> <firfilter/mem_8> <firfilter/mem_9> <firfilter/mem_10> <firfilter/mem_11> <firfilter/mem_12> <firfilter/mem_13> <firfilter/mem_14> <firfilter/mem_15> <firfilter/mem_16> 
 INFO:Xst:2261 - The FF/Latch <firfilter/mem_01> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem_110> <firfilter/mem_210> <firfilter/mem_32> <firfilter/mem_41> <firfilter/mem_51> <firfilter/mem_61> <firfilter/mem_71> <firfilter/mem_81> <firfilter/mem_91> <firfilter/mem_101> <firfilter/mem_111> <firfilter/mem_121> <firfilter/mem_131> <firfilter/mem_141> <firfilter/mem_151> <firfilter/mem_161> 
 INFO:Xst:2261 - The FF/Latch <firfilter/mem_02> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem_113> <firfilter/mem_213> <firfilter/mem_33> <firfilter/mem_42> <firfilter/mem_52> <firfilter/mem_62> <firfilter/mem_72> <firfilter/mem_82> <firfilter/mem_92> <firfilter/mem_102> <firfilter/mem_112> <firfilter/mem_122> <firfilter/mem_132> <firfilter/mem_142> <firfilter/mem_152> <firfilter/mem_162> 
@@ -1803,7 +1784,6 @@ INFO:Xst:2261 - The FF/Latch <firfilter/mem_06> in Unit <firwrapper> is equivale
 INFO:Xst:2261 - The FF/Latch <firfilter/mem_07> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem_128> <firfilter/mem_228> <firfilter/mem_38> <firfilter/mem_47> <firfilter/mem_57> <firfilter/mem_67> <firfilter/mem_77> <firfilter/mem_87> <firfilter/mem_97> <firfilter/mem_107> <firfilter/mem_1111> <firfilter/mem_127> <firfilter/mem_137> <firfilter/mem_147> <firfilter/mem_157> <firfilter/mem_167> 
 INFO:Xst:2261 - The FF/Latch <firfilter/mem_08> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem_130> <firfilter/mem_230> <firfilter/mem_39> <firfilter/mem_48> <firfilter/mem_58> <firfilter/mem_68> <firfilter/mem_78> <firfilter/mem_88> <firfilter/mem_98> <firfilter/mem_108> <firfilter/mem_1112> <firfilter/mem_129> <firfilter/mem_138> <firfilter/mem_148> <firfilter/mem_158> <firfilter/mem_168> 
 INFO:Xst:2261 - The FF/Latch <firfilter/mem_09> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem_140> <firfilter/mem_240> <firfilter/mem_310> <firfilter/mem_49> <firfilter/mem_59> <firfilter/mem_69> <firfilter/mem_79> <firfilter/mem_89> <firfilter/mem_99> <firfilter/mem_109> <firfilter/mem_1113> <firfilter/mem_1210> <firfilter/mem_139> <firfilter/mem_149> <firfilter/mem_159> <firfilter/mem_169> 
-INFO:Xst:2261 - The FF/Latch <firfilter/mem<0>_0> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem<0>_16> <firfilter/mem<0>_15> <firfilter/mem<0>_14> <firfilter/mem<0>_13> <firfilter/mem<0>_12> <firfilter/mem<0>_11> <firfilter/mem<0>_10> <firfilter/mem<0>_9> <firfilter/mem<0>_7> <firfilter/mem<0>_6> <firfilter/mem<0>_8> <firfilter/mem<0>_5> <firfilter/mem<0>_4> <firfilter/mem<0>_3> <firfilter/mem<0>_2> <firfilter/mem<0>_1> 
 INFO:Xst:2261 - The FF/Latch <firfilter/mem_010> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem_150> <firfilter/mem_250> <firfilter/mem_320> <firfilter/mem_410> <firfilter/mem_510> <firfilter/mem_610> <firfilter/mem_710> <firfilter/mem_810> <firfilter/mem_910> <firfilter/mem_1010> <firfilter/mem_1114> <firfilter/mem_1211> <firfilter/mem_1310> <firfilter/mem_1410> <firfilter/mem_1510> <firfilter/mem_1610> 
 INFO:Xst:2261 - The FF/Latch <firfilter/mem_011> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem_160> <firfilter/mem_260> <firfilter/mem_321> <firfilter/mem_411> <firfilter/mem_511> <firfilter/mem_611> <firfilter/mem_711> <firfilter/mem_811> <firfilter/mem_911> <firfilter/mem_1011> <firfilter/mem_1115> <firfilter/mem_1212> <firfilter/mem_1311> <firfilter/mem_1411> <firfilter/mem_1511> <firfilter/mem_1611> 
 INFO:Xst:2261 - The FF/Latch <firfilter/mem_012> in Unit <firwrapper> is equivalent to the following 16 FFs/Latches, which will be removed : <firfilter/mem_170> <firfilter/mem_270> <firfilter/mem_322> <firfilter/mem_412> <firfilter/mem_512> <firfilter/mem_612> <firfilter/mem_712> <firfilter/mem_812> <firfilter/mem_912> <firfilter/mem_1012> <firfilter/mem_1116> <firfilter/mem_1213> <firfilter/mem_1312> <firfilter/mem_1412> <firfilter/mem_1512> <firfilter/mem_1612> 
@@ -1830,10 +1810,11 @@ Mapping all equations...
 Building and optimizing final netlist ...
 Found area constraint ratio of 100 (+ 5) on block firwrapper, actual ratio is 6.
 FlipFlop firfilter/cnt_0 has been replicated 7 time(s)
-FlipFlop firfilter/cnt_1 has been replicated 8 time(s)
-FlipFlop firfilter/cnt_2 has been replicated 3 time(s)
-FlipFlop firfilter/cnt_3 has been replicated 9 time(s)
-FlipFlop firfilter/cnt_4 has been replicated 7 time(s)
+FlipFlop firfilter/cnt_1 has been replicated 7 time(s)
+FlipFlop firfilter/cnt_2 has been replicated 2 time(s)
+FlipFlop firfilter/cnt_3 has been replicated 2 time(s)
+FlipFlop firfilter/cnt_idx_reg_7 has been replicated 6 time(s)
+FlipFlop firfilter/cnt_idx_reg_8 has been replicated 6 time(s)
 
 Final Macro Processing ...
 
@@ -1865,24 +1846,23 @@ Top Level Output File Name         : firwrapper.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 558
+# BELS                             : 498
 #      GND                         : 1
-#      INV                         : 6
-#      LUT1                        : 6
-#      LUT2                        : 35
-#      LUT3                        : 1
-#      LUT4                        : 17
-#      LUT5                        : 19
-#      LUT6                        : 362
-#      MUXCY                       : 48
-#      MUXF7                       : 17
+#      INV                         : 1
+#      LUT2                        : 34
+#      LUT3                        : 5
+#      LUT4                        : 3
+#      LUT5                        : 34
+#      LUT6                        : 323
+#      MUXCY                       : 31
+#      MUXF7                       : 33
 #      VCC                         : 1
-#      XORCY                       : 45
+#      XORCY                       : 32
 # FlipFlops/Latches                : 1099
-#      FD                          : 40
-#      FDE                         : 1024
+#      FDE                         : 1041
 #      FDR                         : 3
 #      FDRE                        : 32
+#      FDSE                        : 23
 # Clock Buffers                    : 1
 #      BUFGP                       : 1
 # IO Buffers                       : 39
@@ -1899,15 +1879,15 @@ Selected Device : 6slx45csg324-3
 
 Slice Logic Utilization: 
  Number of Slice Registers:            1099  out of  54576     2%  
- Number of Slice LUTs:                  446  out of  27288     1%  
-    Number used as Logic:               446  out of  27288     1%  
+ Number of Slice LUTs:                  400  out of  27288     1%  
+    Number used as Logic:               400  out of  27288     1%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:   1509
-   Number with an unused Flip Flop:     410  out of   1509    27%  
-   Number with an unused LUT:          1063  out of   1509    70%  
-   Number of fully used LUT-FF pairs:    36  out of   1509     2%  
-   Number of unique control sets:        36
+ Number of LUT Flip Flop pairs used:   1457
+   Number with an unused Flip Flop:     358  out of   1457    24%  
+   Number with an unused LUT:          1057  out of   1457    72%  
+   Number of fully used LUT-FF pairs:    42  out of   1457     2%  
+   Number of unique control sets:        37
 
 IO Utilization: 
  Number of IOs:                          40
@@ -1949,9 +1929,9 @@ Timing Summary:
 ---------------
 Speed Grade: -3
 
-   Minimum period: 14.083ns (Maximum Frequency: 71.008MHz)
-   Minimum input arrival time before clock: 5.487ns
-   Maximum output required time after clock: 4.281ns
+   Minimum period: 14.069ns (Maximum Frequency: 71.079MHz)
+   Minimum input arrival time before clock: 5.241ns
+   Maximum output required time after clock: 3.847ns
    Maximum combinational path delay: No path found
 
 Timing Details:
@@ -1960,25 +1940,25 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'clk'
-  Clock period: 14.083ns (frequency: 71.008MHz)
-  Total number of paths / destination ports: 11029681 / 1674
+  Clock period: 14.069ns (frequency: 71.079MHz)
+  Total number of paths / destination ports: 10914799 / 1698
 -------------------------------------------------------------------------
-Delay:               14.083ns (Levels of Logic = 21)
-  Source:            firfilter/cnt_0_6 (FF)
+Delay:               14.069ns (Levels of Logic = 21)
+  Source:            firfilter/cnt_1_6 (FF)
   Destination:       firfilter/sum_31 (FF)
   Source Clock:      clk rising
   Destination Clock: clk rising
 
-  Data Path: firfilter/cnt_0_6 to firfilter/sum_31
+  Data Path: firfilter/cnt_1_6 to firfilter/sum_31
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q              19   0.447   1.176  firfilter/cnt_0_6 (firfilter/cnt_0_6)
-     LUT6:I4->O            1   0.203   0.827  firfilter/Mmux_cnt[5]_X_2_o_wide_mux_2_OUT_81 (firfilter/Mmux_cnt[5]_X_2_o_wide_mux_2_OUT_81)
-     LUT6:I2->O            1   0.203   0.000  firfilter/Mmux_cnt[5]_X_2_o_wide_mux_2_OUT_3 (firfilter/Mmux_cnt[5]_X_2_o_wide_mux_2_OUT_3)
-     MUXF7:I1->O          33   0.140   1.305  firfilter/Mmux_cnt[5]_X_2_o_wide_mux_2_OUT_2_f7 (firfilter/cnt[5]_X_2_o_wide_mux_2_OUT<0>)
-     DSP48A1:A0->P47      18   4.560   1.049  firfilter/Mmult_n1213 (firfilter/Mmult_n1213_P47_to_Mmult_n12131)
-     DSP48A1:C30->P0       1   2.687   0.580  firfilter/Mmult_n12131 (firfilter/n1213<17>)
+     FDSE:C->Q            19   0.447   1.176  firfilter/cnt_1_6 (firfilter/cnt_1_6)
+     LUT6:I4->O            1   0.203   0.827  firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_2_OUT_81 (firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_2_OUT_81)
+     LUT6:I2->O            1   0.203   0.000  firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_2_OUT_3 (firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_2_OUT_3)
+     MUXF7:I1->O          32   0.140   1.291  firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_2_OUT_2_f7 (firfilter/cnt[4]_mem[31][0]_wide_mux_2_OUT<0>)
+     DSP48A1:A0->P47      18   4.560   1.049  firfilter/Mmult_n1214 (firfilter/Mmult_n1214_P47_to_Mmult_n12141)
+     DSP48A1:C30->P0       1   2.687   0.580  firfilter/Mmult_n12141 (firfilter/n1214<17>)
      LUT2:I1->O            1   0.205   0.000  firfilter/Maccum_sum_lut<17> (firfilter/Maccum_sum_lut<17>)
      MUXCY:S->O            1   0.172   0.000  firfilter/Maccum_sum_cy<17> (firfilter/Maccum_sum_cy<17>)
      MUXCY:CI->O           1   0.019   0.000  firfilter/Maccum_sum_cy<18> (firfilter/Maccum_sum_cy<18>)
@@ -1994,17 +1974,17 @@ Delay:               14.083ns (Levels of Logic = 21)
      MUXCY:CI->O           1   0.019   0.000  firfilter/Maccum_sum_cy<28> (firfilter/Maccum_sum_cy<28>)
      MUXCY:CI->O           1   0.019   0.000  firfilter/Maccum_sum_cy<29> (firfilter/Maccum_sum_cy<29>)
      MUXCY:CI->O           0   0.019   0.000  firfilter/Maccum_sum_cy<30> (firfilter/Maccum_sum_cy<30>)
-     XORCY:CI->O           1   0.180   0.000  firfilter/Maccum_sum_xor<31> (firfilter/Result<31>1)
+     XORCY:CI->O           1   0.180   0.000  firfilter/Maccum_sum_xor<31> (firfilter/Result<31>)
      FDRE:D                    0.102          firfilter/sum_31
     ----------------------------------------
-    Total                     14.083ns (9.146ns logic, 4.937ns route)
-                                       (64.9% logic, 35.1% route)
+    Total                     14.069ns (9.146ns logic, 4.923ns route)
+                                       (65.0% logic, 35.0% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'clk'
   Total number of paths / destination ports: 1169 / 1119
 -------------------------------------------------------------------------
-Offset:              5.487ns (Levels of Logic = 3)
+Offset:              5.241ns (Levels of Logic = 3)
   Source:            rst (PAD)
   Destination:       firfilter/mem_030 (FF)
   Destination Clock: clk rising
@@ -2013,19 +1993,19 @@ Offset:              5.487ns (Levels of Logic = 3)
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            12   1.222   1.253  rst_IBUF (rst_IBUF)
-     LUT5:I0->O           31   0.203   1.278  firfilter/_n10150_inv11 (firfilter/_n10150_inv1)
-     LUT6:I5->O           16   0.205   1.004  firfilter/_n9702_inv1 (firfilter/_n9702_inv)
-     FDE:CE                    0.322          firfilter/mem_319
+     IBUF:I->O            31   1.222   1.278  rst_IBUF (rst_IBUF)
+     LUT4:I3->O           16   0.205   1.005  firfilter/_n4776_inv51 (firfilter/_n4776_inv_bdd6)
+     LUT5:I4->O           16   0.205   1.004  firfilter/_n4776_inv11 (firfilter/_n4776_inv)
+     FDE:CE                    0.322          firfilter/mem_3130
     ----------------------------------------
-    Total                      5.487ns (1.952ns logic, 3.535ns route)
-                                       (35.6% logic, 64.4% route)
+    Total                      5.241ns (1.954ns logic, 3.287ns route)
+                                       (37.3% logic, 62.7% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'clk'
   Total number of paths / destination ports: 18 / 18
 -------------------------------------------------------------------------
-Offset:              4.281ns (Levels of Logic = 1)
+Offset:              3.847ns (Levels of Logic = 1)
   Source:            firfilter/req_out_buf (FF)
   Destination:       req_out (PAD)
   Source Clock:      clk rising
@@ -2034,11 +2014,11 @@ Offset:              4.281ns (Levels of Logic = 1)
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDR:C->Q             30   0.447   1.263  firfilter/req_out_buf (firfilter/req_out_buf)
+     FDR:C->Q              9   0.447   0.829  firfilter/req_out_buf (firfilter/req_out_buf)
      OBUF:I->O                 2.571          req_out_OBUF (req_out)
     ----------------------------------------
-    Total                      4.281ns (3.018ns logic, 1.263ns route)
-                                       (70.5% logic, 29.5% route)
+    Total                      3.847ns (3.018ns logic, 0.829ns route)
+                                       (78.5% logic, 21.5% route)
 
 =========================================================================
 
@@ -2050,20 +2030,20 @@ Clock to Setup on destination clock clk
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-clk            |   14.083|         |         |         |
+clk            |   14.069|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
 Total REAL time to Xst completion: 18.00 secs
-Total CPU time to Xst completion: 18.73 secs
+Total CPU time to Xst completion: 17.97 secs
  
 --> 
 
-Total memory usage is 280608 kilobytes
+Total memory usage is 275488 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :   26 (   0 filtered)
-Number of infos    :   32 (   0 filtered)
+Number of warnings :    8 (   0 filtered)
+Number of infos    :   33 (   0 filtered)
 

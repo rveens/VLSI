@@ -29,13 +29,8 @@ module filter #(parameter NR_STAGES = 32,
 	 // Extra variables
 	 reg state_busy;
 	 reg signed [0:DDWIDTH-1] mem[0:NR_STAGES-1]; //must be 32-bit, else not enough place to do multiplication
-	 integer cnt;
-	 
-    initial begin
-			for(cnt = 0; cnt < 32; cnt = cnt + 1) begin
-				mem[cnt] = 0;
-			end
-	 end
+	 reg [9:0] cnt_idx_reg;
+	 reg [4:0] cnt;
   
     always @(posedge clk) begin
         // Reset => initialize
@@ -56,7 +51,9 @@ module filter #(parameter NR_STAGES = 32,
 				
 				if (state_busy && !req_out_buf ) begin //processing part
 					mem[cnt+1] <= mem[cnt];
-					sum <= sum + mem[cnt]*h_in[cnt*DWIDTH +: DWIDTH];
+					sum <= sum + mem[cnt]*h_in[cnt_idx_reg +: DWIDTH];
+					
+					cnt_idx_reg <= cnt<<4;
 					cnt <= cnt - 1;
 					
 					if(cnt == 0) begin

@@ -24,17 +24,24 @@ module filter #(parameter NR_STAGES = 32,
   
     // Accumulator (assigned to output directly)
     reg signed [0:DDWIDTH-1] sum;
-    assign data_out = sum[0:DWIDTH-1]; //this one is truncated from 0:31 -> 0:15. If i make this explicit, it will use one DSP unit more (?)
+    assign data_out = sum[0:DWIDTH-1]; 
+	
+	 // Memory to store last 32 inputs and memory to store the coefficients.
+	 reg signed [0:DWIDTH-1] mem[0:NR_STAGES-1];
+	 reg signed [0:DWIDTH-1] coef[0:NR_STAGES-1];
 	 
-	 // Extra variables
+	 // State variables for FIR
 	 reg state_busy;
-	 reg signed [0:DDWIDTH-1] mem[0:NR_STAGES-1]; //must be 32-bit, else not enough place to do multiplication
-	 reg [9:0] cnt_idx_reg;
 	 reg [4:0] cnt;
+	 
+	 integer i;
   
     always @(posedge clk) begin
         // Reset => initialize
         if (rst) begin
+				for (i = 0; i < NR_STAGES; i = i + 1) begin
+					coef[i] = h_in[i*DWIDTH +: DWIDTH];
+				end
 				state_busy <= 0;
             req_in_buf <= 0;
             req_out_buf <= 0;
@@ -42,35 +49,35 @@ module filter #(parameter NR_STAGES = 32,
 				cnt <= NR_STAGES-1;
         end
         else begin
-            // Input request & acknowledge => take the input & go back to computation a.s.a.p.
+            // Request for input sample is acknowledged. Start calculating
             if (req_in && ack_in) begin
 					 mem[0] <= data_in;
 					 state_busy <= 1;
                 req_in_buf <= 0;
             end
 				
-				if (state_busy && !req_out_buf ) begin //processing part
+				// Process the output in 32 cycles. Then initiate a req_out to warn the output that a sample is ready
+				if (state_busy && !req_out) begin
+					// Shift through the data and calculate one tap every clock cycle
 					mem[cnt+1] <= mem[cnt];
-					sum <= sum + mem[cnt]*h_in[cnt_idx_reg +: DWIDTH];
-					
-					cnt_idx_reg <= cnt<<4;
+					sum <= sum + mem[cnt]*coef[cnt];
 					cnt <= cnt - 1;
 					
+					// When a complete cycle is done (32 taps calculated), start to output the outcome
 					if(cnt == 0) begin
 						cnt <= NR_STAGES-1;
 						req_out_buf <= 1;
 					end
 				end
 				
-            // Output request & acknowledge => go back to computation a.s.a.p.
+            // If req_out is acknowledged, reset all variables
             if (req_out && ack_out) begin
                 req_out_buf <= 0;
-					 
-					 sum <= 0; //reset sum
 					 state_busy <= 0;
+					 sum <= 0;
             end
 				
-            // If we need no inputs and have no outputs ready, then proceed with the computation
+            // Wait until everyone is calmed down, then initiate new sample request
             if (!req_in && !req_out && !ack_in && !ack_out && !state_busy) begin   
                 req_in_buf <= 1;
             end

@@ -28,20 +28,23 @@ module filter #(parameter NR_STAGES = 32,
 	
 	 // Memory to store last 32 inputs and memory to store the coefficients.
 	 reg signed [0:DWIDTH-1] mem[0:NR_STAGES-1];
-	 reg signed [0:DWIDTH-1] coef[0:NR_STAGES-1];
+	 wire signed [0:DWIDTH-1] coef[0:NR_STAGES-1];
 	 
 	 // State variables for FIR
 	 reg state_busy;
 	 reg [4:0] cnt;
 	 
-	 integer i;
+	 generate
+		genvar i;
+		for (i = 0; i < NR_STAGES; i = i +1)begin
+			assign coef[i] = h_in[i*DWIDTH +: DWIDTH];
+		end
+	endgenerate
+	 
   
     always @(posedge clk) begin
         // Reset => initialize
         if (rst) begin
-				for (i = 0; i < NR_STAGES; i = i + 1) begin
-					coef[i] = h_in[i*DWIDTH +: DWIDTH];
-				end
 				state_busy <= 0;
             req_in_buf <= 0;
             req_out_buf <= 0;
@@ -60,6 +63,8 @@ module filter #(parameter NR_STAGES = 32,
 				if (state_busy && !req_out) begin
 					// Shift through the data and calculate one tap every clock cycle
 					mem[cnt+1] <= mem[cnt];
+					
+					
 					sum <= sum + mem[cnt]*coef[cnt];
 					cnt <= cnt - 1;
 					

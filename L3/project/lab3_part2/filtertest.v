@@ -26,7 +26,7 @@ wire ack_out1;
 wire [0:DWIDTH-1] data_out1;
 
 // Instantiation of the filter
-filter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
+mainfilter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
   my_filter (clk, rst, req_in1, ack_in1, data_in1, req_out1, ack_out1, data_out1, h_in
 );
 

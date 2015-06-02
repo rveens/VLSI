@@ -215,11 +215,12 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
       <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputRemoved"/>
       <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
       <outfile xil_pn:name="firwrapper.pcf"/>
       <outfile xil_pn:name="firwrapper_map.map"/>
       <outfile xil_pn:name="firwrapper_map.mrp"/>
-      <outfile xil_pn:name="firwrapper_map.ncd"/>
       <outfile xil_pn:name="firwrapper_map.ngm"/>
       <outfile xil_pn:name="firwrapper_map.xrpt"/>
       <outfile xil_pn:name="firwrapper_summary.xml"/>
@@ -227,25 +228,20 @@
     </transform>
     <transform xil_pn:end_ts="1433178694" xil_pn:in_ck="8064412707950707458" xil_pn:name="TRANEXT_par_spartan6" xil_pn:prop_ck="-3829590541433901613" xil_pn:start_ts="1433178648">
       <status xil_pn:value="SuccessfullyRun"/>
-      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="NotReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
       <status xil_pn:value="OutOfDateForPredecessor"/>
-      <outfile xil_pn:name="_xmsgs/par.xmsgs"/>
-      <outfile xil_pn:name="firwrapper.ncd"/>
-      <outfile xil_pn:name="firwrapper.pad"/>
-      <outfile xil_pn:name="firwrapper.par"/>
-      <outfile xil_pn:name="firwrapper.ptwx"/>
-      <outfile xil_pn:name="firwrapper.unroutes"/>
-      <outfile xil_pn:name="firwrapper.xpi"/>
-      <outfile xil_pn:name="firwrapper_pad.csv"/>
-      <outfile xil_pn:name="firwrapper_pad.txt"/>
-      <outfile xil_pn:name="firwrapper_par.xrpt"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputRemoved"/>
+      <status xil_pn:value="OutputRemoved"/>
     </transform>
     <transform xil_pn:name="TRAN_postRouteTrce">
       <status xil_pn:value="AbortedRun"/>
-      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="NotReadyToRun"/>
       <status xil_pn:value="OutOfDateForInputs"/>
       <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="InputAdded"/>
+      <status xil_pn:value="InputRemoved"/>
     </transform>
   </transforms>
 

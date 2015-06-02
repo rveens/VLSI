@@ -4,13 +4,13 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.08 secs
+Total CPU time to Xst completion: 0.06 secs
  
 --> Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.08 secs
+Total CPU time to Xst completion: 0.06 secs
  
 --> Reading design: filtertest.prj
 
@@ -107,8 +107,15 @@ Slice Utilization Ratio Delta      : 5
 =========================================================================
 Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\subfilter.v" into library work
 Parsing module <subfilter>.
-Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\filter.v" into library work
-Parsing module <filter>.
+WARNING:HDLCompiler:248 - "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\subfilter.v" Line 39: Block identifier is required on this block
+Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\preproc.v" into library work
+Parsing module <preproc>.
+Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\postproc.v" into library work
+Parsing module <postproc>.
+Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\passivator.v" into library work
+Parsing module <passivator>.
+Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\mainfilter.v" into library work
+Parsing module <mainfilter>.
 Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\filtertest.v" into library work
 Parsing module <filtertest>.
 
@@ -130,6 +137,6 @@ WARNING:HDLCompiler:1499 - "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project
 Total memory usage is 186992 kilobytes
 
 Number of errors   :    1 (   0 filtered)
-Number of warnings :    6 (   0 filtered)
+Number of warnings :    7 (   0 filtered)
 Number of infos    :    0 (   0 filtered)
 

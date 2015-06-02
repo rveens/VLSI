@@ -30,42 +30,34 @@ module filter #(parameter NR_STAGES = 32,
     reg signed [0:DWIDTH-1] b0, b1;
     assign data_out = {b0, b1};
 	 
-	 	 
-	 // extra stuff
-	 reg [0:(CWIDTH/2)-1] h0;
-	 reg [0:(CWIDTH/2)-1] h1;
-	 reg [0:(CWIDTH/2)-1] h0_1;
-	 wire [0:DWIDTH-1] a0_1;
+	 reg busy;
+	 wire [0:DWIDTH-1] a0_filter;
+	 reg [0:DWIDTH-1] a0_buf; 
+	 assign a0_filter = a0_buf;
 	 
-	 assign a0_1 = a0 + a1;
+	 wire [0:DWIDTH-1] b0_filter;
 	 
-	 // split coefficients
-	 integer i;
-	 initial begin
-			for (i = 0; i < (CWIDTH/2)-1; i = i + 1) begin
-				h0[i] <= h_in[i*2];
-				h1[i] <= h_in[i*2 + 1];
-				h0_1[i] <= h_in[i*2] + h_in[i*2 + 1];
-			end
-	 end
-  
-	 // instantiate subfirs
-	 // use a0 and even of h_in (H0)
-	 passivator #(.DWIDTH(DWIDTH)) pass_H0 ();
-	 subfilter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
-		subfilterH0 (clk, rst, req_in1/*?*/, ack_in1/*?*/, a0, req_out1/*?*/, ack_out1/*?*/, data_out1/*?*/, h0
-	 );
+	 reg req_out_filter_buf;
+	 assign req_out_filter = req_out_filter_buf;
 	 
-	 // use a0+a1 and even + uneven of h_in (H0+H1)
-	 subfilter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
-		subfilterH0_1 (clk, rst, req_in1/*?*/, ack_in1/*?*/, a0_1, req_out1/*?*/, ack_out1/*?*/, data_out1/*?*/, h0_1
-	 );
+	 reg req_in_filter_buf;
+	 assign req_in_filter = req_in_filter_buf;
 	 
-	 // use a1 and uneven of h_in (H1)
-	 subfilter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
-		subfilterH1 (clk, rst, req_in1/*?*/, ack_in1/*?*/, a1, req_out1/*?*/, ack_out1/*?*/, data_out1/*?*/, h1
-	 );
-  
+	 wire ack_in_filter;
+	 wire ack_out_filter;
+	 
+	 
+	 mainfilter #(NR_STAGES, DWIDTH, DDWIDTH, CWIDTH) main
+						(clk,
+                   rst,
+                   req_in_filter,
+                   ack_in_filter,
+                   a0_filter,
+                   req_out_filter,
+                   ack_out_filter,
+                   b0_filter,
+							h_in);
+	 
     always @(posedge clk) begin
         // Reset => initialize
         if (rst) begin
@@ -78,17 +70,28 @@ module filter #(parameter NR_STAGES = 32,
         else begin
             // Input request & acknowledge => take the input & go back to computation a.s.a.p.
             if (req_in && ack_in) begin
-                b0 <= a0;
-                b1 <= a1;
-                req_in_buf <= 0;
-                req_out_buf <= 1;
+					req_in_filter_buf <= 1;
+					if ( req_in_filter && ack_in_filter ) begin
+						a0_buf <= a0;
+						req_in_buf <= 0;
+						req_in_filter_buf <= 0;
+						req_out_filter_buf <= 1;
+						busy <= 1;
+					end
             end
-            // Output request & acknowledge => go back to computation a.s.a.p.
-            if (req_out && ack_out) begin
-                req_out_buf <= 0;
-            end
+				
+				if (busy && ack_out_filter) begin
+					req_out_buf <= 1;
+					if( req_out && ack_out ) begin
+						b0 <= b0_filter;
+						req_out_filter_buf <= 0;
+						req_out_buf <= 0;
+						busy <= 0;
+					end
+				end
+				
             // If we need no inputs and have no outputs ready, then proceed with the computation
-            if (!req_in && !req_out && !ack_in && !ack_out) begin   
+            if (!req_in && !req_out && !ack_in && !ack_out && !busy) begin   
                 req_in_buf <= 1;
             end
         end

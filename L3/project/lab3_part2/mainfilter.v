@@ -21,7 +21,7 @@ module mainfilter #(parameter NR_STAGES = 32,
 	 wire [0:DWIDTH-1] data_in_preproc_pass;
 	 
 	 // wires subfilter -> passivator
-	 wire req_in_subfilter_pass;
+	 wire req_in_pass_subfilter;
 	 
 	 // wires passivator -> subfilter
 	 wire ack_in_pass_subfilter;
@@ -77,7 +77,6 @@ module mainfilter #(parameter NR_STAGES = 32,
 					 );
 	
     always @(posedge clk) begin
-        
     end
 
 endmodule

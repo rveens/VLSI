@@ -4,13 +4,13 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.06 secs
+Total CPU time to Xst completion: 0.09 secs
  
 --> Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.06 secs
+Total CPU time to Xst completion: 0.09 secs
  
 --> Reading design: firwrapper.prj
 
@@ -105,19 +105,19 @@ Slice Utilization Ratio Delta      : 5
 =========================================================================
 *                          HDL Parsing                                  *
 =========================================================================
-Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\subfilter.v" into library work
+Analyzing Verilog file "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\subfilter.v" into library work
 Parsing module <subfilter>.
-Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\preproc.v" into library work
+Analyzing Verilog file "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\preproc.v" into library work
 Parsing module <preproc>.
-Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\postproc.v" into library work
+Analyzing Verilog file "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\postproc.v" into library work
 Parsing module <postproc>.
-Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\passivator.v" into library work
+Analyzing Verilog file "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\passivator.v" into library work
 Parsing module <passivator>.
-Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\mainfilter.v" into library work
+Analyzing Verilog file "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\mainfilter.v" into library work
 Parsing module <mainfilter>.
-Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\filter.v" into library work
+Analyzing Verilog file "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\filter.v" into library work
 Parsing module <filter>.
-Analyzing Verilog file "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\firwrapper.v" into library work
+Analyzing Verilog file "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\firwrapper.v" into library work
 Parsing module <firwrapper>.
 
 =========================================================================
@@ -127,7 +127,7 @@ Parsing module <firwrapper>.
 Elaborating module <firwrapper>.
 
 Elaborating module <filter(NR_STAGES=32,DWIDTH=16,DDWIDTH=32,CWIDTH=512)>.
-WARNING:HDLCompiler:1127 - "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\filter.v" Line 27: Assignment to a1 ignored, since the identifier is never used
+WARNING:HDLCompiler:1127 - "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\filter.v" Line 35: Assignment to a1 ignored, since the identifier is never used
 
 Elaborating module <mainfilter(NR_STAGES=32,DWIDTH=16,DDWIDTH=32,CWIDTH=512)>.
 
@@ -136,7 +136,7 @@ Elaborating module <preproc(NR_STAGES=32,DWIDTH=16,DDWIDTH=32,CWIDTH=512)>.
 Elaborating module <passivator(DWIDTH=16)>.
 
 Elaborating module <subfilter(NR_STAGES=32,DWIDTH=16,DDWIDTH=32,CWIDTH=512)>.
-WARNING:HDLCompiler:413 - "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\subfilter.v" Line 69: Result of 32-bit expression is truncated to fit in 5-bit target.
+WARNING:HDLCompiler:413 - "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\subfilter.v" Line 76: Result of 32-bit expression is truncated to fit in 5-bit target.
 
 Elaborating module <postproc(NR_STAGES=32,DWIDTH=16,DDWIDTH=32,CWIDTH=512)>.
 
@@ -145,7 +145,7 @@ Elaborating module <postproc(NR_STAGES=32,DWIDTH=16,DDWIDTH=32,CWIDTH=512)>.
 =========================================================================
 
 Synthesizing Unit <firwrapper>.
-    Related source file is "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\firwrapper.v".
+    Related source file is "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\firwrapper.v".
         NR_STAGES = 32
         DWIDTH = 16
         CWIDTH = 512
@@ -667,25 +667,26 @@ Synthesizing Unit <firwrapper>.
 Unit <firwrapper> synthesized.
 
 Synthesizing Unit <filter>.
-    Related source file is "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\filter.v".
+    Related source file is "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\filter.v".
         NR_STAGES = 32
         DWIDTH = 16
         DDWIDTH = 32
         CWIDTH = 512
     Found 1-bit register for signal <req_out_buf>.
+    Found 1-bit register for signal <req_in_filter_buf>.
+    Found 1-bit register for signal <req_out_filter_buf>.
     Found 16-bit register for signal <b0>.
     Found 16-bit register for signal <b1>.
-    Found 1-bit register for signal <req_in_filter_buf>.
-    Found 16-bit register for signal <a0_buf>.
-    Found 1-bit register for signal <req_out_filter_buf>.
-    Found 1-bit register for signal <busy>.
+    Found 1-bit register for signal <hold_prod>.
+    Found 1-bit register for signal <hold_cons>.
+    Found 16-bit register for signal <a0_filter_buf>.
     Found 1-bit register for signal <req_in_buf>.
     Summary:
-	inferred  53 D-type flip-flop(s).
+	inferred  54 D-type flip-flop(s).
 Unit <filter> synthesized.
 
 Synthesizing Unit <mainfilter>.
-    Related source file is "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\mainfilter.v".
+    Related source file is "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\mainfilter.v".
         NR_STAGES = 32
         DWIDTH = 16
         DDWIDTH = 32
@@ -695,12 +696,11 @@ Synthesizing Unit <mainfilter>.
 Unit <mainfilter> synthesized.
 
 Synthesizing Unit <preproc>.
-    Related source file is "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\preproc.v".
+    Related source file is "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\preproc.v".
         NR_STAGES = 32
         DWIDTH = 16
         DDWIDTH = 32
         CWIDTH = 512
-WARNING:Xst:647 - Input <rst> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
     Found 512-bit register for signal <h_out_buf>.
     Found 16-bit register for signal <data_out_buf>.
     Summary:
@@ -708,14 +708,14 @@ WARNING:Xst:647 - Input <rst> is never used. This port will be preserved and lef
 Unit <preproc> synthesized.
 
 Synthesizing Unit <passivator>.
-    Related source file is "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\passivator.v".
+    Related source file is "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\passivator.v".
         DWIDTH = 16
     Summary:
 	no macro.
 Unit <passivator> synthesized.
 
 Synthesizing Unit <subfilter>.
-    Related source file is "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\subfilter.v".
+    Related source file is "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\subfilter.v".
         NR_STAGES = 32
         DWIDTH = 16
         DDWIDTH = 32
@@ -1237,13 +1237,13 @@ Synthesizing Unit <subfilter>.
     Found 1-bit register for signal <mem<31><14>>.
     Found 1-bit register for signal <mem<31><15>>.
     Found 1-bit register for signal <state_busy>.
-    Found 6-bit adder for signal <n0756> created at line 65.
-    Found 32-bit adder for signal <sum[0]_cnt[4]_add_73_OUT> created at line 68.
-    Found 5-bit subtractor for signal <GND_6_o_GND_6_o_sub_75_OUT<4:0>> created at line 69.
-    Found 16x16-bit multiplier for signal <n0829> created at line 68.
-    Found 16-bit 32-to-1 multiplexer for signal <cnt[4]_mem[31][0]_wide_mux_34_OUT> created at line 68.
-    Found 16-bit 32-to-1 multiplexer for signal <cnt[4]_coef[31][0]_wide_mux_71_OUT> created at line 68.
-    Found 6-bit comparator lessequal for signal <n0056> created at line 65
+    Found 6-bit adder for signal <n0756> created at line 72.
+    Found 32-bit adder for signal <sum[0]_cnt[4]_add_73_OUT> created at line 75.
+    Found 5-bit subtractor for signal <GND_6_o_GND_6_o_sub_75_OUT<4:0>> created at line 76.
+    Found 16x16-bit multiplier for signal <n0829> created at line 75.
+    Found 16-bit 32-to-1 multiplexer for signal <cnt[4]_mem[31][0]_wide_mux_34_OUT> created at line 75.
+    Found 16-bit 32-to-1 multiplexer for signal <cnt[4]_coef[31][0]_wide_mux_71_OUT> created at line 75.
+    Found 6-bit comparator lessequal for signal <n0056> created at line 72
     Summary:
 	inferred   1 Multiplier(s).
 	inferred   3 Adder/Subtractor(s).
@@ -1253,12 +1253,11 @@ Synthesizing Unit <subfilter>.
 Unit <subfilter> synthesized.
 
 Synthesizing Unit <postproc>.
-    Related source file is "C:\Users\Rick Veens\Documents\GitHub\VLSI\L3\project\lab3_part2\postproc.v".
+    Related source file is "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3_part2\postproc.v".
         NR_STAGES = 32
         DWIDTH = 16
         DDWIDTH = 32
         CWIDTH = 512
-WARNING:Xst:647 - Input <rst> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
     Found 16-bit register for signal <data_out_buf>.
     Found 16-bit register for signal <data_in_buf>.
     Summary:
@@ -1275,8 +1274,8 @@ Macro Statistics
  32-bit adder                                          : 1
  5-bit subtractor                                      : 1
  6-bit adder                                           : 1
-# Registers                                            : 65
- 1-bit register                                        : 24
+# Registers                                            : 66
+ 1-bit register                                        : 25
  16-bit register                                       : 37
  32-bit register                                       : 1
  5-bit register                                        : 1
@@ -1294,7 +1293,8 @@ Macro Statistics
 *                       Advanced HDL Synthesis                          *
 =========================================================================
 
-INFO:Xst:2261 - The FF/Latch <req_out_filter_buf> in Unit <firfilter> is equivalent to the following FF/Latch, which will be removed : <busy> 
+INFO:Xst:2261 - The FF/Latch <req_out_buf> in Unit <firfilter> is equivalent to the following FF/Latch, which will be removed : <hold_cons> 
+INFO:Xst:2261 - The FF/Latch <req_in_filter_buf> in Unit <firfilter> is equivalent to the following FF/Latch, which will be removed : <hold_prod> 
 WARNING:Xst:1710 - FF/Latch <b1_15> (without init value) has a constant value of 0 in block <firfilter>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <b1_14> (without init value) has a constant value of 0 in block <firfilter>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <b1_13> (without init value) has a constant value of 0 in block <firfilter>. This FF/Latch will be trimmed during the optimization process.
@@ -1328,8 +1328,8 @@ Macro Statistics
  6-bit adder                                           : 1
 # Counters                                             : 1
  5-bit down counter                                    : 1
-# Registers                                            : 1640
- Flip-Flops                                            : 1640
+# Registers                                            : 1641
+ Flip-Flops                                            : 1641
 # Comparators                                          : 1
  6-bit comparator lessequal                            : 1
 # Multiplexers                                         : 34
@@ -1357,11 +1357,12 @@ WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <b1_3> (without init
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <b1_2> (without init value) has a constant value of 0 in block <filter>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <b1_1> (without init value) has a constant value of 0 in block <filter>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <b1_0> (without init value) has a constant value of 0 in block <filter>. This FF/Latch will be trimmed during the optimization process.
-INFO:Xst:2261 - The FF/Latch <req_out_filter_buf> in Unit <filter> is equivalent to the following FF/Latch, which will be removed : <busy> 
-WARNING:Xst:2170 - Unit filter : the following signal(s) form a combinatorial loop: req_in_filter_INV_50_o, ack_in_filter, main/pass/req1_ack1_AND_2_o.
-WARNING:Xst:2170 - Unit filter : the following signal(s) form a combinatorial loop: busy_ack_out_filter_AND_362_o, ack_out_filter.
-WARNING:Xst:2170 - Unit filter : the following signal(s) form a combinatorial loop: ack_in_filter.
+INFO:Xst:2261 - The FF/Latch <req_out_buf> in Unit <filter> is equivalent to the following FF/Latch, which will be removed : <hold_cons> 
+INFO:Xst:2261 - The FF/Latch <req_in_filter_buf> in Unit <filter> is equivalent to the following FF/Latch, which will be removed : <hold_prod> 
+WARNING:Xst:2170 - Unit filter : the following signal(s) form a combinatorial loop: main/pass2/req2_ack1_AND_3_o, ack_out_filter, _n0075.
+WARNING:Xst:2170 - Unit filter : the following signal(s) form a combinatorial loop: main/pass/req1_ack1_AND_2_o, ack_in_filter.
 WARNING:Xst:2170 - Unit filter : the following signal(s) form a combinatorial loop: ack_out_filter.
+WARNING:Xst:2170 - Unit filter : the following signal(s) form a combinatorial loop: ack_in_filter.
 
 Optimizing unit <firwrapper> ...
 
@@ -1383,33 +1384,12 @@ FlipFlop firfilter/main/sfil/cnt_3 has been replicated 2 time(s)
 
 Final Macro Processing ...
 
-Processing Unit <firwrapper> :
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_0>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_1>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_2>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_3>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_4>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_5>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_6>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_7>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_8>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_9>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_10>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_11>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_12>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_13>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_14>.
-	Found 2-bit shift register for signal <firfilter/main/post/data_out_buf_15>.
-Unit <firwrapper> processed.
-
 =========================================================================
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 1628
- Flip-Flops                                            : 1628
-# Shift Registers                                      : 16
- 2-bit shift register                                  : 16
+# Registers                                            : 1660
+ Flip-Flops                                            : 1660
 
 =========================================================================
 
@@ -1432,24 +1412,21 @@ Top Level Output File Name         : firwrapper.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 417
+# BELS                             : 421
 #      GND                         : 1
 #      INV                         : 1
-#      LUT2                        : 3
+#      LUT2                        : 9
 #      LUT3                        : 8
-#      LUT4                        : 3
-#      LUT5                        : 5
-#      LUT6                        : 360
+#      LUT4                        : 5
+#      LUT5                        : 3
+#      LUT6                        : 358
 #      MUXF7                       : 35
 #      VCC                         : 1
-# FlipFlops/Latches                : 1628
-#      FD                          : 530
-#      FDE                         : 1040
-#      FDR                         : 5
-#      FDRE                        : 16
+# FlipFlops/Latches                : 1660
+#      FDE                         : 1024
+#      FDR                         : 567
+#      FDRE                        : 32
 #      FDSE                        : 37
-# Shift Registers                  : 16
-#      SRLC16E                     : 16
 # Clock Buffers                    : 1
 #      BUFGP                       : 1
 # IO Buffers                       : 55
@@ -1465,18 +1442,16 @@ Selected Device : 6slx45csg324-3
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:            1628  out of  54576     2%  
- Number of Slice LUTs:                  396  out of  27288     1%  
-    Number used as Logic:               380  out of  27288     1%  
-    Number used as Memory:               16  out of   6408     0%  
-       Number used as SRL:               16
+ Number of Slice Registers:            1660  out of  54576     3%  
+ Number of Slice LUTs:                  384  out of  27288     1%  
+    Number used as Logic:               384  out of  27288     1%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:   1996
-   Number with an unused Flip Flop:     368  out of   1996    18%  
-   Number with an unused LUT:          1600  out of   1996    80%  
-   Number of fully used LUT-FF pairs:    28  out of   1996     1%  
-   Number of unique control sets:        38
+ Number of LUT Flip Flop pairs used:   2031
+   Number with an unused Flip Flop:     371  out of   2031    18%  
+   Number with an unused LUT:          1647  out of   2031    81%  
+   Number of fully used LUT-FF pairs:    13  out of   2031     0%  
+   Number of unique control sets:        37
 
 IO Utilization: 
  Number of IOs:                          72
@@ -1507,7 +1482,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-clk                                | BUFGP                  | 1645  |
+clk                                | BUFGP                  | 1661  |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -1519,7 +1494,7 @@ Timing Summary:
 Speed Grade: -3
 
    Minimum period: 8.421ns (Maximum Frequency: 118.750MHz)
-   Minimum input arrival time before clock: 6.466ns
+   Minimum input arrival time before clock: 6.940ns
    Maximum output required time after clock: 3.732ns
    Maximum combinational path delay: No path found
 
@@ -1530,7 +1505,7 @@ All values displayed in nanoseconds (ns)
 =========================================================================
 Timing constraint: Default period analysis for Clock 'clk'
   Clock period: 8.421ns (frequency: 118.750MHz)
-  Total number of paths / destination ports: 33128 / 2246
+  Total number of paths / destination ports: 33204 / 2294
 -------------------------------------------------------------------------
 Delay:               8.421ns (Levels of Logic = 3)
   Source:            firfilter/main/sfil/cnt_0_6 (FF)
@@ -1553,9 +1528,9 @@ Delay:               8.421ns (Levels of Logic = 3)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'clk'
-  Total number of paths / destination ports: 1158 / 1136
+  Total number of paths / destination ports: 1730 / 1713
 -------------------------------------------------------------------------
-Offset:              6.466ns (Levels of Logic = 3)
+Offset:              6.940ns (Levels of Logic = 3)
   Source:            rst (PAD)
   Destination:       firfilter/main/sfil/mem_028 (FF)
   Destination Clock: clk rising
@@ -1564,29 +1539,29 @@ Offset:              6.466ns (Levels of Logic = 3)
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            64   1.222   1.868  rst_IBUF (rst_IBUF)
+     IBUF:I->O           609   1.222   2.342  rst_IBUF (rst_IBUF)
      LUT3:I0->O           31   0.205   1.642  firfilter/main/sfil/_n2576_inv11 (firfilter/main/sfil/_n2576_inv1)
      LUT6:I0->O           16   0.203   1.004  firfilter/main/sfil/_n2576_inv2 (firfilter/main/sfil/_n2576_inv)
      FDE:CE                    0.322          firfilter/main/sfil/mem_1528
     ----------------------------------------
-    Total                      6.466ns (1.952ns logic, 4.514ns route)
-                                       (30.2% logic, 69.8% route)
+    Total                      6.940ns (1.952ns logic, 4.988ns route)
+                                       (28.1% logic, 71.9% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'clk'
   Total number of paths / destination ports: 18 / 18
 -------------------------------------------------------------------------
 Offset:              3.732ns (Levels of Logic = 1)
-  Source:            firfilter/req_in_buf (FF)
-  Destination:       req_in (PAD)
+  Source:            firfilter/req_out_buf (FF)
+  Destination:       req_out (PAD)
   Source Clock:      clk rising
 
-  Data Path: firfilter/req_in_buf to req_in
+  Data Path: firfilter/req_out_buf to req_out
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDR:C->Q              5   0.447   0.714  firfilter/req_in_buf (firfilter/req_in_buf)
-     OBUF:I->O                 2.571          req_in_OBUF (req_in)
+     FDR:C->Q              5   0.447   0.714  firfilter/req_out_buf (firfilter/req_out_buf)
+     OBUF:I->O                 2.571          req_out_OBUF (req_out)
     ----------------------------------------
     Total                      3.732ns (3.018ns logic, 0.714ns route)
                                        (80.9% logic, 19.1% route)
@@ -1607,14 +1582,14 @@ clk            |    8.421|         |         |         |
 =========================================================================
 
 
-Total REAL time to Xst completion: 10.00 secs
-Total CPU time to Xst completion: 10.50 secs
+Total REAL time to Xst completion: 17.00 secs
+Total CPU time to Xst completion: 16.80 secs
  
 --> 
 
-Total memory usage is 241220 kilobytes
+Total memory usage is 268576 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :   40 (   0 filtered)
-Number of infos    :    2 (   0 filtered)
+Number of warnings :   38 (   0 filtered)
+Number of infos    :    4 (   0 filtered)
 

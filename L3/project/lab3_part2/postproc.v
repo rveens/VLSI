@@ -17,8 +17,15 @@ module postproc #(parameter NR_STAGES = 32,
 	 assign data_out = data_out_buf;
 	 
     always @(posedge clk) begin
-		  data_in_buf <= data_in;
-        data_out_buf <= data_in_buf;
+		  if(rst) begin
+				data_in_buf <= 0;
+				data_out_buf <= 0;
+		  end
+		  else begin
+				data_in_buf <= data_in;
+				data_out_buf <= data_in_buf;
+		  end
+		  
     end
 
 endmodule

@@ -14,13 +14,21 @@ module filter #(parameter NR_STAGES = 32,
                 output [0:DDWIDTH-1] data_out,
                 input  [0:CWIDTH-1] h_in);
 
-    // Output request register
-    reg req_out_buf;
-    assign req_out = req_out_buf;
+   
 
-    // Input request register
+    // Input request registers
     reg req_in_buf;
     assign req_in = req_in_buf;
+	 
+	 reg req_in_filter_buf;
+	 assign req_in_filter = req_in_filter_buf;
+	 
+	  // Output request registers
+    reg req_out_buf;
+    assign req_out = req_out_buf;
+	 
+	 reg req_out_filter_buf;
+	 assign req_out_filter = req_out_filter_buf;
 
     // Split input into 2 samples
     wire signed [0:DWIDTH-1] a0, a1;
@@ -30,22 +38,17 @@ module filter #(parameter NR_STAGES = 32,
     reg signed [0:DWIDTH-1] b0, b1;
     assign data_out = {b0, b1};
 	 
-	 reg busy;
+	 //input
 	 wire [0:DWIDTH-1] a0_filter;
-	 reg [0:DWIDTH-1] a0_buf; 
-	 assign a0_filter = a0_buf;
-	 
 	 wire [0:DWIDTH-1] b0_filter;
+	 reg signed [0:DWIDTH-1] a0_filter_buf; 
+	 assign a0_filter = a0_filter_buf;
 	 
-	 reg req_out_filter_buf;
-	 assign req_out_filter = req_out_filter_buf;
-	 
-	 reg req_in_filter_buf;
-	 assign req_in_filter = req_in_filter_buf;
+	 // Extra wires and flags
+	 reg hold_cons, hold_prod;
 	 
 	 wire ack_in_filter;
 	 wire ack_out_filter;
-	 
 	 
 	 mainfilter #(NR_STAGES, DWIDTH, DDWIDTH, CWIDTH) main
 						(clk,
@@ -56,44 +59,68 @@ module filter #(parameter NR_STAGES = 32,
                    req_out_filter,
                    ack_out_filter,
                    b0_filter,
-							h_in);
-	 
+						 h_in);
+
     always @(posedge clk) begin
         // Reset => initialize
         if (rst) begin
             req_in_buf <= 0;
             req_out_buf <= 0;
+				req_in_filter_buf  <= 0;
+				req_out_filter_buf <= 0;
             b0 <= 0;
             b1 <= 0;
+				hold_prod <= 0;
+				hold_cons <= 0;
+				a0_filter_buf <= 0;
         end
         // !Reset => run
         else begin
-            // Input request & acknowledge => take the input & go back to computation a.s.a.p.
-            if (req_in && ack_in) begin
-					req_in_filter_buf <= 1;
-					if ( req_in_filter && ack_in_filter ) begin
-						a0_buf <= a0;
-						req_in_buf <= 0;
-						req_in_filter_buf <= 0;
-						req_out_filter_buf <= 1;
-						busy <= 1;
-					end
-            end
-				
-				if (busy && ack_out_filter) begin
-					req_out_buf <= 1;
-					if( req_out && ack_out ) begin
-						b0 <= b0_filter;
-						req_out_filter_buf <= 0;
-						req_out_buf <= 0;
-						busy <= 0;
-					end
+				///////// Input data processing (Testbench => Mainfilter)
+	
+				// if not busy, place new request
+				if (!req_in && !ack_in && !hold_prod) begin
+					req_in_buf <= 1;
 				end
 				
-            // If we need no inputs and have no outputs ready, then proceed with the computation
-            if (!req_in && !req_out && !ack_in && !ack_out && !busy) begin   
-                req_in_buf <= 1;
-            end
+				// warn mainfilter that there is data available
+				if (req_in && ack_in) begin
+					a0_filter_buf <= a0;
+					req_in_buf <= 0;
+					req_in_filter_buf <= 1;
+					hold_prod <= 1;
+				end
+				
+				// If mainfilter acknowledges, start retrieving new sample
+				if (req_in_filter && ack_in_filter) begin
+					a0_filter_buf <= 0;
+					req_in_filter_buf <= 0;
+					hold_prod <= 0; //main filter may still be busy but this does not matter, since it will just not acknowledge
+				end
+		  
+		  
+				////////// Output data processing (Mainfilter => Testbench)
+				
+				// If nothing at the output, issue request
+				if (!req_out_filter && !ack_out_filter && !hold_cons) begin
+					req_out_filter_buf <= 1;
+				end
+				
+				// If the request is ack-ed, process data and warn testbench
+				if (req_out_filter && ack_out_filter) begin
+					req_out_filter_buf <= 0;
+					req_out_buf <= 1;
+					hold_cons <= 1;
+				end
+				
+				// Process to testbench
+				if (req_out && ack_out) begin
+					b0 <= b0_filter;
+					req_out_buf <= 0;
+					hold_cons <= 0;
+				end
+				
+				
         end
     end
 

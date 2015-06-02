@@ -17,7 +17,7 @@ module firwrapper #(
 					 input h,
 					 input h_enabled);
 
-	reg [0:CWIDTH-1] h_in;
+	reg [0:CWIDTH-1] h_in = 0;
 
 	filter #(NR_STAGES, DWIDTH, DDWIDTH, CWIDTH) firfilter
 		  (clk,

@@ -34,9 +34,16 @@ module subfilter #(parameter NR_STAGES = 32,
 	 reg state_busy;
 	 reg [4:0] cnt;
 	 
+	 integer j;
+	 initial begin
+		for (j = 0; j < NR_STAGES; j = j + 1)begin : yolo_init
+			mem[j] <= 0;
+		end
+	 end
+	 
 	 generate
 		genvar i;
-		for (i = 0; i < NR_STAGES; i = i +1)begin : yolo
+		for (i = 0; i < NR_STAGES; i = i + 1)begin : yolo
 			assign coef[i] = h_in[i*DWIDTH +: DWIDTH];
 		end
 	endgenerate

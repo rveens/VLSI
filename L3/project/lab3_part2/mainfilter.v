@@ -8,10 +8,10 @@ module mainfilter #(parameter NR_STAGES = 32,
                 input  rst,
                 input req_in,
                 output  ack_in,
-                input signed [0:DWIDTH-1] data_in,
+                input signed [0:DDWIDTH-1] data_in,
                 input req_out,
                 output  ack_out,
-                output signed [0:DWIDTH-1] data_out,
+                output signed [0:DDWIDTH-1] data_out,
                 input signed [0:CWIDTH-1] h_in);
      
 	 // wires preproc -> subfilter

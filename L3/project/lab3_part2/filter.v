@@ -29,20 +29,13 @@ module filter #(parameter NR_STAGES = 32,
 	 
 	 reg req_out_filter_buf;
 	 assign req_out_filter = req_out_filter_buf;
-
-    // Split input into 2 samples
-    wire signed [0:DWIDTH-1] a0, a1;
-    assign {a0, a1} = data_in;
-    
-    // Buffer and combine 2 samples into output
-    reg signed [0:DWIDTH-1] b0, b1;
-    assign data_out = {b0, b1};
 	 
 	 //input
-	 wire [0:DWIDTH-1] a0_filter;
-	 wire [0:DWIDTH-1] b0_filter;
-	 reg signed [0:DWIDTH-1] a0_filter_buf; 
-	 assign a0_filter = a0_filter_buf;
+	 wire [0:DWIDTH-1] data_in_filter;
+	 wire [0:DWIDTH-1] data_out_filter;
+	 
+	 reg signed [0:DWIDTH-1] data_in_filter_buf; 
+	 assign data_in_filter = data_in_filter_buf;
 	 
 	 // Extra wires and flags
 	 reg hold_cons, hold_prod;
@@ -55,10 +48,10 @@ module filter #(parameter NR_STAGES = 32,
                    rst,
                    req_in_filter,
                    ack_in_filter,
-                   a0_filter,
+                   data_in_filter,
                    req_out_filter,
                    ack_out_filter,
-                   b0_filter,
+                   data_out_filter,
 						 h_in);
 
     always @(posedge clk) begin
@@ -68,11 +61,9 @@ module filter #(parameter NR_STAGES = 32,
             req_out_buf <= 0;
 				req_in_filter_buf  <= 0;
 				req_out_filter_buf <= 0;
-            b0 <= 0;
-            b1 <= 0;
 				hold_prod <= 0;
 				hold_cons <= 0;
-				a0_filter_buf <= 0;
+				data_in_filter_buf <= 0;
         end
         // !Reset => run
         else begin
@@ -85,7 +76,7 @@ module filter #(parameter NR_STAGES = 32,
 				
 				// warn mainfilter that there is data available
 				if (req_in && ack_in) begin
-					a0_filter_buf <= a0;
+					data_in_filter_buf <= data_in;
 					req_in_buf <= 0;
 					req_in_filter_buf <= 1;
 					hold_prod <= 1;
@@ -93,7 +84,7 @@ module filter #(parameter NR_STAGES = 32,
 				
 				// If mainfilter acknowledges, start retrieving new sample
 				if (req_in_filter && ack_in_filter) begin
-					a0_filter_buf <= 0;
+					data_in_filter_buf <= 0;
 					req_in_filter_buf <= 0;
 					hold_prod <= 0; //main filter may still be busy but this does not matter, since it will just not acknowledge
 				end
@@ -115,7 +106,7 @@ module filter #(parameter NR_STAGES = 32,
 				
 				// Process to testbench
 				if (req_out && ack_out) begin
-					b0 <= b0_filter;
+					data_out <= data_out_filter;
 					req_out_buf <= 0;
 					hold_cons <= 0;
 				end

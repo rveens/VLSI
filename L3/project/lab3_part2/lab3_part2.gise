@@ -76,6 +76,10 @@
     <transform xil_pn:end_ts="1433272038" xil_pn:in_ck="-2728737981199089846" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1433272038">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="filter.v"/>
       <outfile xil_pn:name="filtertest.v"/>
       <outfile xil_pn:name="firwrapper.v"/>
@@ -100,6 +104,11 @@
     <transform xil_pn:end_ts="1433272038" xil_pn:in_ck="-2728737981199089846" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1433272038">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="filter.v"/>
       <outfile xil_pn:name="filtertest.v"/>
       <outfile xil_pn:name="firwrapper.v"/>
@@ -112,23 +121,22 @@
     <transform xil_pn:end_ts="1433272043" xil_pn:in_ck="-2728737981199089846" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="-3674401494082073863" xil_pn:start_ts="1433272038">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
       <status xil_pn:value="OutputChanged"/>
-      <outfile xil_pn:name="filtertest_beh.prj"/>
-      <outfile xil_pn:name="filtertest_isim_beh.exe"/>
-      <outfile xil_pn:name="fuse.log"/>
-      <outfile xil_pn:name="isim"/>
-      <outfile xil_pn:name="isim.log"/>
-      <outfile xil_pn:name="xilinxsim.ini"/>
+      <status xil_pn:value="OutputRemoved"/>
     </transform>
     <transform xil_pn:end_ts="1433272044" xil_pn:in_ck="-7537020736130186067" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="4301401898861083772" xil_pn:start_ts="1433272043">
       <status xil_pn:value="SuccessfullyRun"/>
-      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="NotReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputRemoved"/>
       <status xil_pn:value="OutputChanged"/>
-      <outfile xil_pn:name="filtertest_isim_beh.wdb"/>
-      <outfile xil_pn:name="isim.cmd"/>
-      <outfile xil_pn:name="isim.log"/>
+      <status xil_pn:value="OutputRemoved"/>
     </transform>
     <transform xil_pn:end_ts="1433259907" xil_pn:name="TRAN_copyInitialToXSTAbstractSynthesis" xil_pn:start_ts="1433259907">
       <status xil_pn:value="SuccessfullyRun"/>
@@ -158,18 +166,14 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1433271771" xil_pn:in_ck="-2728737981199089846" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="3667120019538295415" xil_pn:start_ts="1433271752">
-      <status xil_pn:value="SuccessfullyRun"/>
-      <status xil_pn:value="WarningsGenerated"/>
+    <transform xil_pn:end_ts="1433331359" xil_pn:in_ck="-2728737981199089846" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="3667120019538295415" xil_pn:start_ts="1433331353">
+      <status xil_pn:value="FailedRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <status xil_pn:value="OutOfDateForInputs"/>
-      <status xil_pn:value="InputChanged"/>
       <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
       <outfile xil_pn:name="firwrapper.lso"/>
       <outfile xil_pn:name="firwrapper.ngc"/>
       <outfile xil_pn:name="firwrapper.ngr"/>
       <outfile xil_pn:name="firwrapper.prj"/>
-      <outfile xil_pn:name="firwrapper.stx"/>
       <outfile xil_pn:name="firwrapper.syr"/>
       <outfile xil_pn:name="firwrapper.xst"/>
       <outfile xil_pn:name="firwrapper_xst.xrpt"/>

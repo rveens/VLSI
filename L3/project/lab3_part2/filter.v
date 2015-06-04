@@ -31,11 +31,14 @@ module filter #(parameter NR_STAGES = 32,
 	 assign req_out_filter = req_out_filter_buf;
 	 
 	 //input
-	 wire [0:DWIDTH-1] data_in_filter;
-	 wire [0:DWIDTH-1] data_out_filter;
+	 wire [0:DDWIDTH-1] data_in_filter;
+	 wire [0:DDWIDTH-1] data_out_filter;
 	 
-	 reg signed [0:DWIDTH-1] data_in_filter_buf; 
+	 reg signed [0:DDWIDTH-1] data_in_filter_buf; 
 	 assign data_in_filter = data_in_filter_buf;
+	 
+	 reg signed [0:DDWIDTH-1] data_out_filter_buf; 
+	 assign data_out_filter = data_out_filter_buf;
 	 
 	 // Extra wires and flags
 	 reg hold_cons, hold_prod;
@@ -106,7 +109,7 @@ module filter #(parameter NR_STAGES = 32,
 				
 				// Process to testbench
 				if (req_out && ack_out) begin
-					data_out <= data_out_filter;
+					data_out_filter_buf <= data_out_filter;
 					req_out_buf <= 0;
 					hold_cons <= 0;
 				end

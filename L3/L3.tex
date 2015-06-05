@@ -46,6 +46,8 @@
 
 \date{\today}
 
+\setlength\parindent{0pt}
+
 %--------------------------------- Text ----------------------------------
 
 \begin{document}
@@ -65,10 +67,19 @@ multiplier may be used.
 \end{enumerate}
 
 \subsubsection*{1.1 Analysis of requirements}
+The FIR filter should make use of only one DSP-unit, since the internal clock frequency is significantly higher than the expected sample rate. Furthermore the coefficients should not be buffered but must be connected as wires instead of buffering them in registers. This ensures that requirement 1 and 4 can be satisfied. For requirement 3, the clock frequency should be at least 100MHz, which will be checked in the post-synthesis report. Lastly, the asynchronous ack/req protocol will be used since there needs to be some synchronization between the testbench (44.1KHz sample rate) and the filter (100MHz sample rate).
 
 
-\subsection*{3. System architecture}
-Block diagram
+\subsection*{2. System architecture}
+Figure one shows the global architecture of the FIR filter. 
+\begin{figure}[h]
+	\includegraphics[scale = 1]{Images/3a_blockdiagram}
+    \caption{System overview}
+\end{figure}
+
+Unlike the FIR filter of lab2, the filter has only one tap. After each clock edge the multiplier/accumulator will multiply a sample that is stored in the memory with it's corresponding filter coefficient. An index makes sure that this operation moves through the FIFO in 32 clock cycles. The index sample is also shifted one place to the right. After 32 cycles the last tap has  been calculated and the first place in the FIFO is empty. The system will output the calculated sample, and request a new data item, which will be put on the first index.\\ 
+
+The whole procedure will then restart.
 \subsection*{4. Design choices}
 
 \subsection*{5. Functional correctness}

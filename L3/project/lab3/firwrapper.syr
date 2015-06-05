@@ -4,13 +4,13 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.22 secs
+Total CPU time to Xst completion: 0.09 secs
  
 --> Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.22 secs
+Total CPU time to Xst completion: 0.09 secs
  
 --> Reading design: firwrapper.prj
 
@@ -117,7 +117,7 @@ Parsing module <firwrapper>.
 Elaborating module <firwrapper>.
 
 Elaborating module <filter(NR_STAGES=32,DWIDTH=16,DDWIDTH=32,CWIDTH=512)>.
-WARNING:HDLCompiler:413 - "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3\filter.v" Line 64: Result of 32-bit expression is truncated to fit in 5-bit target.
+WARNING:HDLCompiler:413 - "C:\Users\BarrydeBruin\Documents\GitHub\VLSI\L3\project\lab3\filter.v" Line 68: Result of 32-bit expression is truncated to fit in 5-bit target.
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -651,7 +651,6 @@ Synthesizing Unit <filter>.
         DWIDTH = 16
         DDWIDTH = 32
         CWIDTH = 512
-    Found 1-bit register for signal <state_busy>.
     Found 1-bit register for signal <req_in_buf>.
     Found 1-bit register for signal <req_out_buf>.
     Found 32-bit register for signal <sum>.
@@ -1168,20 +1167,21 @@ Synthesizing Unit <filter>.
     Found 1-bit register for signal <mem<31><13>>.
     Found 1-bit register for signal <mem<31><14>>.
     Found 1-bit register for signal <mem<31><15>>.
-    Found 512-bit register for signal <n0638[511:0]>.
-    Found 6-bit adder for signal <n0688> created at line 62.
-    Found 32-bit adder for signal <sum[0]_cnt[4]_add_41_OUT> created at line 63.
-    Found 5-bit subtractor for signal <GND_2_o_GND_2_o_sub_43_OUT<4:0>> created at line 64.
-    Found 16x16-bit multiplier for signal <n0761> created at line 63.
-    Found 16-bit 32-to-1 multiplexer for signal <cnt[4]_mem[31][0]_wide_mux_2_OUT> created at line 63.
-    Found 16-bit 32-to-1 multiplexer for signal <cnt[4]_coef[31][0]_wide_mux_39_OUT> created at line 63.
-    Found 6-bit comparator lessequal for signal <n0025> created at line 62
+    Found 16-bit register for signal <data_out_buf>.
+    Found 1-bit register for signal <state_busy>.
+    Found 6-bit adder for signal <n0762> created at line 66.
+    Found 32-bit adder for signal <sum[0]_cnt[4]_add_73_OUT> created at line 67.
+    Found 5-bit subtractor for signal <GND_2_o_GND_2_o_sub_75_OUT<4:0>> created at line 68.
+    Found 16x16-bit multiplier for signal <n0835> created at line 67.
+    Found 16-bit 32-to-1 multiplexer for signal <cnt[4]_mem[31][0]_wide_mux_34_OUT> created at line 67.
+    Found 16-bit 32-to-1 multiplexer for signal <cnt[4]_coef[31][0]_wide_mux_71_OUT> created at line 67.
+    Found 6-bit comparator lessequal for signal <n0056> created at line 66
     Summary:
 	inferred   1 Multiplier(s).
 	inferred   3 Adder/Subtractor(s).
-	inferred 1064 D-type flip-flop(s).
+	inferred 568 D-type flip-flop(s).
 	inferred   1 Comparator(s).
-	inferred  36 Multiplexer(s).
+	inferred  35 Multiplexer(s).
 Unit <filter> synthesized.
 
 =========================================================================
@@ -1196,16 +1196,15 @@ Macro Statistics
  6-bit adder                                           : 1
 # Registers                                            : 54
  1-bit register                                        : 19
- 16-bit register                                       : 31
+ 16-bit register                                       : 32
  32-bit register                                       : 1
  5-bit register                                        : 1
- 512-bit register                                      : 2
+ 512-bit register                                      : 1
 # Comparators                                          : 1
  6-bit comparator lessequal                            : 1
-# Multiplexers                                         : 36
+# Multiplexers                                         : 35
  1-bit 2-to-1 multiplexer                              : 33
  16-bit 32-to-1 multiplexer                            : 2
- 5-bit 2-to-1 multiplexer                              : 1
 
 =========================================================================
 
@@ -1217,7 +1216,7 @@ Macro Statistics
 Synthesizing (advanced) Unit <filter>.
 The following registers are absorbed into accumulator <sum>: 1 register on signal <sum>.
 The following registers are absorbed into counter <cnt>: 1 register on signal <cnt>.
-	Multiplier <Mmult_n0761> in block <filter> and accumulator <sum> in block <filter> are combined into a MAC<Mmac_n0761>.
+	Multiplier <Mmult_n0835> in block <filter> and accumulator <sum> in block <filter> are combined into a MAC<Mmac_n0835>.
 Unit <filter> synthesized (advanced).
 
 =========================================================================
@@ -1230,8 +1229,8 @@ Macro Statistics
  6-bit adder                                           : 1
 # Counters                                             : 1
  5-bit down counter                                    : 1
-# Registers                                            : 1539
- Flip-Flops                                            : 1539
+# Registers                                            : 1043
+ Flip-Flops                                            : 1043
 # Comparators                                          : 1
  6-bit comparator lessequal                            : 1
 # Multiplexers                                         : 34
@@ -1247,1041 +1246,23 @@ Macro Statistics
 Optimizing unit <firwrapper> ...
 
 Optimizing unit <filter> ...
-WARNING:Xst:1710 - FF/Latch <firfilter/mem_1510> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1410> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1310> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1210> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1112> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1010> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_910> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_810> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_710> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_610> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_510> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_410> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_310> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_210> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_140> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_010> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1511> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1411> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1311> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1211> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1113> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1011> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_911> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_811> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_711> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_611> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_511> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_411> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_311> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_211> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_150> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_011> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_07> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_158> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_148> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_138> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_128> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1110> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_108> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_98> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_88> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_78> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_68> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_58> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_48> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_38> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_28> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_120> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_09> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_130> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_29> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_39> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_49> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_59> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_69> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_79> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_89> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_99> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_109> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1111> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_129> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_139> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_149> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_159> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_08> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1414> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1314> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1214> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1116> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1014> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_914> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_814> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_714> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_614> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_514> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_414> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_314> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_214> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_162> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_014> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1515> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1415> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1315> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1215> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1117> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1015> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_915> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_815> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_715> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_615> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_515> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_415> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_315> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_215> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_163> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_015> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1516> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1512> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1412> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1312> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1212> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1114> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1012> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_912> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_812> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_712> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_612> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_512> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_412> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_312> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_212> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_160> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_012> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1514> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_013> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_161> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_213> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_313> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_413> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_513> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_613> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_713> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_813> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_913> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1013> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1115> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1213> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1313> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1413> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1513> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_16> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_01> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_152> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_142> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_132> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_122> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_112> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_102> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_92> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_82> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_72> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_62> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_52> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_42> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_32> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_22> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_17> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_02> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_153> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_143> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_133> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_123> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_113> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_103> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_93> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_83> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_73> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_63> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_53> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_43> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_33> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_23> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/req_out_buf> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_15> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_14> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_13> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_12> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_11> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_10> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_9> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_8> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_7> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_6> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_5> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_4> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_3> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_2> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_21> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_31> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_41> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_51> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_61> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_71> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_81> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_91> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_101> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_111> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_121> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_131> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_141> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_151> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/req_in_buf> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/state_busy> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_0> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_05> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_156> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_146> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_136> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_126> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_116> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_106> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_96> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_86> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_76> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_66> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_56> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_46> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_36> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_26> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_117> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_06> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_157> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_147> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_137> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_127> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_118> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_107> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_97> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_87> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_77> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_67> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_57> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_47> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_37> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_27> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_119> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_18> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_03> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_154> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_144> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_134> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_124> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_114> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_104> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_94> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_84> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_74> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_64> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_54> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_44> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_34> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_24> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_110> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_25> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_35> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_45> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_55> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_65> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_75> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_85> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_95> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_105> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_115> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_125> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_135> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_145> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_155> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_04> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_19> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1128> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1026> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_926> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_826> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_726> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_626> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_526> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_426> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_326> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_226> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_174> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_026> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1527> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1427> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1327> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1227> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1129> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1027> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_927> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_827> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_727> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_627> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_527> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_427> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_327> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_227> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_175> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_027> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1528> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1428> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1328> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1228> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1224> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1126> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1024> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_924> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_824> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_724> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_624> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_524> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_424> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_324> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_224> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_172> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_024> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1525> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1425> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1325> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1226> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1326> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1426> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1526> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_025> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_173> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_225> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_325> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_425> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_525> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_625> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_725> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_825> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_925> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1025> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1127> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1225> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1030> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_930> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_830> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_730> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_630> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_530> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_430> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_330> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_230> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_178> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_030> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_3> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_1> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_2> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_6> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_4> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_5> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_9> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_7> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_8> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_12> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_10> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_11> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_15> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_13> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_14> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem<0>_0> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_0> (without init value) has a constant value of 1 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_1> (without init value) has a constant value of 1 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_2> (without init value) has a constant value of 1 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_3> (without init value) has a constant value of 1 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/cnt_4> (without init value) has a constant value of 1 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1130> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1028> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_928> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_828> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_728> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_628> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_528> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_428> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_328> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_228> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_176> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_028> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1529> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1429> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1329> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1229> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1132> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1230> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1330> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1430> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1530> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_029> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_177> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_229> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_329> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_429> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_529> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_629> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_729> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_829> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_929> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1029> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1131> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1318> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1218> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1120> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1018> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_918> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_818> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_718> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_618> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_518> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_418> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_318> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_218> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_166> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_018> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1519> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1419> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1319> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1219> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1121> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1019> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_919> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_819> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_719> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_619> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_519> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_419> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_319> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_219> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_167> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_019> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1520> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1420> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1416> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1316> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1216> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1118> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1016> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_916> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_816> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_716> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_616> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_516> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_416> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_316> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_216> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_164> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_016> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1517> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1418> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1518> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_017> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_165> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_217> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_317> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_417> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_517> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_617> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_717> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_817> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_917> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1017> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1119> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1217> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1317> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1417> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1222> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1124> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1022> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_922> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_822> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_722> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_622> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_522> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_422> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_322> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_222> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_170> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_022> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1523> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1423> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1323> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1223> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1125> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1023> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_923> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_823> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_723> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_623> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_523> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_423> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_323> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_223> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_171> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_023> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1524> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1424> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1324> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1320> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1220> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1122> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1020> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_920> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_820> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_720> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_620> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_520> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_420> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_320> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_220> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_168> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_020> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1521> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1421> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1322> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1422> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1522> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_021> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_169> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_221> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_321> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_421> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_521> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_621> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_721> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_821> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_921> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1021> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1123> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1221> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <firfilter/mem_1321> (without init value) has a constant value of 0 in block <firwrapper>. This FF/Latch will be trimmed during the optimization process.
 
 Mapping all equations...
 Building and optimizing final netlist ...
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_272> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_288> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_304> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_282> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_298> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_314> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_276> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_292> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_308> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_277> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_293> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_309> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_278> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_294> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_310> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_279> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_295> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_311> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_280> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_296> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_312> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_281> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_297> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_313> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_283> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_299> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_315> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_284> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_300> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_316> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_285> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_301> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_317> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_286> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_302> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_318> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_287> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_303> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_319> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_273> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_289> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_305> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_274> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_290> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_306> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_275> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_291> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_307> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_336> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_320> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_352> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_368> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_256> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_400> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_384> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_416> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_432> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_464> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_448> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_480> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_496> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_346> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_330> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_362> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_378> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_266> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_410> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_394> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_426> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_442> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_474> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_458> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_490> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_506> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_347> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_331> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_363> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_379> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_267> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_411> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_395> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_427> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_443> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_475> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_459> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_491> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_507> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_341> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_325> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_357> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_373> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_261> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_405> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_389> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_421> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_437> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_469> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_453> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_485> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_501> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_342> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_326> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_358> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_374> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_262> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_406> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_390> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_422> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_438> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_470> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_454> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_486> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_502> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_343> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_327> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_359> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_375> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_263> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_407> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_391> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_423> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_439> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_471> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_455> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_487> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_503> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_344> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_328> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_360> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_376> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_264> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_408> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_392> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_424> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_440> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_472> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_456> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_488> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_504> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_345> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_329> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_361> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_377> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_265> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_409> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_393> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_425> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_441> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_473> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_457> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_489> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_505> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_348> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_332> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_364> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_380> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_268> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_412> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_396> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_428> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_444> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_476> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_460> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_492> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_508> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_349> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_333> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_365> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_381> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_269> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_413> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_397> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_429> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_445> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_477> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_461> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_493> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_509> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_350> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_334> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_366> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_382> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_270> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_414> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_398> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_430> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_446> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_478> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_462> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_494> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_510> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_351> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_335> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_367> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_383> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_271> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_415> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_399> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_431> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_447> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_479> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_463> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_495> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_511> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_337> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_321> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_353> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_369> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_257> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_401> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_385> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_417> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_433> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_465> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_449> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_481> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_497> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_338> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_322> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_354> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_370> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_258> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_402> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_386> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_418> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_434> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_466> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_450> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_482> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_498> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_339> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_323> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_355> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_371> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_259> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_403> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_387> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_419> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_435> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_467> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_451> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_483> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_499> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_340> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_324> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_356> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_372> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_260> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_404> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_388> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_420> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_436> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_468> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_452> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_484> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_500> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_80> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_64> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_96> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_112> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_144> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_128> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_160> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_176> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_208> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_192> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_224> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_240> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_90> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_74> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_106> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_122> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_154> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_138> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_170> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_186> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_218> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_202> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_234> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_250> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_84> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_68> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_100> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_116> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_148> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_132> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_164> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_180> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_212> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_196> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_228> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_244> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_85> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_69> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_101> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_117> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_149> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_133> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_165> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_181> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_213> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_197> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_229> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_245> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_86> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_70> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_102> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_118> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_150> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_134> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_166> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_182> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_214> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_198> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_230> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_246> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_87> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_71> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_103> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_119> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_151> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_135> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_167> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_183> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_215> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_199> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_231> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_247> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_88> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_72> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_104> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_120> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_152> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_136> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_168> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_184> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_216> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_200> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_232> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_248> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_89> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_73> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_105> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_121> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_153> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_137> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_169> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_185> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_217> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_201> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_233> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_249> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_91> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_75> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_107> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_123> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_155> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_139> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_171> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_187> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_219> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_203> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_235> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_251> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_92> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_76> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_108> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_124> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_156> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_140> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_172> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_188> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_220> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_204> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_236> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_252> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_93> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_77> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_109> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_125> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_157> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_141> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_173> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_189> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_221> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_205> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_237> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_253> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_94> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_78> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_110> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_126> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_158> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_142> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_174> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_190> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_222> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_206> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_238> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_254> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_95> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_79> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_111> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_127> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_159> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_143> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_175> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_191> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_223> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_207> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_239> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_255> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_81> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_65> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_97> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_113> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_145> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_129> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_161> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_177> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_209> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_193> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_225> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_241> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_82> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_66> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_98> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_114> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_146> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_130> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_162> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_178> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_210> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_194> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_226> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_242> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_83> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_67> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_99> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_115> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_147> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_131> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_163> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_179> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_211> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_195> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_227> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_243> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_16> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_32> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_48> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_29> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_45> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_61> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_30> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_46> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_62> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_31> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_47> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_63> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_17> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_33> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_49> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_18> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_34> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_50> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_19> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_35> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_51> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_26> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_42> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_58> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_20> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_36> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_52> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_21> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_37> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_53> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_22> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_38> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_54> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_23> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_39> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_55> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_24> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_40> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_56> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_25> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_41> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_57> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_27> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_43> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_59> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_28> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_44> is unconnected in block <firwrapper>.
-WARNING:Xst:1898 - Due to constant pushing, FF/Latch <firfilter/coef_31_60> is unconnected in block <firwrapper>.
-Found area constraint ratio of 100 (+ 5) on block firwrapper, actual ratio is 2.
+Found area constraint ratio of 100 (+ 5) on block firwrapper, actual ratio is 6.
+FlipFlop firfilter/cnt_0 has been replicated 14 time(s)
+FlipFlop firfilter/cnt_1 has been replicated 14 time(s)
+FlipFlop firfilter/cnt_2 has been replicated 2 time(s)
+FlipFlop firfilter/cnt_3 has been replicated 2 time(s)
 
 Final Macro Processing ...
-
-Processing Unit <firwrapper> :
-	Found 497-bit shift register for signal <h_in_496>.
-Unit <firwrapper> processed.
 
 =========================================================================
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 31
- Flip-Flops                                            : 31
-# Shift Registers                                      : 1
- 497-bit shift register                                : 1
+# Registers                                            : 1080
+ Flip-Flops                                            : 1080
 
 =========================================================================
 
@@ -2304,17 +1285,24 @@ Top Level Output File Name         : firwrapper.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 2
+# BELS                             : 407
 #      GND                         : 1
+#      INV                         : 1
+#      LUT2                        : 2
+#      LUT3                        : 5
+#      LUT4                        : 1
+#      LUT5                        : 3
+#      LUT6                        : 358
+#      MUXF7                       : 35
 #      VCC                         : 1
-# FlipFlops/Latches                : 32
-#      FDE                         : 32
-# Shift Registers                  : 16
-#      SRLC32E                     : 16
+# FlipFlops/Latches                : 1080
+#      FDE                         : 1040
+#      FDR                         : 3
+#      FDSE                        : 37
 # Clock Buffers                    : 1
 #      BUFGP                       : 1
-# IO Buffers                       : 21
-#      IBUF                        : 3
+# IO Buffers                       : 39
+#      IBUF                        : 21
 #      OBUF                        : 18
 # DSPs                             : 1
 #      DSP48A1                     : 1
@@ -2326,21 +1314,20 @@ Selected Device : 6slx45csg324-3
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:              32  out of  54576     0%  
- Number of Slice LUTs:                   16  out of  27288     0%  
-    Number used as Memory:               16  out of   6408     0%  
-       Number used as SRL:               16
+ Number of Slice Registers:            1080  out of  54576     1%  
+ Number of Slice LUTs:                  370  out of  27288     1%  
+    Number used as Logic:               370  out of  27288     1%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:     48
-   Number with an unused Flip Flop:      16  out of     48    33%  
-   Number with an unused LUT:            32  out of     48    66%  
-   Number of fully used LUT-FF pairs:     0  out of     48     0%  
-   Number of unique control sets:         2
+ Number of LUT Flip Flop pairs used:   1441
+   Number with an unused Flip Flop:     361  out of   1441    25%  
+   Number with an unused LUT:          1071  out of   1441    74%  
+   Number of fully used LUT-FF pairs:     9  out of   1441     0%  
+   Number of unique control sets:        35
 
 IO Utilization: 
  Number of IOs:                          40
- Number of bonded IOBs:                  22  out of    218    10%  
+ Number of bonded IOBs:                  40  out of    218    18%  
 
 Specific Feature Utilization:
  Number of BUFG/BUFGCTRLs:                1  out of     16     6%  
@@ -2367,7 +1354,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-clk                                | BUFGP                  | 49    |
+clk                                | BUFGP                  | 1081  |
 -----------------------------------+------------------------+-------+
 
 Asynchronous Control Signals Information:
@@ -2378,9 +1365,9 @@ Timing Summary:
 ---------------
 Speed Grade: -3
 
-   Minimum period: 5.413ns (Maximum Frequency: 184.732MHz)
-   Minimum input arrival time before clock: 2.835ns
-   Maximum output required time after clock: 4.350ns
+   Minimum period: 8.421ns (Maximum Frequency: 118.750MHz)
+   Minimum input arrival time before clock: 6.562ns
+   Maximum output required time after clock: 3.791ns
    Maximum combinational path delay: No path found
 
 Timing Details:
@@ -2389,62 +1376,67 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'clk'
-  Clock period: 5.413ns (frequency: 184.732MHz)
-  Total number of paths / destination ports: 49 / 49
+  Clock period: 8.421ns (frequency: 118.750MHz)
+  Total number of paths / destination ports: 32484 / 1666
 -------------------------------------------------------------------------
-Delay:               5.413ns (Levels of Logic = 0)
-  Source:            firfilter/coef_31_15 (FF)
-  Destination:       firfilter/Mmac_n0761 (DSP)
+Delay:               8.421ns (Levels of Logic = 3)
+  Source:            firfilter/cnt_0_6 (FF)
+  Destination:       firfilter/Mmac_n0835 (DSP)
   Source Clock:      clk rising
   Destination Clock: clk rising
 
-  Data Path: firfilter/coef_31_15 to firfilter/Mmac_n0761
+  Data Path: firfilter/cnt_0_6 to firfilter/Mmac_n0835
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDE:C->Q              3   0.447   0.650  firfilter/coef_31_15 (firfilter/coef_31_15)
-     DSP48A1:A15               4.316          firfilter/Mmac_n0761
+     FDSE:C->Q            19   0.447   1.176  firfilter/cnt_0_6 (firfilter/cnt_0_6)
+     LUT6:I4->O            1   0.203   0.827  firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_34_OUT_87 (firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_34_OUT_87)
+     LUT6:I2->O            1   0.203   0.000  firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_34_OUT_32 (firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_34_OUT_32)
+     MUXF7:I1->O          32   0.140   1.291  firfilter/Mmux_cnt[4]_mem[31][0]_wide_mux_34_OUT_2_f7_1 (firfilter/cnt[4]_mem[31][0]_wide_mux_34_OUT<11>)
+     DSP48A1:B11               4.134          firfilter/Mmac_n0835
     ----------------------------------------
-    Total                      5.413ns (4.763ns logic, 0.650ns route)
-                                       (88.0% logic, 12.0% route)
+    Total                      8.421ns (5.127ns logic, 3.294ns route)
+                                       (60.9% logic, 39.1% route)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'clk'
-  Total number of paths / destination ports: 50 / 50
+  Total number of paths / destination ports: 1120 / 1101
 -------------------------------------------------------------------------
-Offset:              2.835ns (Levels of Logic = 1)
-  Source:            h_enabled (PAD)
-  Destination:       h_in_511 (FF)
+Offset:              6.562ns (Levels of Logic = 3)
+  Source:            rst (PAD)
+  Destination:       firfilter/data_out_buf_0 (FF)
   Destination Clock: clk rising
 
-  Data Path: h_enabled to h_in_511
+  Data Path: rst to firfilter/data_out_buf_0
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            32   1.222   1.291  h_enabled_IBUF (h_enabled_IBUF)
-     FDE:CE                    0.322          h_in_511
+     IBUF:I->O            43   1.222   1.677  rst_IBUF (rst_IBUF)
+     LUT3:I0->O           31   0.205   1.642  firfilter/_n2582_inv11 (firfilter/_n2582_inv1)
+     LUT6:I0->O           32   0.203   1.291  firfilter/_n2582_inv2 (firfilter/_n2582_inv)
+     FDE:CE                    0.322          firfilter/mem_1528
     ----------------------------------------
-    Total                      2.835ns (1.544ns logic, 1.291ns route)
-                                       (54.5% logic, 45.5% route)
+    Total                      6.562ns (1.952ns logic, 4.610ns route)
+                                       (29.7% logic, 70.3% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'clk'
-  Total number of paths / destination ports: 16 / 16
+  Total number of paths / destination ports: 18 / 18
 -------------------------------------------------------------------------
-Offset:              4.350ns (Levels of Logic = 1)
-  Source:            firfilter/Mmac_n0761 (DSP)
-  Destination:       data_out<0> (PAD)
+Offset:              3.791ns (Levels of Logic = 1)
+  Source:            firfilter/req_out_buf (FF)
+  Destination:       req_out (PAD)
   Source Clock:      clk rising
 
-  Data Path: firfilter/Mmac_n0761 to data_out<0>
+  Data Path: firfilter/req_out_buf to req_out
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     DSP48A1:CLK->P31      1   1.200   0.579  firfilter/Mmac_n0761 (data_out_0_OBUF)
-     OBUF:I->O                 2.571          data_out_0_OBUF (data_out<0>)
+     FDR:C->Q              7   0.447   0.773  firfilter/req_out_buf (firfilter/req_out_buf)
+     OBUF:I->O                 2.571          req_out_OBUF (req_out)
     ----------------------------------------
-    Total                      4.350ns (3.771ns logic, 0.579ns route)
-                                       (86.7% logic, 13.3% route)
+    Total                      3.791ns (3.018ns logic, 0.773ns route)
+                                       (79.6% logic, 20.4% route)
 
 =========================================================================
 
@@ -2456,20 +1448,20 @@ Clock to Setup on destination clock clk
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-clk            |    5.413|         |         |         |
+clk            |    8.421|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
-Total REAL time to Xst completion: 30.00 secs
-Total CPU time to Xst completion: 30.08 secs
+Total REAL time to Xst completion: 13.00 secs
+Total CPU time to Xst completion: 13.29 secs
  
 --> 
 
 Total memory usage is 264864 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings : 1017 (   0 filtered)
+Number of warnings :    1 (   0 filtered)
 Number of infos    :    0 (   0 filtered)
 

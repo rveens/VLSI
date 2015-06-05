@@ -115,16 +115,34 @@ There is only one DSP unit used, since the filter is fully sequential. This resu
 Furthermore some additional resources are used to enable the possibility to shift the data in the FIFO every clock cycle.
 
 \subsection*{7. System throughput and latency}
-The minimum sample time estimation is extracted from the synthesis report under \textit{Timing Report}.\\
+The minimum sample time estimation is extracted from the \textit{Synthesis report} under \textit{Timing Report}.\\
 
-\textbf{Minimum period: 8.421ns (Maximum Frequency: 118.750MHz)}\\
+   \textit{Minimum period: 8.421ns (Maximum Frequency: 118.750MHz)\\
+   Minimum input arrival time before clock: 6.274ns\\
+   Maximum output required time after clock: 4.350ns}\\
 
-This time is equal to the largest critical path (the calculation of the tap is the critical path in this design).
+This time is equal to the largest critical path (the calculation of the tap is the critical path in this design).\\
 
+After doing the placement and routing step, we will get a more accurate measurement of the maximum achievable throughput. These measurements can be found in the \textit{Advanced Post-PAR static timing report} under \textit{Timing summary}:\\
 
+   \textit{Minimum period:   9.695ns   (Maximum frequency: 103.146MHz)\\
+   Minimum input required time before clock:  10.637ns\\
+   Maximum output delay after clock:  11.028ns}\\
 
- (min) sample time Ts and (max) sample
-frequency fs, both after synthesis and after placement \& routing.
+Since the minimum period is not the maximum delay, we should take the largest 
+delay as a definition for the maximum clock frequency. This will yield us a maximum system frequency of:\\
+
+$F_{max} = \frac{1}{T_{max delay}} = \frac{1}{11.028ns} = 90.6MHz$\\
+
+This frequency is significantly less than the expected maximum sample rate (or clock frequency) retrieved from the synthesis. This is expected due to the fact that the place and route report also takes the physical layout delays into account, and the synthesis does not. This can be improved by placing a simple buffer at the output of the filter:\\
+
+Post-PAR static timing summary after improvement:\\
+\textit{Minimum period:   9.712ns{1}   (Maximum frequency: 102.965MHz)\\
+   Minimum input required time before clock:   8.630ns\\
+   Maximum output delay after clock:   8.824ns}\\
+
+Therefore our final frequency will be above 100MHz.
+
 
 \subsection*{8. Simulation results}
 Time en FFT plot

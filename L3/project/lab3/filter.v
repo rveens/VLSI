@@ -22,9 +22,10 @@ module filter #(parameter NR_STAGES = 32,
     reg req_in_buf;
     assign req_in = req_in_buf;
   
-    // Accumulator (assigned to output directly)
+    // Accumulator (Buffer output to decrease 'Maximum output delay after clock')
     reg signed [0:DDWIDTH-1] sum;
-    assign data_out = sum[0:DWIDTH-1]; 
+	 reg signed [0:DWIDTH-1] data_out_buf;
+    assign data_out = data_out_buf; 
 	
 	 // Memory to store last 32 inputs and memory to store the coefficients.
 	 reg signed [0:DWIDTH-1] mem[0:NR_STAGES-1];
@@ -34,16 +35,16 @@ module filter #(parameter NR_STAGES = 32,
 	 reg state_busy;
 	 reg [4:0] cnt;
 	 
+	 // Split the coefficient into 32 wire busses of 16 bit
 	 generate
 		genvar i;
-		for (i = 0; i < NR_STAGES; i = i +1)begin
+		for (i = 0; i < NR_STAGES; i = i +1)begin : coef_split
 			assign coef[i] = h_in[i*DWIDTH +: DWIDTH];
 		end
-	endgenerate
+	 endgenerate
 	 
-  
+	 // State machine that controls the flow control between testbench and filter
     always @(posedge clk) begin
-        // Reset => initialize
         if (rst) begin
 				state_busy <= 0;
             req_in_buf <= 0;
@@ -63,14 +64,12 @@ module filter #(parameter NR_STAGES = 32,
 				if (state_busy && !req_out) begin
 					// Shift through the data and calculate one tap every clock cycle
 					mem[cnt+1] <= mem[cnt];
-					
-					
 					sum <= sum + mem[cnt]*coef[cnt];
 					cnt <= cnt - 1;
 					
 					// When a complete cycle is done (32 taps calculated), start to output the outcome
 					if(cnt == 0) begin
-						cnt <= NR_STAGES-1;
+						data_out_buf <= sum[0:15];
 						req_out_buf <= 1;
 					end
 				end
@@ -85,8 +84,7 @@ module filter #(parameter NR_STAGES = 32,
             // Wait until everyone is calmed down, then initiate new sample request
             if (!req_in && !req_out && !ack_in && !ack_out && !state_busy) begin   
                 req_in_buf <= 1;
-            end
-					
+            end	
         end
     end
 

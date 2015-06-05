@@ -42,6 +42,16 @@
 *_usage.xml
 *_xst.xrpt
 
+# nog wat
+*.exe
+*.log
+*.cmd
+*.wdb
+*.ini
+*.xmsgs
+*isim/
+*.bin
+
 # project-wide generated files
 *.gise
 par_usage_statistics.html

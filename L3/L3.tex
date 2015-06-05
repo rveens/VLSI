@@ -1,4 +1,4 @@
-\documentclass[a4paper,twoside,11pt]{article}
+\documentclass[a4paper,twoside,11pt, fleqn]{article}
 \usepackage{a4wide,graphicx,fancyhdr,amsmath,amssymb}
 
 %----------------------- Macros and Definitions --------------------------
@@ -86,9 +86,43 @@ The whole procedure will then restart.
 all requirements?
 
 \subsection*{6. Resource usage}
+Table 1 summarizes the resources used by the FIR filter. This list is obtained by running the synthesis step in Xilinx ISE and extracted from the \textit{Summary} and \textit{Device Utilization} report.
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Resource} & \textbf{Available} & \textbf{Utilized} & \textbf{Percentage utilized}\\
+\hline
+Flip Flops	& 54576 & 1064 	& 1\%\\
+Slice LUTs 	& 27288 & 527 	& 1\%\\
+DSP48A1s	& 58 	& 1 	& 1\%\\
+BRAM		& 116 	& 0 	& 0\%\\
+Bonded IOBs	& 218 	& 40 	& 18\%\\
+\hline
+\end{tabular}
+\caption{General resource usage overview}
+\end{table}
 
+The number of flipflops used in the design are:
+\begin{align*}
+Total_{\#reg}	&= sum + data + coef + cnt + state + flow control\\
+			&= 32 + 16\cdot 32 + 32\cdot 16 + 5 + 1 + 2\\
+			&= 1064
+\end{align*}
+This number matches the synthesis result.\\
+
+There is only one DSP unit used, since the filter is fully sequential. This results in a significant resource reduction since the DSP units are quite expensive. According to the summary report, almost all slice LUTs are used for logical ports. They are used to model the 5 bit counter that counts up to 32. The number of Bonded IOB's represents the number of pins used on the FPGA. These pins are occupied by the clk, rst, h\_in, h\_enabled,  $2\cdot 16$ input and output pins and 2 pairs of ack/req pins.\\
+
+Furthermore some additional resources are used to enable the possibility to shift the data in the FIFO every clock cycle.
 
 \subsection*{7. System throughput and latency}
+The minimum sample time estimation is extracted from the synthesis report under \textit{Timing Report}.\\
+
+\textbf{Minimum period: 8.421ns (Maximum Frequency: 118.750MHz)}\\
+
+This time is equal to the largest critical path (the calculation of the tap is the critical path in this design).
+
+
+
  (min) sample time Ts and (max) sample
 frequency fs, both after synthesis and after placement \& routing.
 

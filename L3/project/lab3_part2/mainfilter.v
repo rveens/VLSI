@@ -14,83 +14,73 @@ module mainfilter #(parameter NR_STAGES = 32,
                 output signed [0:DDWIDTH-1] data_out,
                 input signed [0:CWIDTH-1] h_in);
      
-	 // wires preproc -> subfilter
-	 wire [0:((NR_STAGES/2)*DWIDTH)-1] h0_out_preproc_subfilter;
-	 wire [0:((NR_STAGES/2)*DWIDTH)-1] h1_out_preproc_subfilter; // todo verbinden
-	 wire [0:((NR_STAGES/2)*DWIDTH)-1] h01_out_preproc_subfilter; // todo verbinden
+	 // registers and wires used for merging all acknowledges of the subfilters
+	 wire ack_in_split[2:0], ack_out_split[2:0];
+	 reg ack_in_buf, ack_out_buf;
+	 assign ack_in = ack_in_buf;
+	 assign ack_out = ack_out_buf;
+	
+	 // wires for input and output passivators	
+	 wire req_in_subfilter_pass[2:0], ack_in_pass_subfilter[2:0];
+	 wire req_out_subfilter_pass[2:0], ack_out_subfilter_pass[2:0];
 	 
-	 // wires preproc -> passivator
-	 wire [0:DWIDTH-1] data_in_a_preproc_pass;
-	 wire [0:DWIDTH-1] data_in_b_preproc_pass; // todo verbinden
-	 wire [0:DWIDTH-1] data_in_a_b_preproc_pass; // todo verbinden
+	 // wires that carry all data through the filters
+	 wire signed [0:DWIDTH-1] data_in_preproc_pass[2:0], 
+					 data_in_pass_subfilter[2:0],
+					 data_out_subfilter_pass[2:0],
+					 data_out_pass_post[2:0];
+	 wire signed [0:DDWIDTH-1] data_out_merged;
+					 
+	 // register to buffer the merged output data 
+	 reg signed [0:DDWIDTH-1] data_out_buf;
+	 assign data_out = data_out_buf;
 	 
-	 // wires subfilter -> passivator
-	 wire req_in_pass_subfilter;
+	 // wires used to carry the coefficients for each subfilter
+	 wire signed [0:CWIDTH-1] h_out_preproc_subfilter[2:0];
 	 
-	 // wires passivator -> subfilter
-	 wire ack_in_pass_subfilter;
-	 wire [0:DWIDTH-1] data_in_pass_subfilter; // todo splitsen in a,b,c data_in
-	 
-	  // wires subfilter -> passivator2
-    wire req_out_subfilter_pass;
-	 wire ack_out_subfilter_pass;
-    wire [0:DWIDTH-1] data_out_subfilter_pass;
-	 
-	 wire [0:DWIDTH-1] data_out_pass_post;
-  
-    // instantiate preproc, subfilter, postproc, 2x passivator.	 
+	 // instantiate all components (preproc, 3x passivator, 3x fir, 3x passivator, postproc) 
 	 preproc #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
-			pre (clk,
-				  rst,
-				  data_in,
-				  data_in_a_preproc_pass,
-				  data_in_a_b_preproc_pass,
-				  data_in_b_preproc_pass,
-				  h_in,
-				  h0_out_preproc_subfilter,
-				  h1_out_preproc_subfilter,
-				  h01_out_preproc_subfilter);
+			pre (clk, rst, 
+				  data_in, data_in_preproc_pass[0], data_in_preproc_pass[1], data_in_preproc_pass[2],
+				  h_in, h_out_preproc_subfilter[0], h_out_preproc_subfilter[1], h_out_preproc_subfilter[2]);
 	
-	 passivator #(.DWIDTH(DWIDTH))
-			 pass (req_in,
-					 ack_in,
-					 data_in_a_preproc_pass,
-					 req_in_subfilter_pass,
-					 ack_in_pass_subfilter,
-					 data_in_pass_subfilter);
-	
-	 subfilter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
-			sfil	(clk,
-                rst,
-                req_in_subfilter_pass,
-                ack_in_pass_subfilter,
-                data_in_pass_subfilter,
-                req_out_subfilter_pass,
-                ack_out_subfilter_pass, 
-                data_out_subfilter_pass, 
-                h0_out_preproc_subfilter // fixme: h0 sfilter 1 doet enkel h0? dit is nu (stages/2)*DWIDTH ipv CWIDTH
-					 ); 
-  
-   
-  
-	 passivator #(.DWIDTH(DWIDTH))
-			pass2 (req_out_subfilter_pass,
-					 ack_out_subfilter_pass,
-					 data_out_subfilter_pass,
-					 req_out,
-					 ack_out,
-					 data_out_pass_post);
+	 generate
+        genvar i;
+        for (i = 0; i < 3; i = i + 1) begin : stage
+          passivator #(.DWIDTH(DWIDTH)) 
+			 pass_in (req_in,ack_in_split[i],
+						 data_in_preproc_pass[i],req_in_subfilter_pass[i],ack_in_pass_subfilter[i],
+						 data_in_pass_subfilter[i]);
+			 
+			 subfilter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
+		    sfil	(clk,rst,
+					req_in_subfilter_pass[i],ack_in_pass_subfilter[i],
+					data_in_pass_subfilter[i],req_out_subfilter_pass[i],ack_out_subfilter_pass[i], 
+					data_out_subfilter_pass[i],h_out_preproc_subfilter[i]);
+			 
+			 passivator #(.DWIDTH(DWIDTH))
+			 pass_out (req_out_subfilter_pass[i],ack_out_subfilter_pass[i],
+						  data_out_subfilter_pass[i],req_out,ack_out_split[i],
+						  data_out_pass_post[i]);
+        end
+    endgenerate	
+	 
+	postproc #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
+	 post (clk,rst,
+			 data_out_pass_post[0], data_out_pass_post[1], data_out_pass_post[2] , data_out_merged);
 	 
 	 
-		
-	 postproc #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
-          post (clk,
-                rst,
-                data_out_pass_post,
-                data_out // split by 3
-					 );
-	
     always @(posedge clk) begin
+		if(rst)begin
+			ack_in_buf <= 0;
+			ack_out_buf <= 0;
+			data_out_buf <= 0;
+		end
+		else begin
+			ack_in_buf  <= ack_in_split[0] & ack_in_split[1] & ack_in_split[2];
+			ack_out_buf <= ack_out_split[0] & ack_out_split[1] & ack_out_split[2];
+			data_out_buf <= data_out_merged;
+		end
     end
 
 endmodule

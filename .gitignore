@@ -52,6 +52,11 @@
 *isim/
 *.bin
 
+# texmaker stuff
+*.aux
+*.pdf
+*.synctex.gz
+
 # project-wide generated files
 *.gise
 par_usage_statistics.html

@@ -50,5 +50,66 @@
 
 \begin{document}
 \maketitle
+\newpage
+
+\section*{Lab assignment 3a}
+\subsection*{1. Requirements}
+The assignment is to design and implement a FIR filter named filter that:
+\begin{enumerate}
+\item Uses as little resources as possible and is maximally sequential. In particular at most 1
+multiplier may be used.
+\item Conforms to the 4-phase asynchronous protocol for both input and output.
+\item Can run at a clock frequency of 100 Mhz.
+\item Honors changes in the coefficients (after a finite delay).
+\item May produce a finite length interval of start-up noise
+\end{enumerate}
+
+\subsubsection*{1.1 Analysis of requirements}
+
+
+\subsection*{3. System architecture}
+Block diagram
+\subsection*{4. Design choices}
+
+\subsection*{5. Functional correctness}
+all requirements?
+
+\subsection*{6. Resource usage}
+
+
+\subsection*{7. System throughput and latency}
+ (min) sample time Ts and (max) sample
+frequency fs, both after synthesis and after placement \& routing.
+
+\subsection*{8. Simulation results}
+Time en FFT plot
+
+
+\newpage
+\section*{Lab assignment 3b}
+\subsection*{1. Requirements}
+The specific requirements for the strength reduced FIR filter are:
+\begin{enumerate}
+\item The design may use at most 3 multipliers.
+\item Conforms to the 4-phase asynchronous handshake protocol for both input and output.
+\item Can run at a clock frequency of 100 Mhz.
+\item Should have about 4 times the sample frequency as the sequential implementation.
+\item Honors changes in the coefficients (after a finite delay).
+\item May produce a finite length interval of start-up noise.
+\end{enumerate}
+
+
+\newpage
+\section*{Comparison between two filters}
+In your final report, compare the output signals of the strength reduced filter with the output of the sequential filter, by generating a difference signal for a representative subset of
+samples. Make sure you align the outputs correctly, because the amount of start-up noise of
+the 2 implementations may differ. If the difference signal is non-zero, explain the differences.
+Further reporting guidelines are on the course’s website.
+
+\newpage
+\section*{Appendix}
+all verilog code
+
+
 
 \end{document}

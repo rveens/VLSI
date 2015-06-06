@@ -17,6 +17,11 @@ module postproc #(parameter NR_STAGES = 32,
 	
 	 assign data_out = data_out_buf;
 	 
+	 // delay register for third filter
+	 reg signed [0:DWIDTH-1] d; 
+	 
+	 // do postproc operations
+	 
     always @(posedge clk) begin
 		  if(rst) begin
 				data_in_buf[0] <= 0;
@@ -28,7 +33,15 @@ module postproc #(parameter NR_STAGES = 32,
 				data_in_buf[0] <= data_in_0;
 				data_in_buf[1] <= data_in_1;
 				data_in_buf[2] <= data_in_2;
-				data_out_buf[0:15] <= data_in_buf[0];
+				
+				// delay output of third filter.
+				d <= data_in_buf[2];
+				
+				// sample 1
+	 			data_out_buf[0:15] <= (d + data_in_buf[0]);
+				
+				// sample 2
+				data_out_buf[15:31] <= (data_in_buf[1] - data_in_buf[2] - data_in_buf[0]);
 		  end  
     end
 

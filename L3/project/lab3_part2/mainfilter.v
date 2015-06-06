@@ -36,7 +36,7 @@ module mainfilter #(parameter NR_STAGES = 32,
 	 assign data_out = data_out_buf;
 	 
 	 // wires used to carry the coefficients for each subfilter
-	 wire signed [0:CWIDTH-1] h_out_preproc_subfilter[2:0];
+	 wire signed [0:((NR_STAGES/2)*DWIDTH)-1] h_out_preproc_subfilter[2:0];
 	 
 	 // instantiate all components (preproc, 3x passivator, 3x fir, 3x passivator, postproc) 
 	 preproc #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))

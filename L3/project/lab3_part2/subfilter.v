@@ -12,7 +12,7 @@ module subfilter #(parameter NR_STAGES = 32,
                 output req_out,
                 input  ack_out,
                 output signed [0:DWIDTH-1] data_out,
-                input [0:CWIDTH-1] h_in);
+                input [0:((NR_STAGES/2)*DWIDTH)-1] h_in);
 
 // Output request register
     reg req_out_buf;
@@ -28,8 +28,8 @@ module subfilter #(parameter NR_STAGES = 32,
     assign data_out = data_out_buf; 
 	
 	 // Memory to store last 32 inputs and memory to store the coefficients.
-	 reg signed [0:DWIDTH-1] mem[0:NR_STAGES-1];
-	 wire signed [0:DWIDTH-1] coef[0:NR_STAGES-1];
+	 reg signed [0:DWIDTH-1] mem[0:(NR_STAGES/2)-1];
+	 wire signed [0:DWIDTH-1] coef[0:(NR_STAGES/2)-1];
 	 
 	 // State variables for FIR
 	 reg state_busy;
@@ -38,7 +38,7 @@ module subfilter #(parameter NR_STAGES = 32,
 	 // Split the coefficient into 32 wire busses of 16 bit
 	 generate
 		genvar i;
-		for (i = 0; i < NR_STAGES; i = i +1)begin : coef_split
+		for (i = 0; i < NR_STAGES/2; i = i +1)begin : coef_split
 			assign coef[i] = h_in[i*DWIDTH +: DWIDTH];
 		end
 	 endgenerate
@@ -50,7 +50,7 @@ module subfilter #(parameter NR_STAGES = 32,
             req_in_buf <= 0;
             req_out_buf <= 0;
             sum <= 0;
-				cnt <= NR_STAGES-1;
+				cnt <= (NR_STAGES/2)-1;
         end
         else begin
             // Request for input sample is acknowledged. Start calculating
@@ -71,6 +71,7 @@ module subfilter #(parameter NR_STAGES = 32,
 					if(cnt == 0) begin
 						data_out_buf <= sum[0:15];
 						req_out_buf <= 1;
+						cnt <= (NR_STAGES/2)-1;
 					end
 				end
 				

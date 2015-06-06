@@ -195,30 +195,26 @@ The specific requirements for the strength reduced FIR filter are:
 \item Honors changes in the coefficients (after a finite delay).
 \item May produce a finite length interval of start-up noise.
 \end{enumerate}
-
 \subsubsection{Analysis of requirements}
-
+We use the strength-reduced 2-parallel implementation of Parhi. This implementation uses 3 multipliers and ensures a throughput of 4 times the standard 1 multiplier implementation. To be sure that this frequency can be achieved, we must also ensure that the filter runs on 100MHz and does not take much more than 16 (\# of stages) cycles for two 16-bit samples. Coefficients can also change during runtime. Because the filter consists of three subfilters (filter = active component), the handshake protocol is established with help of passivators.
 
 \subsection{System architecture}
-Block diagram
+ A block diagram of parhi's filter is shown below:
+\begin{figure}[h]
+	\includegraphics[scale = 0.71]{Images/3b_parhi}
+    \caption{Parhi's 2-Parallel strength reduced FIR filter}
+\end{figure}
+
+We have decided to split the filter up in multiple parts, to make the implementation easier:
+
+
 \subsection{Design choices}
-\begin{itemize}
-	\item 
-\end{itemize}
-
-
 \subsection{Functional correctness}
-all requirements?
-
 \subsection{Resource usage}
-
-
 \subsection{System throughput and latency}
- (min) sample time Ts and (max) sample
-frequency fs, both after synthesis and after placement \& routing.
-
 \subsection{Simulation results}
-Time en FFT plot
+
+
 
 \newpage
 \section{Comparison between two filters}

@@ -23,7 +23,7 @@ module subfilter #(parameter NR_STAGES = 32,
     assign req_in = req_in_buf;
   
     // Accumulator (Buffer output to decrease 'Maximum output delay after clock')
-    reg signed [0:DDWIDTH-1] sum;
+    reg signed [0:DDWIDTH] sum; // 16 + 1 bit for overflow with a + b
 	 reg signed [0:DWIDTH-1] data_out_buf;
     assign data_out = data_out_buf; 
 	

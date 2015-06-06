@@ -69,6 +69,9 @@ module preproc #(parameter NR_STAGES = 32,
 	 wire signed [0:DWIDTH-1] a, b;
     assign {a, b} = data_in;
 	 
+	 reg signed [0:DWIDTH-1] a_buf, b_buf;
+	 reg signed[0:DWIDTH] ab_buf; // 16 + 1 bit for overflow with a + b
+	 
     always @(posedge clk) begin
 		  if (rst) begin
 			  data_out_buf[0] <= 0;
@@ -79,9 +82,13 @@ module preproc #(parameter NR_STAGES = 32,
 			  h_out_buf[2] <= 0;
 		  end
 		  else begin
-			  data_out_buf[0] <= a;
-			  data_out_buf[1] <= a+b;
-			  data_out_buf[2] <= b;
+			  a_buf <= a;
+			  b_buf <= b;
+			  ab_buf <= a + b;
+		  
+			  data_out_buf[0] <= a_buf;
+			  data_out_buf[1] <= ab_buf[0:15];
+			  data_out_buf[2] <= b_buf;
 			  h_out_buf[0] <= h0;
 			  h_out_buf[1] <= h01;
 			  h_out_buf[2] <= h1;

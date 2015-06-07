@@ -291,8 +291,8 @@ Table~\ref{tab:3busage} summarizes the resources used by the FIR filter. This li
 \hline
 \textbf{Resource} & \textbf{Available} & \textbf{Utilized} & \textbf{Percentage utilized}\\
 \hline
-Flip Flops	& 54576 & 2471 	& 4 \%\\
-Slice LUTs 	& 27288 & 804 	& 2 \%\\
+Flip Flops	& 54576 & 2495 	& 4 \%\\
+Slice LUTs 	& 27288 & 808 	& 2 \%\\
 DSP48A1s	& 58 	& 3 	& 5 \%\\
 BRAM		& 116 	& 0 	& 0 \%\\
 Bonded IOBs	& 218 	& 72 	& 33 \%\\
@@ -302,9 +302,9 @@ Bonded IOBs	& 218 	& 72 	& 33 \%\\
 \label{tab:3busage}
 \end{table}
 
-The amount of registers in assignment 3b compared to assignment 3a have increased from 1080 to 2471. This is an increase of 128\%. 
+The amount of registers in assignment 3b compared to assignment 3a have increased from 1080 to 2495. This is an increase of 128\%. 
 
-In this version the sequential filter computes 16 instead of 32 taps but in parallel of three. So we could say $(1080/2)*3=1620$. We have around 800 missing registers. These additional registers can be explained as being the result of numerous pipelining.
+In this version the sequential filter computes 16 instead of 32 taps but in parallel of three. So we could say $(1080/2)*3=1620$. We have around 900 missing registers. These additional registers can be explained as being the result of numerous cut sets being that are implemented in assignment 3b to reduce the critical path.
 
 \smallskip
 
@@ -319,16 +319,16 @@ Furthermore, the Bonded IOBs have increase by 32 because testbench now send/rece
 The minimum sample time estimation is extracted from the \textit{Synthesis report} under \textit{Timing Report}.\\
 
    \textit{Minimum period:  7.256ns (Maximum Frequency: 137.820MHz)\\
-   Minimum input arrival time before clock: 6.449ns\\
+   Minimum input arrival time before clock: 6.465ns\\
    Maximum output required time after clock: 3.701ns}\\
 
 This time is equal to the largest critical path (the calculation of the tap is the critical path in this design).\\
 
 After doing the placement and routing step, we will get a more accurate measurement of the maximum achievable throughput. These measurements can be found in the \textit{Advanced Post-PAR static timing report} under \textit{Timing summary}:\\
 
-\textit{Minimum period:   8.164ns\{1\}   (Maximum frequency: 122.489MHz)\\
-   Minimum input required time before clock:   9.259ns\\
-   Maximum output delay after clock:   8.647ns}\\
+\textit{Minimum period:   8.164ns\{1\}   (Maximum frequency: 122.234MHz)\\
+   Minimum input required time before clock:   8.393ns\\
+   Maximum output delay after clock:   8.624ns}\\
 
 Since the minimum period is the maximum delay, we can be sure that our design is able to run at 100MHz.
 
@@ -350,12 +350,12 @@ If we compare the Frequency-plots of both signals, we can already see a small di
 
 \begin{figure}[h]
 	\includegraphics[scale = 0.5]{Images/3a_powerspectra}
-    \caption{Frequency response of filter 3a}
+    \caption{Frequency response of filter 3a, input(green) and output(blue).}
 \end{figure}
 
 \begin{figure}[h]
 	\includegraphics[scale = 0.45]{Images/3b_powerspectra}
-    \caption{Frequency response of of filter 3b }
+    \caption{Frequency response of of filter 3b, input(green) and output(blue).}
 \end{figure}
 For completeness we also made a difference graph of both output signals. We took some arbitrary part of the output signals. At high signal peaks the error was a bit higher. What we see is probably the rounding error we introduced.
 
@@ -395,12 +395,13 @@ module filter #(parameter NR_STAGES = 32,
   // Output request register
   reg req_out_buf;
   assign req_out = req_out_buf;
-
+  
   // Input request register
   reg req_in_buf;
   assign req_in = req_in_buf;
 
-  // Accumulator (Buffer output to decrease 'Maximum output delay after clock')
+  // Accumulator (Buffer output to 
+  // decrease 'Maximum output delay after clock')
   reg signed [0:DDWIDTH-1] sum;
   reg signed [0:DWIDTH-1] data_out_buf;
   assign data_out = data_out_buf; 
@@ -421,7 +422,8 @@ module filter #(parameter NR_STAGES = 32,
     end
   endgenerate
 
-  // State machine that controls the flow control between testbench and filter
+  // State machine that controls the flow control between
+  // testbench and filter
   always @(posedge clk) begin
     if (rst) begin
       state_busy <= 0;
@@ -438,14 +440,16 @@ module filter #(parameter NR_STAGES = 32,
         req_in_buf <= 0;
       end
 
-      // Process the output in 32 cycles. Then initiate a req_out to warn the output that a sample is ready
+      // Process the output in 32 cycles. 
+      // Then initiate a req_out to warn the output that a sample is ready
       if (state_busy && !req_out) begin
         // Shift through the data and calculate one tap every clock cycle
         mem[cnt+1] <= mem[cnt];
         sum <= sum + mem[cnt]*coef[cnt];
         cnt <= cnt - 1;
 
-        // When a complete cycle is done (32 taps calculated), start to output the outcome
+        // When a complete cycle is done (32 taps calculated),
+        // start to output the outcome
         if(cnt == 0) begin
           data_out_buf <= sum[0:15];
           req_out_buf <= 1;
@@ -459,12 +463,496 @@ module filter #(parameter NR_STAGES = 32,
         sum <= 0;
       end
 
-      // Wait until everyone is calmed down, then initiate new sample request
+      // Wait until everyone is calmed down,
+      // then initiate new sample request
       if (!req_in && !req_out && !ack_in && !ack_out && !state_busy) begin   
         req_in_buf <= 1;
       end	
     end
   end
+
+endmodule
+\end{lstlisting}
+
+\subsection{Assignment 3b code}
+\label{code:3b}
+
+\subsubsection{File: filter.v}
+\begin{lstlisting}[language=Verilog]
+`timescale 1ns / 1ps
+
+module filter #(parameter NR_STAGES = 32,
+                parameter DWIDTH = 16,
+                parameter DDWIDTH = 2*DWIDTH,
+                parameter CWIDTH = NR_STAGES * DWIDTH)
+       (input  clk,
+        input  rst,
+        output req_in,
+        input  ack_in,
+        input  [0:DDWIDTH-1] data_in,
+        output req_out,
+        input  ack_out,
+        output [0:DDWIDTH-1] data_out,
+        input  [0:CWIDTH-1] h_in);
+
+
+
+// Input request registers
+reg req_in_buf;
+assign req_in = req_in_buf;
+
+reg req_in_filter_buf;
+assign req_in_filter = req_in_filter_buf;
+
+// Output request registers
+reg req_out_buf;
+assign req_out = req_out_buf;
+
+reg req_out_filter_buf;
+assign req_out_filter = req_out_filter_buf;
+
+//input
+wire signed  [0:DDWIDTH-1] data_in_filter;
+reg signed [0:DDWIDTH-1] data_in_filter_buf;
+assign data_in_filter = data_in_filter_buf;
+
+//output
+wire signed  [0:DDWIDTH-1] data_out_filter;
+reg signed [0:DDWIDTH-1] data_out_filter_buf;
+assign data_out = data_out_filter_buf;
+
+// Extra wires and flags
+reg hold_cons, hold_prod;
+wire ack_in_filter, ack_out_filter;
+
+// Initialize the main filter
+mainfilter #(NR_STAGES, DWIDTH, DDWIDTH, CWIDTH) main
+           (clk,
+            rst,
+            req_in_filter,
+            ack_in_filter,
+            data_in_filter,
+            req_out_filter,
+            ack_out_filter,
+            data_out_filter,
+            h_in);
+
+always @(posedge clk) begin
+    // Reset => initialize
+    if (rst) begin
+        req_in_buf <= 0;
+        req_out_buf <= 0;
+        req_in_filter_buf  <= 0;
+        req_out_filter_buf <= 0;
+        data_out_filter_buf <= 0;
+        hold_prod <= 0;
+        hold_cons <= 0;
+        data_in_filter_buf <= 0;
+    end
+    // !Reset => run
+    else begin
+        ///////// Input data processing (Testbench => Mainfilter)
+
+        // if not busy, place new request
+        if (!req_in && !ack_in && !hold_prod) begin
+            req_in_buf <= 1;
+        end
+
+        // warn mainfilter that there is data available
+        if (req_in && ack_in) begin
+            data_in_filter_buf <= data_in;
+            req_in_buf <= 0;
+            req_in_filter_buf <= 1;
+            hold_prod <= 1;
+        end
+
+        // If mainfilter acknowledges, start retrieving new sample
+        if (req_in_filter && ack_in_filter) begin
+            data_in_filter_buf <= 0;
+            req_in_filter_buf <= 0;
+            hold_prod <= 0; //main filter may still be busy but this does not matter, since it will just not acknowledge
+        end
+
+        ////////// Output data processing (Mainfilter => Testbench)
+
+        // If nothing at the output, issue request
+        if (!req_out_filter && !ack_out_filter && !hold_cons) begin
+            req_out_filter_buf <= 1;
+        end
+
+        // If the request is ack-ed, process data and warn testbench
+        if (req_out_filter && ack_out_filter) begin
+            req_out_filter_buf <= 0;
+            req_out_buf <= 1;
+            hold_cons <= 1;
+        end
+
+        // Process to testbench
+        if (req_out && ack_out) begin
+            data_out_filter_buf <= data_out_filter;
+            req_out_buf <= 0;
+            hold_cons <= 0;
+        end
+
+    end
+end
+
+endmodule
+\end{lstlisting}
+
+\subsubsection{File: mainfilter.v}
+\begin{lstlisting}[language=Verilog]
+`timescale 1ns / 1ps
+
+module mainfilter #(parameter NR_STAGES = 32,
+                    parameter DWIDTH = 16,
+                    parameter DDWIDTH = 2*DWIDTH,
+                    parameter CWIDTH = NR_STAGES * DWIDTH)
+       (input  clk,
+        input  rst,
+        input req_in,
+        output  ack_in,
+        input signed [0:DDWIDTH-1] data_in,
+        input req_out,
+        output  ack_out,
+        output signed [0:DDWIDTH-1] data_out,
+        input signed [0:CWIDTH-1] h_in);
+
+// registers and wires used for merging all acknowledges of the subfilters
+wire ack_in_split[2:0], ack_out_split[2:0];
+reg ack_in_buf, ack_out_buf;
+assign ack_in = ack_in_buf;
+assign ack_out = ack_out_buf;
+
+// wires for input and output passivators
+wire req_in_subfilter_pass[2:0], ack_in_pass_subfilter[2:0];
+wire req_out_subfilter_pass[2:0], ack_out_subfilter_pass[2:0];
+
+// wires that carry all data through the filters
+wire signed [0:DWIDTH] data_in_preproc_pass[2:0],
+     data_in_pass_subfilter[2:0];
+wire signed [0:DWIDTH-1] data_out_subfilter_pass[2:0],
+     data_out_pass_post[2:0];
+wire signed [0:DDWIDTH-1] data_out_merged;
+
+// register to buffer the merged output data
+reg signed [0:DDWIDTH-1] data_out_buf;
+assign data_out = data_out_buf;
+
+// wires used to carry the coefficients for each subfilter
+wire signed [0:((NR_STAGES/2)*DWIDTH)-1] h_out_preproc_subfilter[2:0];
+
+// instantiate all components (preproc, 3x passivator, 3x fir, 3x passivator, postproc)
+preproc #(.NR_STAGES(NR_STAGES),
+		  .DWIDTH(DWIDTH),
+		  .DDWIDTH(DDWIDTH),
+		  .CWIDTH(CWIDTH))
+        pre (clk, rst,
+             data_in, data_in_preproc_pass[0],
+             data_in_preproc_pass[1], data_in_preproc_pass[2],
+             h_in, h_out_preproc_subfilter[0],
+             h_out_preproc_subfilter[1], h_out_preproc_subfilter[2]);
+
+generate
+    genvar i;
+for (i = 0; i < 3; i = i + 1) begin : stage
+    passivator #(.DWIDTH(DWIDTH+1))
+               pass_in (req_in,ack_in_split[i],
+                        data_in_preproc_pass[i],
+                        req_in_subfilter_pass[i],
+                        ack_in_pass_subfilter[i],
+                        data_in_pass_subfilter[i]);
+
+    subfilter #(.NR_STAGES(NR_STAGES),
+    			.DWIDTH(DWIDTH),
+    			.DDWIDTH(DDWIDTH),
+    			.CWIDTH(CWIDTH))
+              sfil	(clk,rst,
+                    req_in_subfilter_pass[i],
+                    ack_in_pass_subfilter[i],
+                    data_in_pass_subfilter[i],
+                    req_out_subfilter_pass[i],
+                    ack_out_subfilter_pass[i],
+                    data_out_subfilter_pass[i],
+                    h_out_preproc_subfilter[i]);
+
+    passivator #(.DWIDTH(DWIDTH))
+               pass_out (req_out_subfilter_pass[i],
+               ack_out_subfilter_pass[i],
+               data_out_subfilter_pass[i],
+               req_out,ack_out_split[i],
+               data_out_pass_post[i]);
+end
+endgenerate
+
+    postproc #(.NR_STAGES(NR_STAGES), 
+    		   .DWIDTH(DWIDTH),
+    		   .DDWIDTH(DDWIDTH),
+    		   .CWIDTH(CWIDTH))
+    post (clk,rst,
+          data_out_pass_post[0], 
+          data_out_pass_post[1], 
+          data_out_pass_post[2],
+          data_out_merged);
+
+
+always @(posedge clk) begin
+    if(rst)begin
+        ack_in_buf <= 0;
+        ack_out_buf <= 0;
+        data_out_buf <= 0;
+    end
+    else begin
+        ack_in_buf  <= ack_in_split[0] & ack_in_split[1] & ack_in_split[2];
+        ack_out_buf <= ack_out_split[0] & ack_out_split[1] & ack_out_split[2];
+        data_out_buf <= data_out_merged;
+    end
+end
+endmodule
+\end{lstlisting}
+
+\subsubsection{File: preproc.v}
+\begin{lstlisting}[language=Verilog]
+`timescale 1ns / 1ps
+
+module preproc #(parameter NR_STAGES = 32,
+                 parameter DWIDTH = 16,
+                 parameter DDWIDTH = 2*DWIDTH,
+                 parameter CWIDTH = NR_STAGES * DWIDTH)
+       (input  clk,
+        input  rst,
+        input signed [0:DDWIDTH-1] data_in,
+        output signed [0:DWIDTH] data_out_0,
+        output signed [0:DWIDTH] data_out_1,
+        output signed [0:DWIDTH] data_out_2,
+        input signed [0:CWIDTH-1] h_in,
+        output signed [0:((NR_STAGES/2)*DWIDTH)-1] h_out_0,
+        output signed [0:((NR_STAGES/2)*DWIDTH)-1] h_out_1,
+        output signed [0:((NR_STAGES/2)*DWIDTH)-1] h_out_2);
+
+// split input
+wire signed [0:DWIDTH-1] a, b;
+assign {a, b} = data_in;
+
+// buffers for output data
+reg signed [0:DWIDTH] data_out_buf[0:2],
+    a_buf,
+    b_buf,
+    ab_buf; // 16 + 1 bit for overflow with a + b
+
+assign data_out_0 = data_out_buf[0];
+assign data_out_1 = data_out_buf[1];
+assign data_out_2 = data_out_buf[2];
+
+// buffers for output coefficients
+reg signed [0:((NR_STAGES/2)*DWIDTH)-1] h_out_buf[0:2];
+assign h_out_0 = h_out_buf[0];
+assign h_out_1 = h_out_buf[1];
+assign h_out_2 = h_out_buf[2];
+
+// split coefficients to enable realtime switching between coefficients
+wire signed [0:((NR_STAGES/2)*DWIDTH)-1] h0, h1, h01;
+generate
+    genvar i;
+for (i = 0; i < NR_STAGES/2; i = i + 1)begin : yolo_coef
+    assign  h0[i*DWIDTH +: DWIDTH] = h_in[2*i*DWIDTH +: DWIDTH];
+    assign  h1[i*DWIDTH +: DWIDTH] = h_in[(2*i+1)*DWIDTH +: DWIDTH];
+    assign h01[i*DWIDTH +: DWIDTH] = h0[i*DWIDTH +: DWIDTH] 
+    			+ h1[i*DWIDTH +: DWIDTH];
+end
+endgenerate
+
+    // processing loop
+    always @(posedge clk) begin
+        if (rst) begin
+            data_out_buf[0] <= 0;
+            data_out_buf[1] <= 0;
+            data_out_buf[2] <= 0;
+            h_out_buf[0] <= 0;
+            h_out_buf[1] <= 0;
+            h_out_buf[2] <= 0;
+        end
+        else begin
+            a_buf <= a;
+            b_buf <= b;
+            ab_buf <= a + b;
+
+            data_out_buf[0] <= a_buf;
+            data_out_buf[1] <= ab_buf[0:DWIDTH];
+            data_out_buf[2] <= b_buf;
+            h_out_buf[0] <= h0;
+            h_out_buf[1] <= h01;
+            h_out_buf[2] <= h1;
+        end
+    end
+    endmodule
+\end{lstlisting}
+
+\subsubsection{File: passivator.v}
+\begin{lstlisting}[language=Verilog]
+`timescale 1ns / 1ps
+module passivator
+       #(parameter DWIDTH = 8)
+       (input req1,
+        output ack1,
+        input [0:DWIDTH-1] data1,
+        input req2,
+        output ack2,
+        output [0:DWIDTH-1] data2);
+
+// Passivator behaviour
+assign ack1 = (req1 & req2) | (req1 & ack1) | (req2 & ack1);
+assign ack2 = ack1;
+
+// Data passthrough
+assign data2 = data1;
+endmodule
+\end{lstlisting}
+
+\subsubsection{File: subfilter.v}
+\begin{lstlisting}[language=Verilog]
+`timescale 1ns / 1ps
+
+module subfilter #(parameter NR_STAGES = 32,
+                   parameter DWIDTH = 16,
+                   parameter DDWIDTH = 2*DWIDTH,
+                   parameter CWIDTH = NR_STAGES * DWIDTH)
+       (input  clk,
+        input  rst,
+        output req_in,
+        input  ack_in,
+        input signed [0:DWIDTH] data_in,
+        output req_out,
+        input  ack_out,
+        output signed [0:DWIDTH-1] data_out,
+        input [0:((NR_STAGES/2)*DWIDTH)-1] h_in);
+
+// Output request register
+reg req_out_buf;
+assign req_out = req_out_buf;
+
+// Input request register
+reg req_in_buf;
+assign req_in = req_in_buf;
+
+// Accumulator (Buffer output to decrease 'Maximum output delay after clock')
+reg signed [0:DDWIDTH] sum; // 32 + 1 bit for overflow with a + b
+reg signed [0:DWIDTH-1] data_out_buf;
+assign data_out = data_out_buf;
+
+// Memory to store last 32 inputs and memory to store the coefficients.
+reg signed [0:DWIDTH] mem[0:(NR_STAGES/2)-1];
+wire signed [0:DWIDTH-1] coef[0:(NR_STAGES/2)-1];
+
+// State variables for FIR
+reg state_busy;
+reg [4:0] cnt;
+
+// Split the coefficient into 32 wire busses of 16 bit
+generate
+    genvar i;
+for (i = 0; i < NR_STAGES/2; i = i +1)begin : coef_split
+    assign coef[i] = h_in[i*DWIDTH +: DWIDTH];
+end
+endgenerate
+
+    // State machine that controls the flow control between testbench and filter
+    always @(posedge clk) begin
+        if (rst) begin
+            state_busy <= 0;
+            req_in_buf <= 0;
+            req_out_buf <= 0;
+            sum <= 0;
+            cnt <= (NR_STAGES/2)-1;
+        end
+        else begin
+            // Request for input sample is acknowledged. Start calculating
+            if (req_in && ack_in) begin
+                mem[0] <= data_in;
+                state_busy <= 1;
+                req_in_buf <= 0;
+            end
+
+            // Process the output in 32 cycles. Then initiate a req_out to warn the output that a sample is ready
+            if (state_busy && !req_out) begin
+                // Shift through the data and calculate one tap every clock cycle
+                mem[cnt+1] <= mem[cnt];
+                sum <= sum + mem[cnt]*coef[cnt];
+                cnt <= cnt - 1;
+
+                // When a complete cycle is done (32 taps calculated), start to output the outcome
+                if(cnt == 0) begin
+                    data_out_buf <= sum[1:DWIDTH];
+                    req_out_buf <= 1;
+                    cnt <= (NR_STAGES/2)-1;
+                end
+            end
+
+            // If req_out is acknowledged, reset all variables
+            if (req_out && ack_out) begin
+                req_out_buf <= 0;
+                state_busy <= 0;
+                sum <= 0;
+            end
+
+            // Wait until everyone is calmed down, then initiate new sample request
+            if (!req_in && !req_out && !ack_in && !ack_out && !state_busy) begin
+                req_in_buf <= 1;
+            end
+        end
+    end
+    endmodule
+\end{lstlisting}
+
+\subsubsection{File: postproc.v}
+\begin{lstlisting}[language=Verilog]
+`timescale 1ns / 1ps
+
+module postproc #(parameter NR_STAGES = 32,
+                  parameter DWIDTH = 16,
+                  parameter DDWIDTH = 2*DWIDTH,
+                  parameter CWIDTH = NR_STAGES * DWIDTH)
+       (input  clk,
+        input  rst,
+        input signed [0:DWIDTH-1] data_in_0,
+        input signed [0:DWIDTH-1] data_in_1,
+        input signed [0:DWIDTH-1] data_in_2,
+        output signed [0:DDWIDTH-1] data_out);
+
+// input/output buffering
+reg signed [0:DWIDTH-1] data_in_buf[2:0];
+reg signed [0:DDWIDTH-1] data_out_buf;
+
+assign data_out = data_out_buf;
+
+// delay register for third filter
+reg signed [0:DWIDTH-1] d;
+
+// do postproc operations
+
+always @(posedge clk) begin
+    if(rst) begin
+        data_in_buf[0] <= 0;
+        data_in_buf[1] <= 0;
+        data_in_buf[2] <= 0;
+        data_out_buf   <= 0;
+    end
+    else begin
+        data_in_buf[0] <= data_in_0;
+        data_in_buf[1] <= data_in_1;
+        data_in_buf[2] <= data_in_2;
+
+        // delay output of third filter.
+        d <= data_in_buf[2];
+
+        // sample 1
+        data_out_buf[0:15] <= (d + data_in_buf[0]);
+
+        // sample 2
+        data_out_buf[15:31] <= (data_in_buf[1] 
+        	- data_in_buf[2] - data_in_buf[0]);
+    end
+end
 
 endmodule
 \end{lstlisting}

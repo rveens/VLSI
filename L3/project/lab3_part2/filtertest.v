@@ -27,8 +27,8 @@ wire [0:DDWIDTH-1] out_data;
 
 // Instantiation of the filter
 filter #(.NR_STAGES(NR_STAGES), .DWIDTH(DWIDTH), .DDWIDTH(DDWIDTH), .CWIDTH(CWIDTH))
-  my_filter (clk, rst, in_req, in_ack, in_data, out_req, out_ack, out_data, h_in
-);
+       my_filter (clk, rst, in_req, in_ack, in_data, out_req, out_ack, out_data, h_in
+                 );
 
 // Input port buffers
 reg in_ack_buf = 0;
@@ -46,13 +46,13 @@ reg signed [0:DWIDTH-1] h [0:NR_STAGES-1];
 // Assign the filter coefficient registers to the correct wires
 generate
     genvar i;
-    for (i = 0; i < NR_STAGES; i = i + 1) begin : stage
-        assign h_in[i*DWIDTH:(i+1)*DWIDTH-1] = h[i];
-    end
+for (i = 0; i < NR_STAGES; i = i + 1) begin : stage
+    assign h_in[i*DWIDTH:(i+1)*DWIDTH-1] = h[i];
+end
 endgenerate
 
-// Variables for handling the file I/O
-integer input_file;
+    // Variables for handling the file I/O
+    integer input_file;
 integer output_file;
 integer io_error;
 reg [0:639] io_error_str;
@@ -106,7 +106,7 @@ initial begin
     h[2] = 0;
     h[3] = 0;
     h[4] = 0;
-	 h[5]  = 4*256;
+    h[5]  = 4*256;
     h[6]  = 4*256;
     h[7]  = 5*256;
     h[8]  = 7*256;
@@ -163,12 +163,12 @@ initial begin
     // Close the input and output files
     $fclose(input_file);
     $fclose(output_file);
-    
+
     // Stop the simulation
     #100;
     $fdisplay("Simulation ended\n");
     $stop;
 
 end
-      
+
 endmodule

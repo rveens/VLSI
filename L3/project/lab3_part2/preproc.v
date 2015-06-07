@@ -7,9 +7,9 @@ module preproc #(parameter NR_STAGES = 32,
                (input  clk,
                 input  rst,
                 input signed [0:DDWIDTH-1] data_in,
-                output signed [0:DWIDTH-1] data_out_0,
-					 output signed [0:DWIDTH-1] data_out_1,
-					 output signed [0:DWIDTH-1] data_out_2,
+                output signed [0:DWIDTH] data_out_0,
+					 output signed [0:DWIDTH] data_out_1,
+					 output signed [0:DWIDTH] data_out_2,
                 input signed [0:CWIDTH-1] h_in,
 					 output signed [0:((NR_STAGES/2)*DWIDTH)-1] h_out_0,
 					 output signed [0:((NR_STAGES/2)*DWIDTH)-1] h_out_1,
@@ -20,9 +20,10 @@ module preproc #(parameter NR_STAGES = 32,
     assign {a, b} = data_in;
 	 	
 	 // buffers for output data
-	 reg signed [0:DWIDTH-1] data_out_buf[0:2];
-	 reg signed [0:DWIDTH-1] a_buf, b_buf;
-	 reg signed[0:DWIDTH] ab_buf; // 16 + 1 bit for overflow with a + b
+	 reg signed [0:DWIDTH] data_out_buf[0:2],
+								  a_buf,	 
+								  b_buf, 
+								  ab_buf; // 16 + 1 bit for overflow with a + b
 	 
 	 assign data_out_0 = data_out_buf[0];
 	 assign data_out_1 = data_out_buf[1];
@@ -61,7 +62,7 @@ module preproc #(parameter NR_STAGES = 32,
 			  ab_buf <= a + b;
 		  
 			  data_out_buf[0] <= a_buf;
-			  data_out_buf[1] <= ab_buf[0:15];
+			  data_out_buf[1] <= ab_buf[0:DWIDTH];
 			  data_out_buf[2] <= b_buf;
 			  h_out_buf[0] <= h0;
 			  h_out_buf[1] <= h01;

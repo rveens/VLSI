@@ -25,12 +25,12 @@ module mainfilter #(parameter NR_STAGES = 32,
 	 wire req_out_subfilter_pass[2:0], ack_out_subfilter_pass[2:0];
 	 
 	 // wires that carry all data through the filters
-	 wire signed [0:DWIDTH-1] data_in_preproc_pass[2:0], 
-					 data_in_pass_subfilter[2:0],
-					 data_out_subfilter_pass[2:0],
+	 wire signed [0:DWIDTH] data_in_preproc_pass[2:0], 
+					 data_in_pass_subfilter[2:0];		 
+	 wire signed [0:DWIDTH-1] data_out_subfilter_pass[2:0],
 					 data_out_pass_post[2:0];
 	 wire signed [0:DDWIDTH-1] data_out_merged;
-					 
+	 
 	 // register to buffer the merged output data 
 	 reg signed [0:DDWIDTH-1] data_out_buf;
 	 assign data_out = data_out_buf;
@@ -47,7 +47,7 @@ module mainfilter #(parameter NR_STAGES = 32,
 	 generate
         genvar i;
         for (i = 0; i < 3; i = i + 1) begin : stage
-          passivator #(.DWIDTH(DWIDTH)) 
+          passivator #(.DWIDTH(DWIDTH+1)) 
 			 pass_in (req_in,ack_in_split[i],
 						 data_in_preproc_pass[i],req_in_subfilter_pass[i],ack_in_pass_subfilter[i],
 						 data_in_pass_subfilter[i]);
@@ -82,5 +82,4 @@ module mainfilter #(parameter NR_STAGES = 32,
 			data_out_buf <= data_out_merged;
 		end
     end
-
 endmodule

@@ -224,12 +224,12 @@ In the \textit{mainfilter.v} file, all inner filter components are instantiated,
 \item \textbf{\textit{preproc.v}}\\	
 In the \textit{preproc.v} file, the coefficients and data are split.
 
-We also changed the buffer size that sums to two input samples from 16 to 17 and round thereafter to 16. We found out that the data could overflow. The rounding part is done to keep the input sample size consistent. The output will probably differ a bit.
+The buffersize for data that is split, is changed from 16 to 17 bit. We found out that the data could overflow on the sample that is summed. The output will probably differ a bit.
 
 \item \textbf{\textit{subfilter.v}}\\
 {All \textit{subfilter.v}(3a filter) components have their own passivator components. The requests and acknowledges are merged and split in \textit{mainfilter.v}. Our first prototype version consisted of a single filter with passivators, and we thought it was less prone to error to duplicate this version.}
 
-We also changed the sum variable from 16 to 17 bit. We found out that it was possible to get an overflow. The output sample will get rounded to 16 bit, to keep the output sample size consistent.	
+We also changed the sum and data input variables from 16 to 17 bit. We found out that it was possible to get an overflow. The output sample will get rounded to 16 bit, to keep the output sample size consistent.	
 
 \item \textbf{\textit{postproc.v}}\\	
 In the \textit{postproc.v} file, The data is merged to the output according to parhi's implementation.	
@@ -254,7 +254,15 @@ Also see section~\ref{sec:req3b} for a list of the requirements.
 \label{sec:thr3b}
 
 \subsection{Simulation results}
+\begin{figure}[h]
+	\includegraphics[scale = 0.71]{Images/3b_timedomain_inputoutput}
+    \caption{Input (green) and output(blue) signal of filter}
+\end{figure}
 
+\begin{figure}[h]
+	\includegraphics[scale = 0.92]{Images/3b_powerspectra}
+    \caption{Frequency response of input(green) and output(blue)}
+\end{figure}
 
 
 \newpage

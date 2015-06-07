@@ -8,13 +8,13 @@ module subfilter #(parameter NR_STAGES = 32,
                 input  rst,
                 output req_in,
                 input  ack_in,
-                input signed [0:DWIDTH-1] data_in,
+                input signed [0:DWIDTH] data_in,
                 output req_out,
                 input  ack_out,
                 output signed [0:DWIDTH-1] data_out,
                 input [0:((NR_STAGES/2)*DWIDTH)-1] h_in);
 
-// Output request register
+    // Output request register
     reg req_out_buf;
     assign req_out = req_out_buf;
 
@@ -23,12 +23,12 @@ module subfilter #(parameter NR_STAGES = 32,
     assign req_in = req_in_buf;
   
     // Accumulator (Buffer output to decrease 'Maximum output delay after clock')
-    reg signed [0:DDWIDTH] sum; // 16 + 1 bit for overflow with a + b
+    reg signed [0:DDWIDTH] sum; // 32 + 1 bit for overflow with a + b
 	 reg signed [0:DWIDTH-1] data_out_buf;
     assign data_out = data_out_buf; 
 	
 	 // Memory to store last 32 inputs and memory to store the coefficients.
-	 reg signed [0:DWIDTH-1] mem[0:(NR_STAGES/2)-1];
+	 reg signed [0:DWIDTH] mem[0:(NR_STAGES/2)-1];
 	 wire signed [0:DWIDTH-1] coef[0:(NR_STAGES/2)-1];
 	 
 	 // State variables for FIR
@@ -69,7 +69,7 @@ module subfilter #(parameter NR_STAGES = 32,
 					
 					// When a complete cycle is done (32 taps calculated), start to output the outcome
 					if(cnt == 0) begin
-						data_out_buf <= sum[0:15];
+						data_out_buf <= sum[1:DWIDTH];
 						req_out_buf <= 1;
 						cnt <= (NR_STAGES/2)-1;
 					end

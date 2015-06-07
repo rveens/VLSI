@@ -273,7 +273,7 @@ In the \textit{postproc.v} file, The data is merged to the output according to p
 \subsection{Functional correctness}
 Also see section~\ref{sec:req3b} for a list of the requirements.
 \begin{enumerate}
-\item The design uses 3 multipliers according to parhi's implementation. See section~\ref{sec:resc3b} for more information about the used resources. 
+\item The design uses 3 multipliers according to Parhi's implementation. See section~\ref{sec:resc3b} for more information about the used resources. 
 \item The design uses passivators to communicate with the subfilters to the main filter. Also the handshake protocol is used to communicate with the testbench. See the block diagram in section~\ref{sec:blk3b} for a more global overview of the filter. 
 \item According to the post-par timing analysis, the design can run above 100MHz. See section~\ref{sec:thr3b} for more information on this.
 \item Since the number of cycles for one sample is halved and the number of input samples is doubled, while the clock frequency is still 100MHz, we can conclude that the throughput is about 4 times the amount of 3a.
@@ -312,7 +312,7 @@ There are 2 additional DSP units utilized, this is because of the triple pipelin
 
 There is no blockram used, no change compared to assignment 3a.
 
-Furthermore, the Boned IOBs have increase by 32 because testbench now send/receives DDWIDTH instead of DWIDTH from the filter.
+Furthermore, the Bonded IOBs have increase by 32 because testbench now send/receives DDWIDTH instead of DWIDTH from the filter.
 
 \subsection{System throughput and latency}
 \label{sec:thr3b}
@@ -346,10 +346,24 @@ Since the minimum period is the maximum delay, we can be sure that our design is
 
 \newpage
 \section{Comparison between two filters}
-In your final report, compare the output signals of the strength reduced filter with the output of the sequential filter, by generating a difference signal for a representative subset of
-samples. Make sure you align the outputs correctly, because the amount of start-up noise of
-the 2 implementations may differ. If the difference signal is non-zero, explain the differences.
-Further reporting guidelines are on the course’s website.
+If we compare the Frequency-plots of both signals, we can already see a small difference. At 22.5KHz, the filter of 3b seems to increase, while the original filter of 3a does not. This may be caused by the rounding we do in the subfilter data output (17 to 16 bit). However, we don't think this is an problem since solving this issue would costs us additional resources, while humans do not even hear the difference.
+
+\begin{figure}[h]
+	\includegraphics[scale = 0.5]{Images/3a_powerspectra}
+    \caption{Frequency response of filter 3a}
+\end{figure}
+
+\begin{figure}[h]
+	\includegraphics[scale = 0.45]{Images/3b_powerspectra}
+    \caption{Frequency response of of filter 3b }
+\end{figure}
+For completeness we also made a difference graph of both output signals. We took some arbitrary part of the output signals. At high signal peaks the error was a bit higher. What we see is probably the rounding error we introduced.
+
+\begin{figure}[h]
+	\includegraphics[scale = 0.55]{Images/3b_difference}
+    \caption{Difference between two outputs (small blue line)}
+\end{figure}
+
 
 \newpage
 \section{Appendix: code listings}

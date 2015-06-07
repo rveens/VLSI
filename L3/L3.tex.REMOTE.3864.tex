@@ -189,7 +189,6 @@ The results match the original filter behavior. Therefore we can say that the fi
 \newpage
 \section{Lab assignment 3b}
 \subsection{Requirements}
-\label{sec:req3b}
 The specific requirements for the strength reduced FIR filter are:
 \begin{enumerate}
 \item The design may use at most 3 multipliers.
@@ -203,7 +202,6 @@ The specific requirements for the strength reduced FIR filter are:
 We use the strength-reduced 2-parallel implementation of Parhi. This implementation uses 3 multipliers and ensures a throughput of 4 times the standard 1 multiplier implementation. To be sure that this frequency can be achieved, we must also ensure that the filter runs on 100MHz and does not take much more than 16 (\# of stages) cycles for two 16-bit samples. Coefficients can also change during runtime. Because the filter consists of three subfilters (filter = active component), the handshake protocol is established with help of passivators.
 
 \subsection{System architecture}
-\label{sec:blk3b}
  A block diagram of parhi's filter is shown below:
  
 \begin{figure}[h]
@@ -248,42 +246,8 @@ Figure~\ref{fig:3bblockdiag} displays the layout of the modules.
 \end{figure}
 
 \subsection{Design choices}
-We have decided to split the filter up in multiple parts, to make the implementation easier:
-\begin{enumerate}
-\item \textbf{\textit{filter.v}}\\
-The state machine that communicates between the filter and the testbench is running in the \textit{filter.v} file.
-
-\item \textbf{\textit{mainfilter.v}}\\	
-In the \textit{mainfilter.v} file, all inner filter components are instantiated, and the in- and output acknowledges are synchronized.	
-
-\item \textbf{\textit{preproc.v}}\\	
-In the \textit{preproc.v} file, the coefficients and data are split.
-
-The buffersize for data that is split, is changed from 16 to 17 bit. We found out that the data could overflow on the sample that is summed. The output will probably differ a bit.
-
-\item \textbf{\textit{subfilter.v}}\\
-{All \textit{subfilter.v}(3a filter) components have their own passivator components. The requests and acknowledges are merged and split in \textit{mainfilter.v}. Our first prototype version consisted of a single filter with passivators, and we thought it was less prone to error to duplicate this version.}
-
-We also changed the sum and data input variables from 16 to 17 bit. We found out that it was possible to get an overflow. The output sample will get rounded to 16 bit, to keep the output sample size consistent.	
-
-\item \textbf{\textit{postproc.v}}\\	
-In the \textit{postproc.v} file, The data is merged to the output according to parhi's implementation.	
-\end{enumerate}
-
 \subsection{Functional correctness}
-Also see section~\ref{sec:req3b} for a list of the requirements.
-\begin{enumerate}
-\item The design uses 3 multipliers according to parhi's implementation. See section~\ref{sec:resc3b} for more information about the used resources. 
-\item The design uses passivators to communicate with the subfilters to the main filter. Also the handshake protocol is used to communicate with the testbench. See the block diagram in section~\ref{sec:blk3b} for a more global overview of the filter. 
-\item According to the post-par timing analysis, the design can run above 100MHz. See section~\ref{sec:thr3b} for more information on this.
-\item Since the number of cycles for one sample is halved and the number of input samples is doubled, while the clock frequency is still 100MHz, we can conclude that the throughput is about 4 times the amount of 3a.
-\item In this design we have again split the wires of the coefficients without the use of registers. We used one addition component to make the coefficients for one of the subfilters. The system should be able to adapt to new coefficients during runtime. It may give some strange behaviour for the first few samples after changing, we have not tested this.
-\item Since we did not change the structure of the subfilter components. This filter has also some start-up noise while the buffers are getting filled.
-\end{enumerate}
-
 \subsection{Resource usage}
-\label{sec:resc3b}
-
 Table~\ref{tab:3busage} summarizes the resources used by the FIR filter. This list is obtained by running the synthesis step in Xilinx ISE and extracted from the \textit{Summary} and \textit{Device Utilization} report.
 
 \begin{table}[h]
@@ -315,7 +279,6 @@ There is no blockram used, no change compared to assignment 3a.
 Furthermore, the Boned IOBs have increase by 32 because testbench now send/receives DDWIDTH instead of DWIDTH from the filter.
 
 \subsection{System throughput and latency}
-\label{sec:thr3b}
 The minimum sample time estimation is extracted from the \textit{Synthesis report} under \textit{Timing Report}.\\
 
    \textit{Minimum period:  7.256ns (Maximum Frequency: 137.820MHz)\\
@@ -333,15 +296,7 @@ After doing the placement and routing step, we will get a more accurate measurem
 Since the minimum period is the maximum delay, we can be sure that our design is able to run at 100MHz.
 
 \subsection{Simulation results}
-\begin{figure}[h]
-	\includegraphics[scale = 0.71]{Images/3b_timedomain_inputoutput}
-    \caption{Input (green) and output(blue) signal of filter}
-\end{figure}
 
-\begin{figure}[h]
-	\includegraphics[scale = 0.92]{Images/3b_powerspectra}
-    \caption{Frequency response of input(green) and output(blue)}
-\end{figure}
 
 
 \newpage

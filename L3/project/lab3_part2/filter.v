@@ -29,14 +29,6 @@ module filter #(parameter NR_STAGES = 32,
 	 
 	 reg req_out_filter_buf;
 	 assign req_out_filter = req_out_filter_buf;
-
-    // Split input into 2 samples
-    //wire signed [0:DWIDTH-1] a0, a1;
-    //assign {a0, a1} = data_in;
-    
-    // Buffer and combine 2 samples into output
-    //reg signed [0:DWIDTH-1] b0, b1;
-	 
 	 
 	 //input
 	 wire signed  [0:DDWIDTH-1] data_in_filter;
@@ -50,10 +42,9 @@ module filter #(parameter NR_STAGES = 32,
 	 
 	 // Extra wires and flags
 	 reg hold_cons, hold_prod;
+	 wire ack_in_filter, ack_out_filter;
 	 
-	 wire ack_in_filter;
-	 wire ack_out_filter;
-	 
+	 // Initialize the main filter
 	 mainfilter #(NR_STAGES, DWIDTH, DDWIDTH, CWIDTH) main
 						(clk,
                    rst,
@@ -121,8 +112,7 @@ module filter #(parameter NR_STAGES = 32,
 					req_out_buf <= 0;
 					hold_cons <= 0;
 				end
-				
-				
+
         end
     end
 

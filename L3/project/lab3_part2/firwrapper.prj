@@ -1,7 +1,0 @@
-verilog work "subfilter.v"
-verilog work "preproc.v"
-verilog work "postproc.v"
-verilog work "passivator.v"
-verilog work "mainfilter.v"
-verilog work "filter.v"
-verilog work "firwrapper.v"

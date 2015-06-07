@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/Rick Veens/Desktop/lab3_part2/filtertest_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="filtertest" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="5" />
+   <wvobject fp_name="/filtertest/h_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">h_in[0:511]</obj_property>
+      <obj_property name="ObjectShortName">h_in[0:511]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/in_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">in_data[0:31]</obj_property>
+      <obj_property name="ObjectShortName">in_data[0:31]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/out_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_data[0:31]</obj_property>
+      <obj_property name="ObjectShortName">out_data[0:31]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/filtertest/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+</wave_config>

@@ -2,6 +2,7 @@
 \usepackage{a4wide,graphicx,fancyhdr,amsmath,amssymb}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{dirtree}
 
 %----------------------- Macros and Definitions --------------------------
 
@@ -200,13 +201,47 @@ We use the strength-reduced 2-parallel implementation of Parhi. This implementat
 
 \subsection{System architecture}
  A block diagram of parhi's filter is shown below:
+ 
 \begin{figure}[h]
+	
 	\includegraphics[scale = 0.71]{Images/3b_parhi}
     \caption{Parhi's 2-Parallel strength reduced FIR filter}
+    \label{fig:3bparhi}
 \end{figure}
 
 We have decided to split the filter up in multiple parts, to make the implementation easier:
+\begin{enumerate}
+	\item \textit{Pre-processing} \\
+		Splits the input data into the three output streams as seen on the left side of figure	\ref{fig:3bparhi}. \\
+		Furthermore, the input coefficients $h\_in$ are split into the even coefficients (H0), odd coefficients (H1) and sum of the even and odd coefficients (H0+H1).
 
+	\item \textit{Parallel filtering} \\
+	The filter of assignment 3a is used in parallel to process each part of parhi's filter as shown in the middle section of figure	\ref{fig:3bparhi}.
+	
+	\item \textit{Post-processing} \\
+	This part receives the data from the parallel filters, applies the operations shown on the right side of figure \ref{fig:3bparhi}, and delivers output.
+\end{enumerate}
+
+The hierarchy of the implementation of assignment 3b is as follows: 
+\dirtree{%
+.1 filter.
+.2 mainfilter.
+.3 preproc.
+.3 subfilter (3x).
+.3 passivator (6x).
+.3 postproc.
+}
+In this hierarchy, the top level element implements the communication with the filter implementation and $filtertest$. We chose to implement a $mainfilter$ module that contains all of the wiring of the many connected modules.
+
+Note that the $subfilter$ module is the implementation of assignment 3a, adjusted to process 16 taps instead of 32.
+
+Figure~\ref{fig:3bblockdiag} displays the layout of the modules.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1.0]{./Images/3b_blockdiagram.eps}
+	\caption{Block diagram of assignment 3b, with a few abstractions.}
+	\label{fig:3bblockdiag}
+\end{figure}
 
 \subsection{Design choices}
 \subsection{Functional correctness}

@@ -118,7 +118,8 @@ Also see section~\ref{sec:req3a} for a list of the requirements.
 \subsection{Resource usage}
 \label{sec:resc3a}
 
-Table 1 summarizes the resources used by the FIR filter. This list is obtained by running the synthesis step in Xilinx ISE and extracted from the \textit{Summary} and \textit{Device Utilization} report.
+Table~\ref{tab:3ausage} summarizes the resources used by the FIR filter. This list is obtained by running the synthesis step in Xilinx ISE and extracted from the \textit{Summary} and \textit{Device Utilization} report.
+
 \begin{table}[h]
 \begin{tabular}{|l|l|l|l|}
 \hline
@@ -132,6 +133,7 @@ Bonded IOBs	& 218 	& 40 	& 18\%\\
 \hline
 \end{tabular}
 \caption{General resource usage overview}
+\label{tab:3ausage}
 \end{table}
 
 The number of flipflops used in the design are:
@@ -158,7 +160,7 @@ This time is equal to the largest critical path (the calculation of the tap is t
 
 After doing the placement and routing step, we will get a more accurate measurement of the maximum achievable throughput. These measurements can be found in the \textit{Advanced Post-PAR static timing report} under \textit{Timing summary}:\\
 
-\textit{Minimum period:   9.712ns{1}   (Maximum frequency: 102.965MHz)\\
+\textit{Minimum period:   9.712ns\{1\}   (Maximum frequency: 102.965MHz)\\
    Minimum input required time before clock:   8.630ns\\
    Maximum output delay after clock:   8.824ns}\\
 
@@ -246,7 +248,53 @@ Figure~\ref{fig:3bblockdiag} displays the layout of the modules.
 \subsection{Design choices}
 \subsection{Functional correctness}
 \subsection{Resource usage}
+Table~\ref{tab:3busage} summarizes the resources used by the FIR filter. This list is obtained by running the synthesis step in Xilinx ISE and extracted from the \textit{Summary} and \textit{Device Utilization} report.
+
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Resource} & \textbf{Available} & \textbf{Utilized} & \textbf{Percentage utilized}\\
+\hline
+Flip Flops	& 54576 & 2471 	& 4 \%\\
+Slice LUTs 	& 27288 & 804 	& 2 \%\\
+DSP48A1s	& 58 	& 3 	& 5 \%\\
+BRAM		& 116 	& 0 	& 0 \%\\
+Bonded IOBs	& 218 	& 72 	& 33 \%\\
+\hline
+\end{tabular}
+\caption{General resource usage overview}
+\label{tab:3busage}
+\end{table}
+
+The amount of registers in assignment 3b compared to assignment 3a have increased from 1080 to 2471. This is an increase of 128\%. 
+
+In this version the sequential filter computes 16 instead of 32 taps but in parallel of three. So we could say $(1080/2)*3=1620$. We have around 800 missing registers. These additional registers can be explained as being the result of numerous pipelining.
+
+\smallskip
+
+There are 2 additional DSP units utilized, this is because of the triple pipelining of the sequential filter of assignment 3a.
+
+There is no blockram used, no change compared to assignment 3a.
+
+Furthermore, the Boned IOBs have increase by 32 because testbench now send/receives DDWIDTH instead of DWIDTH from the filter.
+
 \subsection{System throughput and latency}
+The minimum sample time estimation is extracted from the \textit{Synthesis report} under \textit{Timing Report}.\\
+
+   \textit{Minimum period:  7.256ns (Maximum Frequency: 137.820MHz)\\
+   Minimum input arrival time before clock: 6.449ns\\
+   Maximum output required time after clock: 3.701ns}\\
+
+This time is equal to the largest critical path (the calculation of the tap is the critical path in this design).\\
+
+After doing the placement and routing step, we will get a more accurate measurement of the maximum achievable throughput. These measurements can be found in the \textit{Advanced Post-PAR static timing report} under \textit{Timing summary}:\\
+
+\textit{Minimum period:   8.164ns\{1\}   (Maximum frequency: 122.489MHz)\\
+   Minimum input required time before clock:   9.259ns\\
+   Maximum output delay after clock:   8.647ns}\\
+
+Since the minimum period is the maximum delay, we can be sure that our design is able to run at 100MHz.
+
 \subsection{Simulation results}
 
 

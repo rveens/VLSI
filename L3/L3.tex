@@ -43,8 +43,10 @@
 	Rick Veens \qquad Studentno: 0912292\\
 	\texttt{r.veens@student.tue.nl}
 	\and
-	Barry de Bruin \qquad Studentno: -\\
-	\texttt{-@student.tue.nl}
+	Barry de Bruin \qquad Studentno: 0919605\\
+	\texttt{e.d.bruin@student.tue.nl}
+	\and
+	\texttt{Group 7}
 }
 
 \date{\today}
@@ -235,20 +237,21 @@ The hierarchy of the implementation of assignment 3b is as follows:
 .3 passivator (6x).
 .3 postproc.
 }
-In this hierarchy, the top level element implements the communication with the filter implementation and $filtertest$. We chose to implement a $mainfilter$ module that contains all of the wiring of the many connected modules.
+In this hierarchy, the top level element implements the communication with the filter implementation and $filtertest$. We chose to implement a $mainfilter$ module that contains all of the wiring of the many connected modules.\\
 
-Note that the $subfilter$ module is the implementation of assignment 3a, adjusted to process 16 taps instead of 32.
+Note that the $subfilter$ module is the implementation of assignment 3a, adjusted to process 16 taps instead of 32.\\
 
 Figure~\ref{fig:3bblockdiag} displays the layout of the modules.
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=1.0]{./Images/3b_blockdiagram.eps}
+	\includegraphics[scale=0.8]{./Images/3b_blockdiagram.eps}
 	\caption{Block diagram of assignment 3b, with a few abstractions.}
 	\label{fig:3bblockdiag}
 \end{figure}
 
 \subsection{Design choices}
-We have decided to split the filter up in multiple parts, to make the implementation easier:
+The following design choices have been made during the implementation. Each file has different functionality:
+
 \begin{enumerate}
 \item \textbf{\textit{filter.v}}\\
 The state machine that communicates between the filter and the testbench is running in the \textit{filter.v} file.
@@ -278,7 +281,7 @@ Also see section~\ref{sec:req3b} for a list of the requirements.
 \item According to the post-par timing analysis, the design can run above 100MHz. See section~\ref{sec:thr3b} for more information on this.
 \item Since the number of cycles for one sample is halved and the number of input samples is doubled, while the clock frequency is still 100MHz, we can conclude that the throughput is about 4 times the amount of 3a.
 \item In this design we have again split the wires of the coefficients without the use of registers. We used one addition component to make the coefficients for one of the subfilters. The system should be able to adapt to new coefficients during runtime. It may give some strange behaviour for the first few samples after changing, we have not tested this.
-\item Since we did not change the structure of the subfilter components. This filter has also some start-up noise while the buffers are getting filled.
+\item Since we did not change the internal structure of the subfilter components. This filter has also some start-up noise while the buffers are getting filled.
 \end{enumerate}
 
 \subsection{Resource usage}
@@ -302,16 +305,18 @@ Bonded IOBs	& 218 	& 72 	& 33 \%\\
 \label{tab:3busage}
 \end{table}
 
-The amount of registers in assignment 3b compared to assignment 3a have increased from 1080 to 2495. This is an increase of 128\%. 
+The amount of registers in assignment 3b compared to assignment 3a have increased from 1080 to 2495. This is an increase of 128\%.
 
+\smallskip 
 In this version the sequential filter computes 16 instead of 32 taps but in parallel of three. So we could say $(1080/2)*3=1620$. We have around 900 missing registers. These additional registers can be explained as being the result of numerous cut sets being that are implemented in assignment 3b to reduce the critical path.
 
 \smallskip
-
 There are 2 additional DSP units utilized, this is because of the triple pipelining of the sequential filter of assignment 3a.
 
+\smallskip
 There is no blockram used, no change compared to assignment 3a.
 
+\smallskip
 Furthermore, the Bonded IOBs have increase by 32 because testbench now send/receives DDWIDTH instead of DWIDTH from the filter.
 
 \subsection{System throughput and latency}
@@ -357,10 +362,10 @@ If we compare the Frequency-plots of both signals, we can already see a small di
 	\includegraphics[scale = 0.45]{Images/3b_powerspectra}
     \caption{Frequency response of of filter 3b, input(green) and output(blue).}
 \end{figure}
-For completeness we also made a difference graph of both output signals. We took some arbitrary part of the output signals. At high signal peaks the error was a bit higher. What we see is probably the rounding error we introduced.
+For completeness we also made a difference graph of both output signals. We took some arbitrary part of the output signals and plotted them together with the difference. At high signal peaks the error was a bit higher. What we see is probably the rounding error we introduced.
 
 \begin{figure}[h]
-	\includegraphics[scale = 0.55]{Images/3b_difference}
+	\includegraphics[scale = 0.50]{Images/3b_difference}
     \caption{Difference between two outputs (small blue line)}
 \end{figure}
 
@@ -474,6 +479,7 @@ module filter #(parameter NR_STAGES = 32,
 endmodule
 \end{lstlisting}
 
+\newpage
 \subsection{Assignment 3b code}
 \label{code:3b}
 
@@ -600,6 +606,7 @@ end
 endmodule
 \end{lstlisting}
 
+\newpage
 \subsubsection{File: mainfilter.v}
 \begin{lstlisting}[language=Verilog]
 `timescale 1ns / 1ps
@@ -655,18 +662,18 @@ preproc #(.NR_STAGES(NR_STAGES),
 
 generate
     genvar i;
-for (i = 0; i < 3; i = i + 1) begin : stage
-    passivator #(.DWIDTH(DWIDTH+1))
-               pass_in (req_in,ack_in_split[i],
-                        data_in_preproc_pass[i],
-                        req_in_subfilter_pass[i],
-                        ack_in_pass_subfilter[i],
-                        data_in_pass_subfilter[i]);
+	for (i = 0; i < 3; i = i + 1) begin : stage
+    	passivator #(.DWIDTH(DWIDTH+1))
+        pass_in (req_in,ack_in_split[i],
+                 data_in_preproc_pass[i],
+                 req_in_subfilter_pass[i],
+                 ack_in_pass_subfilter[i],
+                 data_in_pass_subfilter[i]);
 
-    subfilter #(.NR_STAGES(NR_STAGES),
-    			.DWIDTH(DWIDTH),
-    			.DDWIDTH(DDWIDTH),
-    			.CWIDTH(CWIDTH))
+    	subfilter #(.NR_STAGES(NR_STAGES),
+    				.DWIDTH(DWIDTH),
+    				.DDWIDTH(DDWIDTH),
+    				.CWIDTH(CWIDTH))
               sfil	(clk,rst,
                     req_in_subfilter_pass[i],
                     ack_in_pass_subfilter[i],
@@ -676,12 +683,12 @@ for (i = 0; i < 3; i = i + 1) begin : stage
                     data_out_subfilter_pass[i],
                     h_out_preproc_subfilter[i]);
 
-    passivator #(.DWIDTH(DWIDTH))
-               pass_out (req_out_subfilter_pass[i],
-               ack_out_subfilter_pass[i],
-               data_out_subfilter_pass[i],
-               req_out,ack_out_split[i],
-               data_out_pass_post[i]);
+    	passivator #(.DWIDTH(DWIDTH))
+              		pass_out (req_out_subfilter_pass[i],
+               		ack_out_subfilter_pass[i],
+               		data_out_subfilter_pass[i],
+               		req_out,ack_out_split[i],
+               		data_out_pass_post[i]);
 end
 endgenerate
 
@@ -711,6 +718,7 @@ end
 endmodule
 \end{lstlisting}
 
+\newpage
 \subsubsection{File: preproc.v}
 \begin{lstlisting}[language=Verilog]
 `timescale 1ns / 1ps
@@ -788,6 +796,7 @@ endgenerate
     endmodule
 \end{lstlisting}
 
+\newpage
 \subsubsection{File: passivator.v}
 \begin{lstlisting}[language=Verilog]
 `timescale 1ns / 1ps
@@ -904,6 +913,7 @@ endgenerate
     endmodule
 \end{lstlisting}
 
+\newpage
 \subsubsection{File: postproc.v}
 \begin{lstlisting}[language=Verilog]
 `timescale 1ns / 1ps

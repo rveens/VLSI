@@ -41,7 +41,7 @@
 
 %-------------------------------- Title ----------------------------------
 
-\title{\vspace{-\baselineskip}\sffamily\bfseries Assignment 3}
+\title{\vspace{-\baselineskip}\sffamily\bfseries Assignment 4}
 \author{
 	Rick Veens \qquad Studentno: 0912292\\
 	\texttt{r.veens@student.tue.nl}
@@ -211,16 +211,15 @@ If the lanczos2 function gives a close to one output, the quantized value will b
 % Put this in a file named coef_generate_matlab.m, 
 % then call it while you are in the file directory
 
+
 function [y] = coef_generate_matlab(L)
         % make sure that coefficients sum to 1
-        y = coef_gen(L)/L;
+        y = coef_gen(L);
+        y = coef_gen(L)/sum(y);
 
         % quantize and round to nearest integer
         y = round(y*(2^16)); 
-        
-        % divide sum by 2^16 and it should be 1
-        %sum = round(sum(y)./(2^16));
-        
+             
         % convert to signed int filter coeff
         y = int16(y);
         y = hex(fi(y, 1, 16, 0)); %1 stands for signed, 16 bit out
@@ -242,6 +241,10 @@ function y = lanczos2(t)
         y = sinc(t).*sinc(t/2);
     end
 end
+
+%%
+
+
 
 \end{lstlisting}
 

@@ -197,7 +197,7 @@ The maximum system frequency will be $F_{system} = max(F_s\cdot L_1, F_s\cdot \f
 \subsubsection{Conclusion}
 The best solution may depend on your needs. If your L is really large, we may consider using a composite solution to exchange coefficient memory for additional arithmetic steps. The naive method does make a lot of useless computations, while the direct equation method has almost no computations with a zero factor.\\
 
-Therefore we can say that for our upsampler, the single-stage direct equation solution is best, since we only have to store 160 coefficients, and still can get maximum performance of doing only 4 multiplications/additions per sample.
+Therefore we can say that for our upsampler, the composite-stage direct equation solution is best if we can ensure that all 8 calculations can be done between a single maximum sample time. Otherwise, the single-stage version needs to be implemented. **need better agreement**
 
 \newpage
 \subsection{Implementation}

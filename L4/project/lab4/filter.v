@@ -26,7 +26,7 @@ module filter
 	assign req_in = req_in_buf;
 	
 	// Accumulator (assigned to output directly)
-	reg signed [0:33-1] sum;
+	reg signed [0:DDWIDTH] sum; //33 bit!
 	reg signed [0:DWIDTH-1] data_out_buf;
 	assign data_out = data_out_buf;
 	

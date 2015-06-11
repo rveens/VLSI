@@ -1,7 +1,7 @@
 
 function [y] = coef_generate_matlab(L)
         % make sure that coefficients sum to 1
-        y = coef_gen(L);
+        %y = coef_gen(L);
         y = coef_gen(L)/sum(y);
 
         % quantize and round to nearest integer
@@ -10,7 +10,8 @@ function [y] = coef_generate_matlab(L)
         % convert to signed int filter coeff
         y = int16(y);
         y = hex(fi(y, 1, 16, 0)); %1 stands for signed, 16 bit out
-        y= y(~isspace(y)); % remove spaces
+        
+        %y= y(~isspace(y)); % remove spaces
         dlmwrite('coef.txt',y,''); %create file, with no delimiter ''      
 end
 

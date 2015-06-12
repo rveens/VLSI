@@ -62,10 +62,12 @@
 \maketitle
 \newpage
 
-\section{Lab assignment 4a}
+\tableofcontents
 
-\subsection{Exercise 1}
-\subsection{Exercise 2}
+\newpage
+
+\section{Exercise 1}
+\section{Exercise 2}
 If we take for example L = 5 and M = 4, we get the following graph, while following the direct equation, we get for different y(n):
 
 \begin{align}
@@ -150,10 +152,10 @@ y[1] &= h[3\cdot 5 + 5\cdot 4 \textbf{ mod } 5]\cdot x[5\cdot 4 \textbf{ div } 5
 
 
 \newpage
-\subsection{Exercise 3}
+\section{Exercise 3}
 We have the following 4 designs: 
 
-\subsubsection{Direct equation solution}
+\subsection{Direct equation solution}
 This solution uses the direct equation and has two different implementations: The direct method that has a single direct equation stage, and the composite implementation that uses two stages.
 
 \smallskip
@@ -169,7 +171,7 @@ Uses $4\cdot (L_{sub1} + L_{sub2})$ coefficients, while $L = L_{sub1} \cdot L_{s
 \smallskip
 If we compose a resampler of two of those systems, the highest system frequency will be input frequency of the first system, the output of the first system (input of second system), or the output of the second system.
 
-\subsubsection{Naive solution}
+\subsection{Naive solution}
 Uses the complete part of an upscaler, low-pass filter and downscaler. Again we have two variants:
 
 \smallskip
@@ -194,19 +196,46 @@ The maximum system frequency will be $F_{system} = max(F_s\cdot L_1, F_s\cdot \f
     \caption{Naive solution with double set of stages}
 \end{figure}
 
-\subsubsection{Conclusion}
+\subsection{Conclusion}
 The best solution may depend on your needs. If your L is really large, we may consider using a composite solution to exchange coefficient memory for additional arithmetic steps. The naive method does make a lot of useless computations, while the direct equation method has almost no computations with a zero factor.\\
 
 Therefore we can say that for our upsampler, the composite-stage direct equation solution is best if we can ensure that all 8 calculations can be done between a single maximum sample time. Otherwise, the single-stage version needs to be implemented. **need better agreement**
 
 \newpage
-\subsection{Implementation}
+\section{Implementation}
 Since input frequency is only 44khz, and output frequency only 48khz, we can just implement this by using a single DSP unit.\\
 
 I generate the coefficients using matlab. They are in the coef.bin file, and already multiplied by $2^{16}$ and rounded.\\
 
 If the lanczos2 function gives a close to one output, the quantized value will be close to the maximum that a 16-bit value can hold. Therefore 16-bit is not enough to store the summation and multiplication of multiple of such values.\\
 
+\subsection{Requirements}
+\begin{enumerate}
+	\item The output sample rate must be $\frac{48000}{44100}$ times the input sample rate.
+	\item The output represents a resampled version of the input.
+	\item The design must support an input sample rate of at least 44.1kHz.
+	\item The design must be able to run at a clock frequency of at least 100Mhz.
+	\item The design may produce start-up noise.
+	\item The top-level Verilog module must be called filter.
+\end{enumerate}
+
+
+\subsubsection{Analysis of requirements}
+
+\subsection{System architecture}
+
+\subsection{Design choices}
+
+\subsection{Functional correctness}
+
+\subsection{Resource usage}
+
+\subsection{System throughput and latency}
+
+\subsection{Simulation results}
+
+\newpage
+\section{Appendix A: Matlab coefficients script}
 \begin{lstlisting}
 % Put this in a file named coef_generate_matlab.m, 
 % then call it while you are in the file directory
@@ -243,10 +272,9 @@ function y = lanczos2(t)
 end
 
 %%
-
-
-
 \end{lstlisting}
 
+\newpage
+\section{Appendix B: Verilog Code}
 
 \end{document}

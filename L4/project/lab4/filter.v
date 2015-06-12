@@ -25,8 +25,8 @@ module filter
 	reg req_in_buf;
 	assign req_in = req_in_buf;
 	
-	// Accumulator (assigned to output directly)
-	reg signed [0:DDWIDTH-8] sum; //33 bit!
+	// Accumulator
+	reg signed [0:DDWIDTH-8] sum; //25 bit!
 	reg signed [0:DWIDTH-1] data_out_buf;
 	assign data_out = data_out_buf;
 	
@@ -41,17 +41,20 @@ module filter
 	
 	//Lookup tables for the coefficient index and if we have to shift or not
 	reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
-	reg [0:DWIDTH-1]lookup_coefIdx[0:L-1]; //'1' means shift, '0' means no shift
+	reg [0:DWIDTH-1]lookup_coefIdx[0:L-1][0:3]; //'1' means shift, '0' means no shift
 	
-	integer i, cnt;
+	integer i, j, cnt;
 	initial begin
 		// import coefficients
 		$readmemh("coef.txt", coef, 0, CWIDTH -1); 
 		
-		// define lookup tables
 		for (i = 0; i < L; i = i + 1) begin	
-			lookup_coefIdx[i] = i*M%L;	
-			
+			for (j = 0; j < 4; j = j +1) begin
+				lookup_coefIdx[i][j] = j*L + i*M%L;
+			end
+		end
+		// define lookup tables
+		for (i = 0; i < L; i = i + 1) begin		
 			if(i*M/L == (i+1)*M/L)
 				lookup_shift[i] = 0; //do not shift yet
 			else
@@ -59,7 +62,7 @@ module filter
 		end		
 	end
 	
-	integer y,z, c_idx;
+	integer y,z, x, c_idx;
 
 	 // State machine that controls the flow control between testbench and filter
     always @(posedge clk) begin
@@ -70,18 +73,20 @@ module filter
             sum <= 0;
 				cnt <= 3;
 				i <= 0;
-				c_idx<=0;
-				y <= 0;
-				z <= 0;
+				c_idx =0;
+				y = 0;
+				z = 0;
+				x = 0;
         end
 		  
         else begin
             // Request for input sample is acknowledged. Start calculating
             if (req_in && ack_in) begin
                 y = y + 1;
-					 if(y == 372864) begin
+					 if(y >= 372864) begin
 						$display(y);
 						$display(z);
+						$display(x);
 					 end
 					 
 					 mem[0] <= data_in;
@@ -93,8 +98,9 @@ module filter
             if (state_busy && !req_out) begin
                 // Shift through the data and calculate one tap every clock cycle
 						mem[cnt+lookup_shift[i]] <= mem[cnt];
+		
+						c_idx = lookup_coefIdx[i][cnt];
 						
-						c_idx = 	(cnt*L)+lookup_coefIdx[i];
 						sum <= sum + mem[cnt]*coef[c_idx];
 						cnt <= cnt - 1;
 
@@ -115,6 +121,8 @@ module filter
 					 
 					 if (lookup_shift[i])
 						state_busy <= 0;
+					 else
+						x = x + 1;
 					
 					 i <= (i + 1) % 160;
             end

@@ -63,6 +63,15 @@ module filter
 	end
 	
 	integer y,z, x, c_idx;
+	
+	parameter input_data_requested = 1,
+				 input_data_received = 2,
+				 output_data_consumed = 3,
+				 output_data_ready = 4,
+				 data_processing = 5,
+				 waiting_for_ack = 6;
+		  
+	reg [3:0] state;
 
 	 // State machine that controls the flow control between testbench and filter
     always @(posedge clk) begin
@@ -77,60 +86,65 @@ module filter
 				y = 0;
 				z = 0;
 				x = 0;
+				state <= 0;
         end
 		  
         else begin
-            // Request for input sample is acknowledged. Start calculating
-            if (req_in && ack_in) begin
-                y = y + 1;
-					 if(y >= 372864) begin
-						$display(y);
-						$display(z);
-						$display(x);
-					 end
-					 
-					 mem[0] <= data_in;
-                state_busy <= 1;
-                req_in_buf <= 0;
-            end
+		  
+      case (state) 
+			waiting_for_ack: begin
+				if(req_in && ack_in)
+					state <= input_data_received;
+				
+				if (req_out && ack_out)
+					state <= output_data_consumed;
+				
+				end	
+			input_data_requested: begin
+				req_in_buf <= 1;
+				state <= waiting_for_ack;
+			end
+			input_data_received: begin
+					mem[0] <= data_in;
+               //state_busy <= 1;
+               req_in_buf <= 0;
 
-            // Process the output in 32 cycles. Then initiate a req_out to warn the output that a sample is ready
-            if (state_busy && !req_out) begin
-                // Shift through the data and calculate one tap every clock cycle
-						mem[cnt+lookup_shift[i]] <= mem[cnt];
-		
-						c_idx = lookup_coefIdx[i][cnt];
+					state <= data_processing;
+			end	
+			data_processing: begin
+					mem[cnt+lookup_shift[i]] <= mem[cnt];
+					c_idx = lookup_coefIdx[i][cnt];
 						
-						sum <= sum + mem[cnt]*coef[c_idx];
-						cnt <= cnt - 1;
+					sum <= sum + mem[cnt]*coef[c_idx];
+					cnt <= cnt - 1;
 
                 // When a complete cycle is done (32 taps calculated), start to output the outcome
                 if(cnt == 0) begin
-							cnt <= 3;
-							data_out_buf <= sum[0:15];
-							req_out_buf <= 1;
+							state <= output_data_ready;
                 end
-            end
+			end
+			output_data_ready: begin
+					cnt <= 3;
+					data_out_buf <= sum[0:15];			
+					req_out_buf <= 1;
 
-            // If req_out is acknowledged, reset all variables
-            if (req_out && ack_out) begin
-						z = z + 1;
-				
-                req_out_buf <= 0;
-                sum <= 0;
-					 
-					 if (lookup_shift[i])
-						state_busy <= 0;
-					 else
-						x = x + 1;
+					state <= waiting_for_ack;
+			end
+			output_data_consumed: begin
+					req_out_buf <= 0;
+               sum <= 0;
 					
-					 i <= (i + 1) % 160;
-            end
-
-            // Wait until everyone is calmed down, then initiate new sample request
-            if (!req_in && !req_out && !ack_in && !ack_out && !state_busy) begin
-                req_in_buf <= 1;
-            end
-        end
-    end
+					i <= (i + 1) % 160;
+					 
+					if (lookup_shift[i])
+						state <= input_data_requested;
+					else
+						state <= data_processing;
+			end		
+			default:
+					state <= input_data_requested;
+      endcase  
+    
+		end
+	 end
 endmodule

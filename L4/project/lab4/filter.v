@@ -40,10 +40,10 @@ module filter
 	reg signed [0:DWIDTH-1] coef [0:CWIDTH-1]; //** means 'power'
 	
 	//Lookup tables for the coefficient index and if we have to shift or not
-	reg [0:L+15-1]lookup_shift; //'1' means shift, '0' means no shift
+	reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
 	reg [0:DWIDTH-1]lookup_coefIdx[0:L-1]; //'1' means shift, '0' means no shift
 	
-	integer i, j, cnt;
+	integer i, cnt;
 	initial begin
 		// import coefficients
 		$readmemh("coef.txt", coef, 0, CWIDTH -1); 
@@ -51,17 +51,16 @@ module filter
 		// define lookup tables
 		for (i = 0; i < L; i = i + 1) begin	
 			lookup_coefIdx[i] = i*M%L;	
-		end
-		for (j = 0; j < L+15; j = j + 1) begin
-			if(j*M/L == (j+1)*M/L)
-				lookup_shift[j] = 0; //do not shift yet
-			else
-				lookup_shift[j] = 1; //shift		
-		end
 			
+			if(i*M/L == (i+1)*M/L)
+				lookup_shift[i] = 0; //do not shift yet
+			else
+				lookup_shift[i] = 1; //shift	
+		end		
 	end
 	
-	integer c_idx;
+	integer y,z, c_idx;
+
 	 // State machine that controls the flow control between testbench and filter
     always @(posedge clk) begin
         if (rst) begin
@@ -71,15 +70,21 @@ module filter
             sum <= 0;
 				cnt <= 3;
 				i <= 0;
-				j <= 0;
 				c_idx<=0;
+				y <= 0;
+				z <= 0;
         end
-
-				
+		  
         else begin
             // Request for input sample is acknowledged. Start calculating
             if (req_in && ack_in) begin
-                mem[0] <= data_in;
+                y = y + 1;
+					 if(y == 372864) begin
+						$display(y);
+						$display(z);
+					 end
+					 
+					 mem[0] <= data_in;
                 state_busy <= 1;
                 req_in_buf <= 0;
             end
@@ -87,7 +92,7 @@ module filter
             // Process the output in 32 cycles. Then initiate a req_out to warn the output that a sample is ready
             if (state_busy && !req_out) begin
                 // Shift through the data and calculate one tap every clock cycle
-						mem[cnt+lookup_shift[j]] <= mem[cnt];
+						mem[cnt+lookup_shift[i]] <= mem[cnt];
 						
 						c_idx = 	(cnt*L)+lookup_coefIdx[i];
 						sum <= sum + mem[cnt]*coef[c_idx];
@@ -95,7 +100,6 @@ module filter
 
                 // When a complete cycle is done (32 taps calculated), start to output the outcome
                 if(cnt == 0) begin
-                    
 							cnt <= 3;
 							data_out_buf <= sum[0:15];
 							req_out_buf <= 1;
@@ -104,16 +108,15 @@ module filter
 
             // If req_out is acknowledged, reset all variables
             if (req_out && ack_out) begin
+						z = z + 1;
+				
                 req_out_buf <= 0;
-                
                 sum <= 0;
 					 
-					 if (lookup_shift[j])
+					 if (lookup_shift[i])
 						state_busy <= 0;
 					
-					 j <= (j + 1) % 175;
 					 i <= (i + 1) % 160;
-					 
             end
 
             // Wait until everyone is calmed down, then initiate new sample request

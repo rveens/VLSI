@@ -7,11 +7,11 @@
 \contentsline {section}{\numberline {4}Implementation}{8}
 \contentsline {subsection}{\numberline {4.1}Requirements}{8}
 \contentsline {subsubsection}{\numberline {4.1.1}Analysis of requirements}{8}
-\contentsline {subsection}{\numberline {4.2}System architecture}{8}
-\contentsline {subsection}{\numberline {4.3}Design choices}{8}
-\contentsline {subsection}{\numberline {4.4}Functional correctness}{8}
-\contentsline {subsection}{\numberline {4.5}Resource usage}{8}
-\contentsline {subsection}{\numberline {4.6}System throughput and latency}{8}
-\contentsline {subsection}{\numberline {4.7}Simulation results}{8}
-\contentsline {section}{\numberline {5}Appendix A: Matlab coefficients script}{9}
-\contentsline {section}{\numberline {6}Appendix B: Verilog Code}{10}
+\contentsline {subsection}{\numberline {4.2}System architecture}{9}
+\contentsline {subsection}{\numberline {4.3}Design choices}{10}
+\contentsline {subsection}{\numberline {4.4}Functional correctness}{10}
+\contentsline {subsection}{\numberline {4.5}Resource usage}{10}
+\contentsline {subsection}{\numberline {4.6}System throughput and latency}{10}
+\contentsline {subsection}{\numberline {4.7}Simulation results}{10}
+\contentsline {section}{\numberline {5}Appendix A: Matlab coefficients script}{11}
+\contentsline {section}{\numberline {6}Appendix B: Verilog Code}{12}

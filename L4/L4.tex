@@ -199,7 +199,6 @@ The maximum system frequency will be $F_{system} = max(F_s\cdot L_1, F_s\cdot \f
 \subsection{Conclusion}
 The best solution may depend on your needs. If your L is really large, we may consider using a composite solution to exchange coefficient memory for additional arithmetic steps. The naive method does make a lot of useless computations, while the direct equation method has almost no computations with a zero factor.\\
 
-Therefore we can say that for our upsampler, the composite-stage direct equation solution is best if we can ensure that all 8 calculations can be done between a single maximum sample time. Otherwise, the single-stage version needs to be implemented. **need better agreement**
 
 \newpage
 \section{Implementation}
@@ -222,9 +221,36 @@ If the lanczos2 function gives a close to one output, the quantized value will b
 
 \subsubsection{Analysis of requirements}
 
+\newpage
 \subsection{System architecture}
+The resampler is based on the direct equation solution. It uses a state machine that works almost identical as the standard state machine provided in lab 2 and 3. \\
 
+To calculate one output, we need 4 samples. To store the samples we have introduced a FIFO buffer. We calculate one output during 4 iterations.  Every iteration one tap is calculated. If we do not have to re-use the sample for next out, the samples will be shifted by one during the calculation, but only if the shift enable is '1'.\\
+
+The resampler also uses 2 lookup tables:
+\begin{enumerate}
+\item \textbf{coefficients index LUT}: This table stores which coefficient we should use for the calculation of the current output.
+\item \textbf{sample shift LUT}: This table stores a '1' or a '0'. If the current output index points to a '0', the data FIFO will not be shifted, since next output will also use the same samples. If it points to a '1', the data FIFO  will be shifted, because next output needs a new sample.
+\end{enumerate}
+
+\begin{figure}[h]
+	\includegraphics[scale = 1]{Images/4_blockdiagram}
+    \caption{Block diagram of resampler from direct equation}
+\end{figure}
+
+
+\newpage
 \subsection{Design choices}
+The resampler is based on the direct equation solution, and uses a single scaler. This is done because the naive solution needs a high internal sample frequency (that scales  with the upsample rate), and it does a lot of unnecessary multiplications by zero. It is probably possible to implemented a composite direct equation solution which shares resources (DSP units) and also uses less registers, but this will introduce additional complexity which we avoided.\\
+
+The resampler uses a state machine that works almost identical as the standard state machine provided in lab 2 and 3. The reason why we have rewritten this state machine is that it was hard to see what was actually going on because a lot of states have almost the same requirements. Furthermore, the execution order of all states is mostly the same. Therefore, a state machine did make sense. This also allowed for easier pipelining (just split one state in two).\\
+
+The coefficients are loaded in a Block RAM, and a LUT is connected to it. This LUT defines which coefficients should be used during the calculation of the current output. Another LUT is initialized to tell the system if it should re-use the current data.\\
+
+The sum register stores the temporary results during the calculation of an output. It uses 25 bits, which are truncated to the 16 MSB when the output is ready. 
+\textbf{NEED MORE ELABORATION, CANT FULLY REASON ON THIS}.
+
+
 
 \subsection{Functional correctness}
 

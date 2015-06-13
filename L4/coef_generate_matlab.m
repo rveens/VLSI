@@ -1,7 +1,8 @@
 
 function [y] = coef_generate_matlab(L)
         % make sure that coefficients sum to 1
-        y = coef_gen(L)/sum(y);
+        y = coef_gen(L);
+        y = y/sum(y);
 
         % quantize and round to nearest integer
         y = round(y*(2^16)); 

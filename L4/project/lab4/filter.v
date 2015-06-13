@@ -42,13 +42,12 @@ module filter
 		// import coefficients
 		$readmemh("coef.txt", coef, 0, CWIDTH -1); 
 		
+		// define lookup tables
 		for (i = 0; i < L; i = i + 1) begin	
 			for (j = 0; j < 4; j = j +1) begin
 				lookup_coefIdx[i][j] = j*L + i*M%L;
 			end
-		end
-		// define lookup tables
-		for (i = 0; i < L; i = i + 1) begin		
+			
 			if(i*M/L == (i+1)*M/L)
 				lookup_shift[i] = 0; //do not shift yet
 			else

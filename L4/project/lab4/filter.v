@@ -4,7 +4,7 @@ module filter
  #(parameter DWIDTH = 16,
    parameter DDWIDTH = 2*DWIDTH,
 	parameter L = 160,
-	parameter L_LOG = 10, //made it 10, because it has to store 4*160 coefficients
+	parameter L_LOG = 8,
 	parameter M = 147,
 	parameter M_LOG = 8,
 	parameter CWIDTH = 4*L)
@@ -25,18 +25,18 @@ module filter
 	reg req_in_buf;
 	assign req_in = req_in_buf;
 	
-	// Accumulator
+	// Accumulator and temporary buffer
 	reg signed [0:DDWIDTH-8] sum; //25 bit!
 	reg signed [0:DWIDTH-1] data_out_buf;
 	assign data_out = data_out_buf;
 	
 	//coefficients data and lookup tables for the coef index and shift index
 	reg signed [0:DWIDTH-1] mem[0:3],
+									coef_buf,
 									coef [0:CWIDTH-1], //** means 'power'
 									lookup_coefIdx[0:L-1][0:3];
 	reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
 
-	
 	integer i, j, cnt;
 	initial begin
 		// import coefficients
@@ -62,8 +62,9 @@ module filter
 				 input_data_received 	= 2,
 				 output_data_consumed 	= 3,
 				 output_data_ready 		= 4,
-				 data_processing 			= 5,
-				 waiting_for_ack 			= 6;
+				 data_processing_stage1 = 5,
+				 data_processing_stage2 = 6,
+				 waiting_for_ack 			= 7;
 		  
 	 // State machine that controls the flow control between testbench and filter
     always @(posedge clk) begin
@@ -94,16 +95,29 @@ module filter
 							mem[0] <= data_in;
 							
 							req_in_buf <= 0;
-							state <= data_processing;
+							state <= data_processing_stage1;
 					end
 					
-					data_processing: begin
+					// stage 1 of data processing to get the coefficients **pipelining**
+					data_processing_stage1: begin
+							// get coefficient for next run **reduce pipeline**
+							coef_buf <= coef[lookup_coefIdx[i][cnt]];
+
+							state <= data_processing_stage2;
+					end
+					
+					// stage 2 of data processing to calculate one of the 4 taps
+					data_processing_stage2: begin
+							// shift the data, but only if we do not have to re-use it once more after this
 							mem[cnt+lookup_shift[i]] <= mem[cnt];
-							sum <= sum + mem[cnt]*coef[lookup_coefIdx[i][cnt]];
+							sum <= sum + mem[cnt]*coef_buf;
+							
 							cnt <= cnt - 1;
 
 							if(cnt == 0)
 									state <= output_data_ready;
+							else
+									state <= data_processing_stage1;
 					end
 					
 					output_data_ready: begin
@@ -123,12 +137,12 @@ module filter
 							if (lookup_shift[i] == 1)
 								state <= input_data_requested;
 							else
-								state <= data_processing; //if the data is not shifted, we have to re-use it once more
+								state <= data_processing_stage1; //if the data is not shifted, we have to re-use it once more
 					end
 					
-					default:
-							// Request new sample if state not defined (yet)
+					default: begin
 							state <= input_data_requested;
+					end
 				endcase  
 			end
 	 end

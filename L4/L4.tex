@@ -3,6 +3,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{dirtree}
+\usepackage{subcaption}
 
 %matlab 
 \usepackage[]{mcode}
@@ -209,6 +210,8 @@ I generate the coefficients using matlab. They are in the coef.bin file, and alr
 If the lanczos2 function gives a close to one output, the quantized value will be close to the maximum that a 16-bit value can hold. Therefore 16-bit is not enough to store the summation and multiplication of multiple of such values.\\
 
 \subsection{Requirements}
+\label{sec:req}
+
 \begin{enumerate}
 	\item The output sample rate must be $\frac{48000}{44100}$ times the input sample rate.
 	\item The output represents a resampled version of the input.
@@ -266,12 +269,95 @@ The processing step is divided in two stages: the first stage retrieves the coef
 
 
 \subsection{Functional correctness}
+Also see the requirements listed in section \ref{sec:req}.
+\begin{enumerate}
+	\item <verwijzing naar plaatje>
+	\item <verwijzing naar plaatje>
+	\item 
+\end{enumerate}
 
 \subsection{Resource usage}
+\label{sec:resc4}
+
+Table~\ref{tab:4usage} summarizes the resources used by the FIR filter. This list is obtained by running the synthesis step in Xilinx ISE and extracted from the \textit{Summary} and \textit{Device Utilization} report.
+
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Resource} & \textbf{Available} & \textbf{Utilized} & \textbf{Percentage utilized}\\
+\hline
+Flip Flops	& 54576 & 114 	& 0 \%\\
+Slice LUTs 	& 27288 & 327 	& 2 \%\\
+DSP48A1s	& 58 	& 1 	& 5 \%\\
+BRAM		& 116 	& 1 	& 1 \%\\
+Bonded IOBs	& 218 	& 38 	& 33 \%\\
+\hline
+\end{tabular}
+\caption{General resource usage overview}
+\label{tab:4usage}
+\end{table}
+
+\newpage
+
+\smallskip 
+\textbf{I counted 756+20859 bits being used as registers? I cannot trace 114.}
+
+
+\smallskip
+Only 1 DSP unit is used, this is for the multiplication in the direct form equation between the coefficient and the input.
+
+\smallskip
+One blockram is used. On our platform (Spartan-6) a 'blockram' contains 18Kb of memory. (\textbf{REFER TO SOURCE? $http://www.xilinx.com/support/documentation/data_sheets/ds160.pdf$})
+We only use one blockram, because we store the coefficients that are DWIDTH$*$CWIDTH$=16*L*4=16*160*4=16*640=10240$ bits.
+
+\smallskip
+38 IO pins are used, 16*2 for input and output data and 6 extra for ack\_in, ack\_out, req\_in, req\_out, clk and rst.
 
 \subsection{System throughput and latency}
+\label{sec:thr4}
+The minimum sample time estimation is extracted from the \textit{Synthesis report} under \textit{Timing Report}.\\
+
+   \textit{Minimum period:  7.464ns (Maximum Frequency: 133.981MHz)\\
+   Minimum input arrival time before clock: 4.963ns\\
+   Maximum output required time after clock: 3.701ns}\\
+
+This time is equal to the largest critical path (the calculation of the tap is the critical path in this design).\\
+
+After doing the placement and routing step, we will get a more accurate measurement of the maximum achievable throughput. These measurements can be found in the \textit{Advanced Post-PAR static timing report} under \textit{Timing summary}:\\
+
+\textit{Minimum period:   8.164ns\{1\}   (Maximum frequency: 122.730MHz)\\
+   Minimum input required time before clock:   3.971ns\\
+   Maximum output delay after clock:   8.540ns}\\
+
+Since the minimum period is the maximum delay, we can be sure that our design is able to run at 100MHz.
 
 \subsection{Simulation results}
+See Figure~\ref{fig:compInOut} for a screenshot of Audacity comparing the input and output of the filter.
+
+We noticed a peculiarity when comparing the input and output: the length of the output signal (in seconds) is slightly \textit{less} than the input signal. See Figure~\ref{fig:outlengdif}.
+
+The input and output lengths are 8.454 and 8.455 seconds respectively. The output is 0.00011\% shorter. The reason of this peculiarity is currently unknown.
+
+\begin{figure}[h]
+	\includegraphics[scale = 0.40]{Images/simulationresults.png}
+    \caption{Comparison of input and output.}
+    \label{fig:compInOut}
+\end{figure}
+\begin{figure}[h]
+	\includegraphics[scale = 0.40]{Images/simulation_outputdifference.png}
+    \caption{The last part of the input and output, zoomed in. The length of the output is less then the input.}
+    \label{fig:outlengdif}
+\end{figure}
+\begin{figure}[h]
+	\begin{subfigure}[b]{0.5\textwidth}	
+		\includegraphics[scale=0.50]{Images/simulation_frequencyspectrum_input.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}	
+		\includegraphics[scale=0.50]{Images/simulation_frequencyspectrum_output.png}
+	\end{subfigure}
+    \caption{Comparison of the input spectrum (left) and output spectrum (right).}
+\end{figure}
+
 
 \newpage
 \section{Appendix A: Matlab coefficients script}

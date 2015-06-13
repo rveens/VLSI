@@ -238,6 +238,15 @@ The resampler also uses 2 lookup tables:
     \caption{Block diagram of resampler from direct equation}
 \end{figure}
 
+\newpage
+The state machine that controls the resampler is shown in the figure below:
+\begin{figure}[h]
+	\includegraphics[scale = 1]{Images/4_statemachine}
+    \caption{State machine of resampler}
+\end{figure}
+
+
+
 
 \newpage
 \subsection{Design choices}
@@ -245,10 +254,14 @@ The resampler is based on the direct equation solution, and uses a single scaler
 
 The resampler uses a state machine that works almost identical as the standard state machine provided in lab 2 and 3. The reason why we have rewritten this state machine is that it was hard to see what was actually going on because a lot of states have almost the same requirements. Furthermore, the execution order of all states is mostly the same. Therefore, a state machine did make sense. This also allowed for easier pipelining (just split one state in two).\\
 
+We pre-calculate the coefficients in matlab, and store them in a text-file. The matlab script is included in the appendix.\\
+
 The coefficients are loaded in a Block RAM, and a LUT is connected to it. This LUT defines which coefficients should be used during the calculation of the current output. Another LUT is initialized to tell the system if it should re-use the current data.\\
 
 The sum register stores the temporary results during the calculation of an output. It uses 25 bits, which are truncated to the 16 MSB when the output is ready. 
-\textbf{NEED MORE ELABORATION, CANT FULLY REASON ON THIS}.
+\textbf{NEED MORE ELABORATION, CANT FULLY REASON ON THIS. I THINK I ASK MONDAY}.\\
+
+The processing step is divided in two stages: the first stage retrieves the coefficients from the BRAM with help of the coefficient LUT. The second stage computes the tap that uses this coefficients. Therefore the calculation of one output actually takes 8 clock cycles instead of 4. This choice to improve the timing constraints.\\
 
 
 
@@ -263,14 +276,14 @@ The sum register stores the temporary results during the calculation of an outpu
 \newpage
 \section{Appendix A: Matlab coefficients script}
 \begin{lstlisting}
-% Put this in a file named coef_generate_matlab.m, 
-% then call it while you are in the file directory
-
+% Put this in a file named coef_generate_matlab.m, then call it 
+% while you are in the file directory. It will write the coefficients
+% to the coef.txt file and also return them.
 
 function [y] = coef_generate_matlab(L)
         % make sure that coefficients sum to 1
         y = coef_gen(L);
-        y = coef_gen(L)/sum(y);
+        y = y/sum(y);
 
         % quantize and round to nearest integer
         y = round(y*(2^16)); 
@@ -278,7 +291,7 @@ function [y] = coef_generate_matlab(L)
         % convert to signed int filter coeff
         y = int16(y);
         y = hex(fi(y, 1, 16, 0)); %1 stands for signed, 16 bit out
-        y= y(~isspace(y)); % remove spaces
+        
         dlmwrite('coef.txt',y,''); %create file, with no delimiter ''      
 end
 
@@ -297,7 +310,6 @@ function y = lanczos2(t)
     end
 end
 
-%%
 \end{lstlisting}
 
 \newpage

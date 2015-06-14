@@ -11,7 +11,7 @@
 \contentsline {subsection}{\numberline {4.3}Design choices}{11}
 \contentsline {subsection}{\numberline {4.4}Functional correctness}{11}
 \contentsline {subsection}{\numberline {4.5}Resource usage}{12}
-\contentsline {subsection}{\numberline {4.6}System throughput and latency}{13}
-\contentsline {subsection}{\numberline {4.7}Simulation results}{14}
-\contentsline {section}{\numberline {5}Appendix A: Matlab coefficients script}{15}
-\contentsline {section}{\numberline {6}Appendix B: Verilog Code}{16}
+\contentsline {subsection}{\numberline {4.6}System throughput and latency}{12}
+\contentsline {subsection}{\numberline {4.7}Simulation results}{13}
+\contentsline {section}{\numberline {5}Appendix A: Matlab coefficients script}{14}
+\contentsline {section}{\numberline {6}Appendix B: Verilog Code}{15}

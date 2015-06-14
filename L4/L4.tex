@@ -157,13 +157,15 @@ y[1] &= h[3\cdot 5 + 5\cdot 4 \textbf{ mod } 5]\cdot x[5\cdot 4 \textbf{ div } 5
 We have the following 4 designs: 
 
 \subsection{Direct equation solution}
-This solution uses the direct equation and has two different implementations: The direct method that has a single direct equation stage, and the composite implementation that uses two stages.\\
+This solution uses the direct equation and has two different implementations: The direct method that has a single direct equation stage, and the composite implementation that uses two stages.
 
+\smallskip
 \textbf{Direct method}\\
 This implementation uses $4\cdot L$ coefficients and needs only 4 multiplications/additions. All inner factors can be pre-computed.
 \smallskip
-The highest sample rate inside the system (system frequency) will be input or output sample frequency, depending on the L and M constants. Therefore: $F_{system} = max(Fs_{in}, Fs_{out})$.]\\
+The highest sample rate inside the system (system frequency) will be input or output sample frequency, depending on the L and M constants. Therefore: $F_{system} = max(Fs_{in}, Fs_{out})$.
  
+\smallskip 
 \textbf{Composite method}\\
 Uses $4\cdot (L_{sub1} + L_{sub2})$ coefficients, while $L = L_{sub1} \cdot L_{sub2}$. Therefore we need less coefficients compared to the direct method. Since every sample still needs 4 multiplications/additions, we actually need 8 multiplication/additions for this implementation.
 
@@ -196,9 +198,7 @@ The maximum system frequency will be $F_{system} = max(F_s\cdot L_1, F_s\cdot \f
 \end{figure}
 
 \subsection{Conclusion}
-The best solution may depend on your needs. If your L is really large, we may consider using a composite solution to exchange coefficient memory for additional arithmetic steps. The naive method does make a lot of useless computations, while the direct equation method has almost no computations with a zero factor.\\ 
-
-For us it may actually be useful to use the composite equation, since it uses less memory for the coefficients (scales with L). Also it is possible to apply folding to both stages. As a result, the computation will take 8 cycles, but since the clock frequency of the FPGA is above 100MHz, this is no issue. Because of the increased complexity of previous solution, we decided to implement the single stage direct equation.\\
+The best solution may depend on your needs. If your L is really large, we may consider using a composite solution to exchange coefficient memory for additional arithmetic steps. The naive method does make a lot of useless computations, while the direct equation method has almost no computations with a zero factor.\\
 
 
 \newpage
@@ -223,6 +223,7 @@ If the lanczos2 function gives a close to one output, the quantized value will b
 
 
 \subsubsection{Analysis of requirements}
+\textbf{ENKEL MINIMALE SAMPLE RATE?}
 
 \newpage
 \subsection{System architecture}
@@ -270,15 +271,21 @@ The processing step is divided in two stages: the first stage retrieves the coef
 
 \subsection{Functional correctness}
 Also see the requirements listed in section \ref{sec:req}.
+
+\textbf{REQ 3, REQ 5 \& REQ 6 ???}
+
 \begin{enumerate}
-	\item <verwijzing naar plaatje>
-	\item <verwijzing naar plaatje>
-	\item 
+	\item We make use of the direct-form method, and we use set our L and M parameters to 160 and 147 respectively. This is the same ratio as $\frac{48000}{44100}$.
+	\item Please see Figure~\ref{fig:compInOut} for a comparison of the input and output of the scaler.
+	\item -
+	\item Please see section~\ref{sec:thr4}, here we look into the timing report and note that the throughput is above 100MHz.
+	\item -
+	\item -
 \end{enumerate}
 
-\newpage
 \subsection{Resource usage}
 \label{sec:resc4}
+
 Table~\ref{tab:4usage} summarizes the resources used by the FIR filter. This list is obtained by running the synthesis step in Xilinx ISE and extracted from the \textit{Summary} and \textit{Device Utilization} report.
 
 \begin{table}[h]
@@ -297,21 +304,20 @@ Bonded IOBs	& 218 	& 38 	& 33 \%\\
 \label{tab:4usage}
 \end{table}
 
-Only 1 DSP unit is used, this is for the multiplication in the direct form equation between the coefficient and the input.\\
+\smallskip 
+\textbf{I counted 756+20859 bits being used as registers? I cannot trace 114.}
 
-Both LUTs are stored in DRAM. This is also shown in figure \ref{fig:RAM}. The shift-LUT has a size of $L\cdot 1 = 160$ bits. The coefficient index LUT requires $j\cdot DWIDTH\cdot L = 4\cdot 16 \cdot 160 = 10240$ bits of memory. This LUT is stored in 160 4x16bit RAMs, as can be seen in the figure below.\\ 
 
-The coefficient values from the coef.txt file are stored in one Block RAM unit. One BRAM  unit of the Spartan-6 serie contains 18Kb of memory, and is therefore large enough to store all coefficient indexes. This explains the low number of used flipflops, since not many are used as a buffer.
+\smallskip
+Only 1 DSP unit is used, this is for the multiplication in the direct form equation between the coefficient and the input.
 
-\begin{figure}[h]
-	\includegraphics[scale = 0.9]{Images/simulation_missingregisters}
-    \caption{Post-par RAM utilization}
-    \label{fig:RAM}
-\end{figure}
+\smallskip
+One blockram is used. On our platform (Spartan-6) a 'blockram' contains 18Kb of memory. (\textbf{REFER TO SOURCE? $http://www.xilinx.com/support/documentation/data_sheets/ds160.pdf$})
+We only use one blockram, because we store the coefficients that are DWIDTH$*$CWIDTH$=16*L*4=16*160*4=16*640=10240$ bits.
 
-Furthermore, 38 IO pins are used, $16\cdot 2$ for input and output data and 6 extra for ack\_in, ack\_out, req\_in, req\_out, clk and rst.
+\smallskip
+38 IO pins are used, 16*2 for input and output data and 6 extra for ack\_in, ack\_out, req\_in, req\_out, clk and rst.
 
-\newpage
 \subsection{System throughput and latency}
 \label{sec:thr4}
 The minimum sample time estimation is extracted from the \textit{Synthesis report} under \textit{Timing Report}.\\
@@ -330,33 +336,39 @@ After doing the placement and routing step, we will get a more accurate measurem
 
 Since the minimum period is the maximum delay, we can be sure that our design is able to run at 100MHz.
 
-\newpage
 \subsection{Simulation results}
-Figure~\ref{fig:compInOut} shows a time-domain screenshot of the input signal(top) and the output signal(bottom) that is generated by the resampler.\\
+See Figure~\ref{fig:compInOut} for a screenshot of Audacity comparing the input and output of the filter.
 
-We noticed a peculiarity when comparing the input and output: the length of the output signal (in seconds) is slightly \textit{less} than the input signal (figure~\ref{fig:outlengdif}). The input and output lengths are 8.454 and 8.455 seconds respectively. The output is 0.00011\% shorter. The reason of this difference in signal length is not completely clear.
+We noticed a peculiarity when comparing the input and output: the length of the output signal (in seconds) is slightly \textit{less} than the input signal. See Figure~\ref{fig:outlengdif}.
+
+The input and output lengths are 8.454 and 8.455 seconds respectively. The output is 0.00011\% shorter. The reason of this peculiarity is currently unknown.
+
+\textbf{FREQ SPECTRUM BESCHRIJVEN}
+
 \begin{figure}[h]
 	\includegraphics[scale = 0.40]{Images/simulationresults.png}
     \caption{Comparison of input and output.}
     \label{fig:compInOut}
 \end{figure}
-
-In the Audacity frequency plot we saw a few noteworthy difference. At first, the output spectrum is a bit weaker overall. This is probably due to rounding. The second thing is that after 18khz, the output signal has some additional noise. 
-
 \begin{figure}[h]
-	\begin{subfigure}[b]{0.45\textwidth}	
-		\includegraphics[scale=0.5]{Images/simulation_frequencyspectrum_input.png}
+	\includegraphics[scale = 0.40]{Images/simulation_outputdifference.png}
+    \caption{The last part of the input and output, zoomed in. The length of the output is less then the input.}
+    \label{fig:outlengdif}
+\end{figure}
+\begin{figure}[h]
+	\begin{subfigure}[b]{0.5\textwidth}	
+		\includegraphics[scale=0.40]{Images/simulation_frequencyspectrum_input.png}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}	
-		\includegraphics[scale=0.5]{Images/simulation_frequencyspectrum_output.png}
+	\begin{subfigure}[b]{0.5\textwidth}	
+		\includegraphics[scale=0.40]{Images/simulation_frequencyspectrum_output.png}
 	\end{subfigure}
     \caption{Comparison of the input spectrum (left) and output spectrum (right).}
 \end{figure}
 
 
+\clearpage
 
 
-\newpage
 \section{Appendix A: Matlab coefficients script}
 \begin{lstlisting}
 % Put this in a file named coef_generate_matlab.m, then call it 
@@ -392,17 +404,161 @@ function y = lanczos2(t)
         y = sinc(t).*sinc(t/2);
     end
 end
+
 \end{lstlisting}
-
-Figure~\ref{fig:frq} shows the frequency response of the FIR filter that is generated with help of the matlab code from appendix A.
-
-\begin{figure}[h]
-	\includegraphics[scale=0.7]{Images/frequencyplot}
-    \caption{Interpolation filter frequency domain (Matlab)}
-    \label{fig:frq}
-\end{figure}
 
 \newpage
 \section{Appendix B: Verilog Code}
+File: filter.v.
+\begin{lstlisting}[language=Verilog]
+`timescale 1ns / 1ps
+
+module filter
+       #(parameter DWIDTH = 16,
+         parameter DDWIDTH = 2*DWIDTH,
+         parameter L = 160,
+         parameter L_LOG = 8,
+         parameter M = 147,
+         parameter M_LOG = 8,
+         parameter CWIDTH = 4*L)
+       (input clk,
+        input rst,
+        output req_in,
+        input ack_in,
+        input signed [0:DWIDTH-1] data_in,
+        output req_out,
+        input ack_out,
+        output signed [0:DWIDTH-1] data_out);
+
+// Output request register
+reg req_out_buf;
+assign req_out = req_out_buf;
+
+// Input request register
+reg req_in_buf;
+assign req_in = req_in_buf;
+
+// Accumulator and temporary buffer
+reg signed [0:DDWIDTH-8] sum; //25 bit!
+reg signed [0:DWIDTH-1] data_out_buf;
+assign data_out = data_out_buf;
+
+//coefficients data and lookup tables for the coef index and shift index
+reg signed [0:DWIDTH-1] mem[0:3],
+    coef_buf,
+    coef [0:CWIDTH-1], //** means 'power'
+    lookup_coefIdx[0:L-1][0:3];
+reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
+
+integer i, j, cnt;
+initial begin
+    // import coefficients
+    $readmemh("coef.txt", coef, 0, CWIDTH -1);
+
+    // define lookup tables
+    for (i = 0; i < L; i = i + 1) begin
+        for (j = 0; j < 4; j = j +1) begin
+            lookup_coefIdx[i][j] = j*L + i*M%L;
+        end
+
+        if(i*M/L == (i+1)*M/L)
+            lookup_shift[i] = 0; //do not shift yet
+        else
+            lookup_shift[i] = 1; //shift
+    end
+end
+
+// State machine variables
+reg [3:0] state;
+parameter input_data_requested 	= 1,
+          input_data_received 	= 2,
+          output_data_consumed 	= 3,
+          output_data_ready 		= 4,
+          data_processing_stage1 = 5,
+          data_processing_stage2 = 6,
+          waiting_for_ack 			= 7;
+
+// State machine that controls the flow control between testbench and filter
+always @(posedge clk) begin
+    if (rst) begin
+        req_in_buf <= 0;
+        req_out_buf <= 0;
+        sum <= 0;
+        cnt <= 3;
+        i <= 0;
+        state <= 0;
+    end
+    else begin
+        case (state)
+            waiting_for_ack: begin
+                if(req_in && ack_in)
+                    state <= input_data_received;
+
+                if (req_out && ack_out)
+                    state <= output_data_consumed;
+            end
+
+            input_data_requested: begin
+                req_in_buf <= 1;
+                state <= waiting_for_ack;
+            end
+
+            input_data_received: begin
+                mem[0] <= data_in;
+
+                req_in_buf <= 0;
+                state <= data_processing_stage1;
+            end
+
+            // stage 1 of data processing to get the coefficients **pipelining**
+            data_processing_stage1: begin
+                // get coefficient for next run **reduce pipeline**
+                coef_buf <= coef[lookup_coefIdx[i][cnt]];
+
+                state <= data_processing_stage2;
+            end
+
+            // stage 2 of data processing to calculate one of the 4 taps
+            data_processing_stage2: begin
+                // shift the data, but only if we do not have to re-use it once more after this
+                mem[cnt+lookup_shift[i]] <= mem[cnt];
+                sum <= sum + mem[cnt]*coef_buf;
+
+                cnt <= cnt - 1;
+
+                if(cnt == 0)
+                    state <= output_data_ready;
+                else
+                    state <= data_processing_stage1;
+            end
+
+            output_data_ready: begin
+                data_out_buf <= sum[0:15];
+                cnt <= 3;
+
+                req_out_buf <= 1;
+                state <= waiting_for_ack;
+            end
+
+            output_data_consumed: begin
+                // reset variables and increment index
+                sum <= 0;
+                i <= (i + 1) % L;
+
+                req_out_buf <= 0;
+                if (lookup_shift[i] == 1)
+                    state <= input_data_requested;
+                else
+                    state <= data_processing_stage1; //if the data is not shifted, we have to re-use it once more
+            end
+
+            default: begin
+                state <= input_data_requested;
+            end
+        endcase
+    end
+end
+endmodule
+\end{lstlisting}
 
 \end{document}

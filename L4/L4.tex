@@ -83,15 +83,13 @@ One noteworthy aspect of the figure is that the first sample always get used twi
 We have the following 4 designs: 
 
 \subsection{Direct equation solution}
-This solution uses the direct equation and has two different implementations: The direct method that has a single direct equation stage, and the composite implementation that uses two stages.
+This solution uses the direct equation and has two different implementations: The direct method that has a single direct equation stage, and the composite implementation that uses two stages.\\
 
-\smallskip
 \textbf{Direct method}\\
 This implementation uses $4\cdot L$ coefficients and needs only 4 multiplications/additions. All inner factors can be pre-computed.
 \smallskip
-The highest sample rate inside the system (system frequency) will be input or output sample frequency, depending on the L and M constants. Therefore: $F_{system} = max(Fs_{in}, Fs_{out})$.
+The highest sample rate inside the system (system frequency) will be input or output sample frequency, depending on the L and M constants. Therefore: $F_{system} = max(Fs_{in}, Fs_{out})$.]\\
  
-\smallskip 
 \textbf{Composite method}\\
 Uses $4\cdot (L_{sub1} + L_{sub2})$ coefficients, while $L = L_{sub1} \cdot L_{sub2}$. Therefore we need less coefficients compared to the direct method. Since every sample still needs 4 multiplications/additions, we actually need 8 multiplication/additions for this implementation.
 
@@ -123,14 +121,15 @@ The maximum system frequency will be $F_{system} = max(F_s\cdot L_1, F_s\cdot \f
 \end{figure}
 
 \subsection{Conclusion}
-The best solution may depend on your needs. If your L is really large, we may consider using a composite solution to exchange coefficient memory for additional arithmetic steps. The naive method does make a lot of useless computations, while the direct equation method has almost no computations with a zero factor.\\
+The best solution may depend on your needs. If your L is really large, we may consider using a composite solution to exchange coefficient memory for additional arithmetic steps. The naive method does make a lot of useless computations, while the direct equation method has almost no computations with a zero factor.\\ 
 
+For us it may actually be useful to use the composite equation, since it uses less memory for the coefficients (scales with L). Also it is possible to apply folding to both stages. As a result, the computation will take 8 cycles, but since the clock frequency of the FPGA is above 100MHz, this is no issue. Because of the increased complexity of previous solution, we decided to implement the single stage direct equation.\\
 
 \newpage
 \section{Implementation}
 Since input frequency is only 44khz, and output frequency only 48khz, we can just implement this by using a single DSP unit.\\
 
-I generate the coefficients using matlab. They are in the coef.bin file, and already multiplied by $2^{16}$ and rounded.\\
+We generate the coefficients using matlab. They are in the coef.txt file, and already multiplied by $2^{16}$ and rounded.\\
 
 If the lanczos2 function gives a close to one output, the quantized value will be close to the maximum that a 16-bit value can hold. Therefore 16-bit is not enough to store the summation and multiplication of multiple of such values.\\
 
@@ -189,27 +188,24 @@ The coefficients are loaded in a Block RAM, and a LUT is connected to it. This L
 The sum register stores the temporary results during the calculation of an output. It uses 25 bits, which are truncated to the 16 MSB when the output is ready. 
 \textbf{NEED MORE ELABORATION, CANT FULLY REASON ON THIS. I THINK I ASK MONDAY}.\\
 
-The processing step is divided in two stages: the first stage retrieves the coefficients from the BRAM with help of the coefficient LUT. The second stage computes the tap that uses this coefficients. Therefore the calculation of one output actually takes 8 clock cycles instead of 4. This choice to improve the timing constraints.\\
-
-
+The processing step is divided in two stages: the first stage retrieves the coefficients from the BRAM with help of the coefficient LUT. The second stage computes the tap that uses this coefficients. Therefore the calculation of one output actually takes 8 clock cycles instead of 4. This choice to improve the timing constraints.
 
 \subsection{Functional correctness}
 Also see the requirements listed in section \ref{sec:req}.
 
-\textbf{REQ 3, REQ 5 \& REQ 6 ???}
+\textbf{REQ 3??}
 
 \begin{enumerate}
 	\item We make use of the direct-form method, and we use set our L and M parameters to 160 and 147 respectively. This is the same ratio as $\frac{48000}{44100}$.
 	\item Please see Figure~\ref{fig:compInOut} for a comparison of the input and output of the scaler.
 	\item -
 	\item Please see section~\ref{sec:thr4}, here we look into the timing report and note that the throughput is above 100MHz.
-	\item -
-	\item -
+	\item Since we use a FIR filter, which uses samples from the past, we will have noise before our 4-sample buffer is filled.
+	\item \textit{filter.v} is uses as top-level in our design.
 \end{enumerate}
 
 \subsection{Resource usage}
 \label{sec:resc4}
-
 Table~\ref{tab:4usage} summarizes the resources used by the FIR filter. This list is obtained by running the synthesis step in Xilinx ISE and extracted from the \textit{Summary} and \textit{Device Utilization} report.
 
 \begin{table}[h]
@@ -228,20 +224,21 @@ Bonded IOBs	& 218 	& 38 	& 33 \%\\
 \label{tab:4usage}
 \end{table}
 
-\smallskip 
-\textbf{I counted 756+20859 bits being used as registers? I cannot trace 114.}
+Only 1 DSP unit is used, this is for the multiplication in the direct form equation between the coefficient and the input.\\
 
+Both LUTs are stored in DRAM. This is also shown in figure \ref{fig:RAM}. The shift-LUT has a size of $L\cdot 1 = 160$ bits. The coefficient index LUT requires $j\cdot DWIDTH\cdot L = 4\cdot 16 \cdot 160 = 10240$ bits of memory. This LUT is stored in 160 4x16bit RAMs, as can be seen in the figure below.\\ 
 
-\smallskip
-Only 1 DSP unit is used, this is for the multiplication in the direct form equation between the coefficient and the input.
+The coefficient values from the coef.txt file are stored in one Block RAM unit. One BRAM  unit of the Spartan-6 serie contains 18Kb of memory, and is therefore large enough to store all coefficient indexes. This explains the low number of used flipflops, since not many are used as a buffer.
 
-\smallskip
-One blockram is used. On our platform (Spartan-6) a 'blockram' contains 18Kb of memory. (\textbf{REFER TO SOURCE? $http://www.xilinx.com/support/documentation/data_sheets/ds160.pdf$})
-We only use one blockram, because we store the coefficients that are DWIDTH$*$CWIDTH$=16*L*4=16*160*4=16*640=10240$ bits.
+\begin{figure}[h]
+	\includegraphics[scale = 0.9]{Images/simulation_missingregisters}
+    \caption{Post-par RAM utilization}
+    \label{fig:RAM}
+\end{figure}
 
-\smallskip
-38 IO pins are used, 16*2 for input and output data and 6 extra for ack\_in, ack\_out, req\_in, req\_out, clk and rst.
+Furthermore, 38 IO pins are used, $16\cdot 2$ for input and output data and 6 extra for ack\_in, ack\_out, req\_in, req\_out, clk and rst.
 
+\newpage
 \subsection{System throughput and latency}
 \label{sec:thr4}
 The minimum sample time estimation is extracted from the \textit{Synthesis report} under \textit{Timing Report}.\\
@@ -260,36 +257,31 @@ After doing the placement and routing step, we will get a more accurate measurem
 
 Since the minimum period is the maximum delay, we can be sure that our design is able to run at 100MHz.
 
+\newpage
 \subsection{Simulation results}
 See Figure~\ref{fig:compInOut} for a screenshot of Audacity comparing the input and output of the filter.
 
 We noticed a peculiarity when comparing the input and output: the length of the output signal (in seconds) is slightly \textit{less} than the input signal. See Figure~\ref{fig:outlengdif}.
 
-The input and output lengths are 8.454 and 8.455 seconds respectively. The output is 0.00011\% shorter. The reason of this peculiarity is currently unknown.
-
-\textbf{FREQ SPECTRUM BESCHRIJVEN}
+The input and output lengths are 8.454 and 8.455 seconds respectively. The output is 0.00011\% shorter. The reason of this difference in signal length is not completely clear.
 
 \begin{figure}[h]
 	\includegraphics[scale = 0.40]{Images/simulationresults.png}
     \caption{Comparison of input and output.}
     \label{fig:compInOut}
 \end{figure}
+
+In the Audacity frequency plot we saw a few noteworthy difference. At first, the output spectrum is a bit weaker overall. This is probably due to rounding. The second thing is that after 18khz, the output signal has some additional noise. 
+
 \begin{figure}[h]
-	\includegraphics[scale = 0.40]{Images/simulation_outputdifference.png}
-    \caption{The last part of the input and output, zoomed in. The length of the output is less then the input.}
-    \label{fig:outlengdif}
-\end{figure}
-\begin{figure}[h]
-	\begin{subfigure}[b]{0.5\textwidth}	
-		\includegraphics[scale=0.40]{Images/simulation_frequencyspectrum_input.png}
+	\begin{subfigure}[b]{0.45\textwidth}	
+		\includegraphics[scale=0.5]{Images/simulation_frequencyspectrum_input.png}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.5\textwidth}	
-		\includegraphics[scale=0.40]{Images/simulation_frequencyspectrum_output.png}
+	\begin{subfigure}[b]{0.45\textwidth}	
+		\includegraphics[scale=0.5]{Images/simulation_frequencyspectrum_output.png}
 	\end{subfigure}
     \caption{Comparison of the input spectrum (left) and output spectrum (right).}
 \end{figure}
-
-
 \clearpage
 
 
@@ -328,8 +320,15 @@ function y = lanczos2(t)
         y = sinc(t).*sinc(t/2);
     end
 end
-
 \end{lstlisting}
+
+Figure~\ref{fig:frq} shows the frequency response of the FIR filter that is generated with help of the matlab code from appendix A.
+
+\begin{figure}[h]
+	\includegraphics[scale=0.7]{Images/frequencyplot}
+    \caption{Interpolation filter frequency domain (Matlab)}
+    \label{fig:frq}
+\end{figure}
 
 \newpage
 \section{Appendix B: Verilog Code}
@@ -473,7 +472,7 @@ always @(posedge clk) begin
                 if (lookup_shift[i] == 1)
                     state <= input_data_requested;
                 else
-                    state <= data_processing_stage1; //if the data is not shifted, we have to re-use it once more
+                    state <= data_processing_stage1; 
             end
 
             default: begin

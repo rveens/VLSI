@@ -68,91 +68,17 @@
 \newpage
 
 \section{Exercise 1}
-\section{Exercise 2}
-If we take for example L = 5 and M = 4, we get the following graph, while following the direct equation, we get for different y(n):
-
-\begin{align}
-y[n] &= \sum_{j=0}^3 h[j\cdot L + n\cdot M \textbf{ mod } L]\cdot x[n\cdot M \textbf{ div } L - j]\\
-&= \sum_{j=0}^3 h[j\cdot 5 + n\cdot 4 \textbf{ mod } 5]\cdot x[n\cdot 4 \textbf{ div } 5 - j]
-\end{align}
-
-
-for n = 0 we get for j = 0 to 3:
-\begin{align}
-y[0] &= h[0\cdot 5 + 0\cdot 4 \textbf{ mod } 5]\cdot x[0\cdot 4 \textbf{ div } 5 - 0]\\ 
-&= h[0]\cdot x[0] \\
-y[0] &= h[1\cdot 5 + 0\cdot 4 \textbf{ mod } 5]\cdot x[0\cdot 4 \textbf{ div } 5 - 1] \\
-&= h[5]\cdot x[-1] \\
-y[0] &= h[2\cdot 5 + 0\cdot 4 \textbf{ mod } 5]\cdot x[0\cdot 4 \textbf{ div } 5 - 2] \\
-&= h[10]\cdot x[-2] \\
-y[0] &= h[3\cdot 5 + 0\cdot 4 \textbf{ mod } 5]\cdot x[0\cdot 4 \textbf{ div } 5 - 3] \\
-&= h[15]\cdot x[-3] \\
-\end{align}
-
-for n = 1 we get for j = 0 to 3:
-\begin{align}
-y[1] &= h[0\cdot 5 + 1\cdot 4 \textbf{ mod } 5]\cdot x[1\cdot 4 \textbf{ div } 5 - 0]]\\ 
-&= h[4]\cdot x[0] \\
-y[1] &= h[1\cdot 5 + 1\cdot 4 \textbf{ mod } 5]\cdot x[1\cdot 4 \textbf{ div } 5 - 1]] \\
-&= h[9]\cdot x[-1] \\
-y[1] &= h[2\cdot 5 + 1\cdot 4 \textbf{ mod } 5]\cdot x[1\cdot 4 \textbf{ div } 5 - 2]] \\
-&= h[14]\cdot x[-2] \\
-y[1] &= h[3\cdot 5 + 1\cdot 4 \textbf{ mod } 5]\cdot x[1\cdot 4 \textbf{ div } 5 - 3]] \\
-&= h[19]\cdot x[-3] \\
-\end{align}
-
-for n = 2 we get for j = 0 to 3:
-\begin{align}
-y[1] &= h[0\cdot 5 + 2\cdot 4 \textbf{ mod } 5]\cdot x[2\cdot 4 \textbf{ div } 5 - 0]]\\ 
-&= h[3]\cdot x[1] \\
-y[1] &= h[1\cdot 5 + 2\cdot 4 \textbf{ mod } 5]\cdot x[2\cdot 4 \textbf{ div } 5 - 1]] \\
-&= h[8]\cdot x[0] \\
-y[1] &= h[2\cdot 5 + 2\cdot 4 \textbf{ mod } 5]\cdot x[2\cdot 4 \textbf{ div } 5 - 2]] \\
-&= h[13]\cdot x[-1] \\
-y[1] &= h[3\cdot 5 + 2\cdot 4 \textbf{ mod } 5]\cdot x[2\cdot 4 \textbf{ div } 5 - 3]] \\
-&= h[18]\cdot x[-2] \\
-\end{align}
-
-for n = 3 we get for j = 0 to 3:
-\begin{align}
-y[1] &= h[0\cdot 5 + 3\cdot 4 \textbf{ mod } 5]\cdot x[3\cdot 4 \textbf{ div } 5 - 0]]\\ 
-&= h[2]\cdot x[2] \\
-y[1] &= h[1\cdot 5 + 3\cdot 4 \textbf{ mod } 5]\cdot x[3\cdot 4 \textbf{ div } 5 - 1]] \\
-&= h[7]\cdot x[1] \\
-y[1] &= h[2\cdot 5 + 3\cdot 4 \textbf{ mod } 5]\cdot x[3\cdot 4 \textbf{ div } 5 - 2]] \\
-&= h[12]\cdot x[0] \\
-y[1] &= h[3\cdot 5 + 3\cdot 4 \textbf{ mod } 5]\cdot x[3\cdot 4 \textbf{ div } 5 - 3]] \\
-&= h[17]\cdot x[-1] \\
-\end{align}
-
-for n = 4 we get for j = 0 to 3:
-\begin{align}
-y[1] &= h[0\cdot 5 + 4\cdot 4 \textbf{ mod } 5]\cdot x[4\cdot 4 \textbf{ div } 5 - 0]]\\ 
-&= h[1]\cdot x[3] \\
-y[1] &= h[1\cdot 5 + 4\cdot 4 \textbf{ mod } 5]\cdot x[4\cdot 4 \textbf{ div } 5 - 1]] \\
-&= h[6]\cdot x[2] \\
-y[1] &= h[2\cdot 5 + 4\cdot 4 \textbf{ mod } 5]\cdot x[4\cdot 4 \textbf{ div } 5 - 2]] \\
-&= h[11]\cdot x[1] \\
-y[1] &= h[3\cdot 5 + 4\cdot 4 \textbf{ mod } 5]\cdot x[4\cdot 4 \textbf{ div } 5 - 3]] \\
-&= h[16]\cdot x[0] \\
-\end{align}
-
-Now it starts repeating:\\
-
-for n = 5 we get for j = 0 to 3:
-\begin{align}
-y[1] &= h[0\cdot 5 + 5\cdot 4 \textbf{ mod } 5]\cdot x[5\cdot 4 \textbf{ div } 5 - 0]]\\ 
-&= h[0]\cdot x[0] \\
-y[1] &= h[1\cdot 5 + 5\cdot 4 \textbf{ mod } 5]\cdot x[5\cdot 4 \textbf{ div } 5 - 1]] \\
-&= h[5]\cdot x[-1] \\
-y[1] &= h[2\cdot 5 + 5\cdot 4 \textbf{ mod } 5]\cdot x[5\cdot 4 \textbf{ div } 5 - 2]] \\
-&= h[10]\cdot x[-2] \\
-y[1] &= h[3\cdot 5 + 5\cdot 4 \textbf{ mod } 5]\cdot x[5\cdot 4 \textbf{ div } 5 - 3]] \\
-&= h[15]\cdot x[-3] \\
-\end{align}
-
 
 \newpage
+\section{Exercise 2}
+If we take for example L = 5 and M = 4, we get the following results:
+\begin{figure}[h]
+	\includegraphics[scale = 0.8]{Images/repeat}
+    \caption{Direct equation input and coefficient plot for L = 5 and M = 4}
+\end{figure}
+
+One noteworthy aspect of the figure is that the first sample always get used twice, but with a different coefficient. The cycle will repeat after 5 cycles for both the coefficients and the input samples.
+
 \section{Exercise 3}
 We have the following 4 designs: 
 
@@ -171,20 +97,19 @@ Uses $4\cdot (L_{sub1} + L_{sub2})$ coefficients, while $L = L_{sub1} \cdot L_{s
 If we compose a resampler of two of those systems, the highest system frequency will be input frequency of the first system, the output of the first system (input of second system), or the output of the second system.
 
 \subsection{Naive solution}
-Uses the complete part of an upscaler, low-pass filter and downscaler. Again we have two variants:
+Uses the complete part of an upscaler, low-pass filter and downscaler. Again we have two variants:\\
 
-\smallskip
 \textbf{Direct scalers}\\
 Since the filter in this implementation is just a low-pass FIR filter, we need one multiplication/addition step for every coefficient. This is not very efficient because L-1 out of L samples are zero and will therefore not influence the output signal. Because $4\cdot L$ coefficients are needed to filter out the high-frequency noise, we need the same amount of multiplication/additions for one output sample.
 
 \smallskip
-The maximum system frequency will be $F_{system} = F_s\cdot L$ Hz, which is the sampling frequency of the low-pass filter. This is also shown in figure xx below:
+The maximum system frequency will be $F_{system} = F_s\cdot L$ Hz, which is the sampling frequency of the low-pass filter. This is also shown in figure \ref{fig:naive} below:
 \begin{figure}[h]
 	\includegraphics[scale = 1]{Images/3_0}
     \caption{Naive solution with single set of stages}
+    \label{fig:naive}
 \end{figure}
 
-\newpage
 \textbf{Composite scalers } \\
 Now we actually have two stages and therefore we need to apply the FIR filter in both stages. This will actually cost us $4\cdot (L_1 + L_2)$ multiplication/addition steps, where still L-1 out of L samples are zero.
 
@@ -221,8 +146,8 @@ If the lanczos2 function gives a close to one output, the quantized value will b
 	\item The top-level Verilog module must be called filter.
 \end{enumerate}
 
-
 \subsubsection{Analysis of requirements}
+The output sample rate will be $\frac{48000}{44100} = \frac{160}{147}$. This implies that the resampler for every 147 input samples generates 160 output samples. So therefore some samples need to be used twice. The output will probably have some increased noise, since the filtering part will never be perfect, but this has to be neglectable and you should not be able to hear it. The 100MHz minimum clock frequency will be checked by looking at the post-par timing analysis. Furthermore there will be some start-up noise, since samples from the past are used by the filtering step, and we first have to fill our buffer.
 
 \newpage
 \subsection{System architecture}

@@ -5,7 +5,10 @@ function [y] = coef_generate_matlab(L)
         y = y/sum(y);
 
         % quantize and round to nearest integer
-        y = round(y*(2^16)); 
+        y = y * 160;
+        
+        stem(y);
+        y = round(y*(2^15)); 
              
         % convert to signed int filter coeff
         y = int16(y);

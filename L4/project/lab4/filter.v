@@ -26,7 +26,7 @@ reg req_in_buf;
 assign req_in = req_in_buf;
 
 // Accumulator and temporary buffer
-reg signed [0:DDWIDTH-8] sum; //25 bit!
+reg signed [0:DDWIDTH+1] sum; //34 bit!
 reg signed [0:DWIDTH-1] data_out_buf;
 assign data_out = data_out_buf;
 
@@ -120,7 +120,7 @@ always @(posedge clk) begin
             end
 
             output_data_ready: begin
-                data_out_buf <= sum[0:15];
+                data_out_buf <= sum[3:DWIDTH+2];
                 cnt <= 3;
 
                 req_out_buf <= 1;

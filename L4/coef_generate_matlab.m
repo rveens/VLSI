@@ -7,14 +7,14 @@ function [y] = coef_generate_matlab(L)
         % quantize and round to nearest integer
         y = y * 160;
         
-        stem(y);
-        y = round(y*(2^15)); 
+        %stem(y);
+       % y = round(y*(2^15)); 
              
         % convert to signed int filter coeff
-        y = int16(y);
-        y = hex(fi(y, 1, 16, 0)); %1 stands for signed, 16 bit out
+       % y = int16(y);
+       % y = hex(fi(y, 1, 16, 0)); %1 stands for signed, 16 bit out
         
-        dlmwrite('coef.txt',y,''); %create file, with no delimiter ''      
+        %dlmwrite('coef.txt',y,''); %create file, with no delimiter ''      
 end
 
 function [y] = coef_gen(L)

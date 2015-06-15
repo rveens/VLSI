@@ -185,20 +185,17 @@ We pre-calculate the coefficients in matlab, and store them in a text-file. The 
 
 The coefficients are loaded in a Block RAM, and a LUT is connected to it. This LUT defines which coefficients should be used during the calculation of the current output. Another LUT is initialized to tell the system if it should re-use the current data.\\
 
-The sum register stores the temporary results during the calculation of an output. It uses 25 bits, which are truncated to the 16 MSB when the output is ready. 
-\textbf{NEED MORE ELABORATION, CANT FULLY REASON ON THIS. I THINK I ASK MONDAY}.\\
+The sum register stores the temporary results during the calculation of an output. It uses 34 bits, which are truncated to 16 bits when the output is ready. We use 34 bits because we sum 4 times $16*16=33$ into a register. So we need 34 bit. \\
 
 The processing step is divided in two stages: the first stage retrieves the coefficients from the BRAM with help of the coefficient LUT. The second stage computes the tap that uses this coefficients. Therefore the calculation of one output actually takes 8 clock cycles instead of 4. This choice to improve the timing constraints.
 
 \subsection{Functional correctness}
 Also see the requirements listed in section \ref{sec:req}.
 
-\textbf{REQ 3??}
-
 \begin{enumerate}
 	\item We make use of the direct-form method, and we use set our L and M parameters to 160 and 147 respectively. This is the same ratio as $\frac{48000}{44100}$.
 	\item Please see Figure~\ref{fig:compInOut} for a comparison of the input and output of the scaler.
-	\item -
+	\item We attempted to run the design using the offline project, and it worked at 44.1k. See section ~\ref{sec:4results}.
 	\item Please see section~\ref{sec:thr4}, here we look into the timing report and note that the throughput is above 100MHz.
 	\item Since we use a FIR filter, which uses samples from the past, we will have noise before our 4-sample buffer is filled.
 	\item \textit{filter.v} is uses as top-level in our design.
@@ -258,26 +255,24 @@ After doing the placement and routing step, we will get a more accurate measurem
 Since the minimum period is the maximum delay, we can be sure that our design is able to run at 100MHz.
 
 \newpage
-\subsection{Simulation results}
+\subsection{Offline project results}
+\label{sec:4results}
+
 See Figure~\ref{fig:compInOut} for a screenshot of Audacity comparing the input and output of the filter.
 
-We noticed a peculiarity when comparing the input and output: the length of the output signal (in seconds) is slightly \textit{less} than the input signal. See Figure~\ref{fig:outlengdif}.
-
-The input and output lengths are 8.454 and 8.455 seconds respectively. The output is 0.00011\% shorter. The reason of this difference in signal length is not completely clear.
-
 \begin{figure}[h]
-	\includegraphics[scale = 0.40]{Images/simulationresults.png}
+	\includegraphics[scale = 0.76]{Images/offline_run_results.png}
     \caption{Comparison of input and output.}
     \label{fig:compInOut}
 \end{figure}
 
-In the Audacity frequency plot we saw a few noteworthy difference. At first, the output spectrum is a bit weaker overall. This is probably due to rounding. The second thing is that after 18khz, the output signal has some additional noise. 
+In the Audacity frequency plot we saw a noteworthy difference. After 18khz, the output signal has some additional noise. This is most likely caused by the low-pass filter.
 
 \begin{figure}[h]
-	\begin{subfigure}[b]{0.45\textwidth}	
+	\begin{subfigure}[b]{0.6\textwidth}	
 		\includegraphics[scale=0.5]{Images/simulation_frequencyspectrum_input.png}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}	
+	\begin{subfigure}[b]{0.6\textwidth}	
 		\includegraphics[scale=0.5]{Images/simulation_frequencyspectrum_output.png}
 	\end{subfigure}
     \caption{Comparison of the input spectrum (left) and output spectrum (right).}
@@ -297,7 +292,8 @@ function [y] = coef_generate_matlab(L)
         y = y/sum(y);
 
         % quantize and round to nearest integer
-        y = round(y*(2^16)); 
+        y = y * 160;
+        y = round(y*(2^15)); 
              
         % convert to signed int filter coeff
         y = int16(y);
@@ -325,7 +321,7 @@ end
 Figure~\ref{fig:frq} shows the frequency response of the FIR filter that is generated with help of the matlab code from appendix A.
 
 \begin{figure}[h]
-	\includegraphics[scale=0.7]{Images/frequencyplot}
+	\includegraphics[scale=0.67]{Images/frequencyplot}
     \caption{Interpolation filter frequency domain (Matlab)}
     \label{fig:frq}
 \end{figure}
@@ -362,7 +358,7 @@ reg req_in_buf;
 assign req_in = req_in_buf;
 
 // Accumulator and temporary buffer
-reg signed [0:DDWIDTH-8] sum; //25 bit!
+reg signed [0:DDWIDTH+1] sum; //34 bit!
 reg signed [0:DWIDTH-1] data_out_buf;
 assign data_out = data_out_buf;
 
@@ -443,7 +439,6 @@ always @(posedge clk) begin
 
             // stage 2 of data processing to calculate one of the 4 taps
             data_processing_stage2: begin
-                // shift the data, but only if we do not have to re-use it once more after this
                 mem[cnt+lookup_shift[i]] <= mem[cnt];
                 sum <= sum + mem[cnt]*coef_buf;
 
@@ -456,7 +451,7 @@ always @(posedge clk) begin
             end
 
             output_data_ready: begin
-                data_out_buf <= sum[0:15];
+                data_out_buf <= sum[3:DWIDTH+2];
                 cnt <= 3;
 
                 req_out_buf <= 1;
@@ -472,7 +467,7 @@ always @(posedge clk) begin
                 if (lookup_shift[i] == 1)
                     state <= input_data_requested;
                 else
-                    state <= data_processing_stage1; 
+                    state <= data_processing_stage1;
             end
 
             default: begin

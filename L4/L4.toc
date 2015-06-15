@@ -12,6 +12,6 @@
 \contentsline {subsection}{\numberline {4.4}Functional correctness}{9}
 \contentsline {subsection}{\numberline {4.5}Resource usage}{10}
 \contentsline {subsection}{\numberline {4.6}System throughput and latency}{11}
-\contentsline {subsection}{\numberline {4.7}Simulation results}{12}
+\contentsline {subsection}{\numberline {4.7}Offline project results}{12}
 \contentsline {section}{\numberline {5}Appendix A: Matlab coefficients script}{13}
 \contentsline {section}{\numberline {6}Appendix B: Verilog Code}{14}

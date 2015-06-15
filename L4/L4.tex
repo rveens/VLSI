@@ -68,6 +68,74 @@
 \newpage
 
 \section{Exercise 1}
+Figure \ref{fig:flow} describes the general flow of an resampler. We are going to verify the direct equation solution.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale = 1.3]{Images/3_01}
+    \caption{resampler flow}
+    \label{fig:flow}
+\end{figure}
+
+We can define the filter equation as a convolution sum:
+\begin{align*}
+w[n] 	&= \sum_{0\leq k < 4L} h[k]\cdot v[n-k]\text{, for k $\in \mathbb{N}$}\\
+\intertext{Unroll the summation sign by defining k = jL + l, where j,l  $\in \mathbb{N}$}
+		&= \sum_{0\leq j<4}  \sum_{0\leq l<L} h[jL + l]\cdot v[n-(jL+l)]		
+\end{align*}
+We want to end with a function where x is the input, and y is the output. Therefore we are going to express both x and y in v and w and try to substitute them in the convolution sum.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale = 1.3]{Images/3_02}
+    \caption{Upsampling part}
+     \label{fig:up}
+\end{figure}
+
+Upsampling the input sample means that for every input sample we will have $L$ output samples. Therefore we can define the part of figure \ref{fig:up} as:\\
+
+$ v[n] =
+  \begin{cases}
+    x[\dfrac{n}{L}]      & \quad \text{if } n \text{\textbf{ mod }} L = 0\\
+    0  					& \quad \text{if } n \text{\textbf{ mod }} L \neq 0\\
+  \end{cases}$
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale = 1.3]{Images/3_03}
+    \caption{Downsampling part}
+    \label{fig:down}
+\end{figure}
+
+For the downsampling part that is shown in figure \ref{fig:down}, we can say that for every M inputs, we want one output, or:\\
+
+$y[n] = w[n\cdot m]$\\
+
+Substituting x and y in the convolution sum yields:\\
+
+$ v[n - (jL + l)] =
+  \begin{cases}
+    x[\dfrac{n - (jL + l)}{L}]      & \quad \text{if } n - (jL + l) \text{\textbf{ mod }} L = 0\\
+    0  					& \quad \text{if } n - (jL + l) \text{\textbf{ mod }} L \neq 0\\
+  \end{cases}$
+  
+Therefore we can substitute this into our function:\\
+
+$w[n] = \sum_{0\leq j<4}  \sum_{0\leq l<L} h[jL + l]\cdot x[\dfrac{n - (jL + l)}{L}]$ , for $n - (jL + l) \textbf{ mod } L = 0$\\
+
+now rewrite:
+\begin{align*}
+n - (jL + l) \textbf{ mod } L = 0\\
+n - jL - l \textbf{ mod } L = 0\\
+n - jL \textbf{ mod } L = l\\
+\end{align*}
+Substitute in for this in function w(n):
+\begin{align*}
+w[n] &= \sum_{0\leq j<4}  \sum_{0\leq l<L} h[jL + n - jL \textbf{ mod } L]\cdot x[\dfrac{n - jL + (n - jL) \textbf{ mod } L}{L}]\\
+	 &= \sum_{0\leq j<4}  \sum_{0\leq l<L} h[jL + (n - jL \textbf{ mod } L]\cdot x[\dfrac{n}{L} - {j}  - \dfrac{(n - jL \textbf{ mod } L))}{L}]\\
+\end{align*}
+
+\textbf{Don't know how to get rid of the factor in x, the last step should be to substitute y for w.}
+
 
 \newpage
 \section{Exercise 2}

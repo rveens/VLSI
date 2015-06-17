@@ -49,7 +49,7 @@ module filter
             end			   				
 				
 			   //Read handshake is pending then stop producing output
-			if (req_in && !ack_in) begin              
+				if (req_in && !ack_in) begin              
                req_out_buf <= 0;
             end 
 								

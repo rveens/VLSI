@@ -173,6 +173,7 @@ Since the filter in this implementation is just a low-pass FIR filter, we need o
 \smallskip
 The maximum system frequency will be $F_{system} = F_s\cdot L$ Hz, which is the sampling frequency of the low-pass filter. This is also shown in figure \ref{fig:naive} below:
 \begin{figure}[h]
+	\centering
 	\includegraphics[scale = 1]{Images/3_0}
     \caption{Naive solution with single set of stages}
     \label{fig:naive}
@@ -184,6 +185,7 @@ Now we actually have two stages and therefore we need to apply the FIR filter in
 \smallskip
 The maximum system frequency will be $F_{system} = max(F_s\cdot L_1, F_s\cdot \frac{L_1\cdot L_2}{M_1})$, since one of the two stages can have the highest frequency, depending on the L and M parameters.
 \begin{figure}[h]
+\centering
 	\includegraphics[scale = 1]{Images/3_1}
     \caption{Naive solution with double set of stages}
 \end{figure}
@@ -236,6 +238,7 @@ The resampler also uses 2 lookup tables:
 \newpage
 The state machine that controls the resampler is shown in the figure below:
 \begin{figure}[h]
+\centering
 	\includegraphics[scale = 1]{Images/4_statemachine}
     \caption{State machine of resampler}
 \end{figure}
@@ -274,6 +277,7 @@ Also see the requirements listed in section \ref{sec:req}.
 Table~\ref{tab:4usage} summarizes the resources used by the FIR filter. This list is obtained by running the synthesis step in Xilinx ISE and extracted from the \textit{Summary} and \textit{Device Utilization} report.
 
 \begin{table}[h]
+\centering
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{Resource} & \textbf{Available} & \textbf{Utilized} & \textbf{Percentage utilized}\\
@@ -296,6 +300,7 @@ Both LUTs are stored in DRAM. This is also shown in figure \ref{fig:RAM}. The sh
 The coefficient values from the coef.txt file are stored in one Block RAM unit. One BRAM  unit of the Spartan-6 serie contains 18Kb of memory, and is therefore large enough to store all coefficient indexes. This explains the low number of used flipflops, since not many are used as a buffer.
 
 \begin{figure}[h]
+\centering
 	\includegraphics[scale = 0.9]{Images/simulation_missingregisters}
     \caption{Post-par RAM utilization}
     \label{fig:RAM}

@@ -23,7 +23,7 @@ module bufferinput
  parameter DDWIDTH = 2*DWIDTH,
  parameter NR_STREAMS = 16,
  parameter NR_STREAMS_LOG = 4,
- parameter RAM_WIDTH = DWIDTH;
+ parameter RAM_WIDTH = DWIDTH,
  parameter RAM_ADDR_BITS = <ram_addr_bits> )(
  input enable,
  input clk,

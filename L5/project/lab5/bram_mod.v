@@ -10,7 +10,7 @@ module rom_mod
 			  input [0:RAM_ADDR_BITS-1] read_address,
            output [0:RAM_WIDTH-1] out_data);
 
-   (* RAM_STYLE="{AUTO | BLOCK |  BLOCK_POWER1 | BLOCK_POWER2}" *)
+   (* RAM_STYLE="block" *)
    reg [0:RAM_WIDTH-1] bram [0:(2**RAM_ADDR_BITS)-1];
    
 	// output buffer

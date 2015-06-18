@@ -43,9 +43,12 @@ module bufferinput
  // request registers
  reg req_in_buf, req_out_buf;
  
+ assign req_out = req_out_buf;
+ assign req_in = req_in_buf;
+ 
  // RAM address pointers
- wire [RAM_ADDR_BITS-1:0] rd_ptr, wr_ptr, shift_ptr;
- reg [RAM_ADDR_BITS-1:0] rd_ptr_buf, wr_ptr_buf, shift_ptr_buf;
+ wire [0:RAM_ADDR_BITS-1] rd_ptr, wr_ptr, shift_ptr;
+ reg [0:RAM_ADDR_BITS-1] rd_ptr_buf, wr_ptr_buf, shift_ptr_buf;
  assign rd_ptr = rd_ptr_buf;
  assign wr_ptr = wr_ptr_buf;
  assign shift_ptr = shift_ptr_buf;
@@ -55,7 +58,7 @@ module bufferinput
 						 ram_data_in[0:2]; //+ data_in wire
 
  // Output + shift buffers
- reg [DWIDTH-1:0] data_out_buf[0:3],
+ reg [0:DWIDTH-1] data_out_buf[0:3],
 						data_in_buf[0:2];
  
  assign data_out_0 = data_out_buf[0];
@@ -175,7 +178,7 @@ module bufferinput
 			 // Idle state
 			 if (!req_in && !ack_in && !req_out && !ack_out) begin 
 				req_in_buf <= 1; 
-			 end 
+			 end
 		end
  end
 

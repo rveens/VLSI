@@ -36,7 +36,7 @@ module accumulate_multiply
     reg signed [0:DWIDTH-1] coef [0:CWIDTH-1], 
 									 lookup_coefIdx[0:L-1],
 									 coef_temp_buf[0:3];
-	 parameter offset_coefIdx[0:3] = {0*L, 1*L, 2*L, 3*L}; 
+	 //parameter offset_coefIdx[0:3] = {0*L, 1*L, 2*L, 3*L};
 
 	 integer i, j;
 	 
@@ -75,10 +75,10 @@ module accumulate_multiply
 					if(j == NR_STREAMS - 1) begin
 						i <= (i + 1) % L;
 						// load new buffer samples
-						coef_temp_buf[0] <= coef[offset_coefIdx[0] + lookup_coefIdx[i+1]]; //[i+1] because not yet update
-						coef_temp_buf[1] <= coef[offset_coefIdx[1] + lookup_coefIdx[i+1]];
-						coef_temp_buf[2] <= coef[offset_coefIdx[2] + lookup_coefIdx[i+1]];
-						coef_temp_buf[3] <= coef[offset_coefIdx[3] + lookup_coefIdx[i+1]];
+						coef_temp_buf[0] <= coef[0*L + lookup_coefIdx[i+1]]; //[i+1] because not yet update
+						coef_temp_buf[1] <= coef[1*L + lookup_coefIdx[i+1]];
+						coef_temp_buf[2] <= coef[2*L + lookup_coefIdx[i+1]];
+						coef_temp_buf[3] <= coef[3*L + lookup_coefIdx[i+1]];
 					end
 					else begin
 						j <= (j + 1) % NR_STREAMS;	

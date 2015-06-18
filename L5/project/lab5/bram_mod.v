@@ -5,21 +5,27 @@ module rom_mod
            input clk,
 			  input rst,
 			  input write_enable,
-           input [RAM_ADDR_BITS-1:0] in_address,
-			  input [RAM_WIDTH-1:0] in_data,
-			  input [RAM_ADDR_BITS-1:0] out_address,
-           output [RAM_WIDTH-1:0] out_data);
+           input [0:RAM_ADDR_BITS-1] write_address,
+			  input [0:RAM_WIDTH-1] in_data,
+			  input [0:RAM_ADDR_BITS-1] read_address,
+           output [0:RAM_WIDTH-1] out_data);
 
-always @(posedge clk)
-    if(rst) begin
+   (* RAM_STYLE="{AUTO | BLOCK |  BLOCK_POWER1 | BLOCK_POWER2}" *)
+   reg [0:RAM_WIDTH-1] bram [0:(2**RAM_ADDR_BITS)-1];
+   
+	// output buffer
+	reg [0:RAM_WIDTH-1] data_out_buf;
+	assign out_data = data_out_buf;
+
+
+	always @(posedge clk) begin
+		if(rst) begin
     
-	 end
-    else begin
-		if(write_enable) begin
-			//do not write new data in RAM
 		end
 		else begin
-		
+			if (write_enable)
+				bram[write_address] <= in_data;
+			data_out_buf <= bram[read_address];
 		end
 	 end
 endmodule

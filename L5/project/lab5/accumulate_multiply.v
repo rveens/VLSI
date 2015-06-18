@@ -93,7 +93,8 @@ module accumulate_multiply
             end 
 								
             // Write handshake complete
-            if (req_out && ack_out) begin                				   
+            if (req_out && ack_out) begin
+					data_out_buf <= 0;
 				   req_in_buf <= 1; 
             end 
 

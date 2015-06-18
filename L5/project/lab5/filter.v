@@ -18,57 +18,32 @@ module filter
 	output req_out,
 	input ack_out,
 	output [0:DWIDTH-1] data_out);
-
-    // Output request register
-    reg req_out_buf;
-    assign req_out = req_out_buf;
-
-    // Input request register
-    reg req_in_buf;
-    assign req_in = req_in_buf;
 	 
-    // Accumulator (assigned to output directly)
-    reg signed [0:DWIDTH-1] sum;
-    assign data_out = sum;
-	 
-  
+	// wires
+	wire [0:DWIDTH-1] mem_data_out[0:3],
+							accmul_data_in[0:3];
+	wire mem_ack_out, mem_req_out,
+		  accmul_ack_in, accmul_req_in;
+
+	// memory
+	bufferinput #( .DWIDTH(DWIDTH), .NR_STREAMS(NR_STREAMS), .NR_STREAMS_LOG(NR_STREAMS_LOG) )
+	memory_inst (clk, rst, ack_in, req_in, data_in, mem_ack_out, mem_req_out, 
+					 mem_data_out[0], mem_data_out[1], mem_data_out[2], mem_data_out[3]);
+
+	// Instantiation of Passivator2
+	passivator_4d #(.DWIDTH(DWIDTH)) 
+	pas3 (mem_req_out, mem_ack_out, 
+			mem_data_out[0], mem_data_out[1], mem_data_out[2], mem_data_out[3], accmul_req_in, accmul_ack_in, 
+			accmul_data_in[0], accmul_data_in[1], accmul_data_in[2], accmul_data_in[3]);
+
+	// Instantiation of the accumulate_multiply
+	accumulate_multiply #(.DWIDTH(DWIDTH), .NR_STREAMS(NR_STREAMS), .NR_STREAMS_LOG(NR_STREAMS_LOG) ) 
+	accmul_inst (clk, rst, accmul_req_in, accmul_ack_in, 
+					 accmul_data_in[0], accmul_data_in[1], accmul_data_in[2], accmul_data_in[3], 
+					 req_out, ack_out, data_out);
+				   
     always @(posedge clk) begin
-        // Reset => initialize
-        if (rst) begin
-            req_in_buf <= 0;
-            req_out_buf <= 0;
-            sum <= 0;				
-        end
-        // !Reset => run
-        else begin
-		  
-            // Read handshake complete
-            if (req_in && ack_in) begin
-                sum <= data_in;					              					 
-				req_out_buf <= 1;                					  
-            end			   				
-				
-			   //Read handshake is pending then stop producing output
-				if (req_in && !ack_in) begin              
-               req_out_buf <= 0;
-            end 
-								
-            // Write handshake complete
-            if (req_out && ack_out) begin                				   
-				   req_in_buf <= 1; 
-            end 
 
-            //Write handshake is pending then stop acquiring output.
-            if (req_out && !ack_out) begin                			                  
-				   req_in_buf <= 0;
-            end 			            			  
-				
-            // Idle state
-            if (!req_in && !ack_in && !req_out && !ack_out) begin                		
-              req_in_buf <= 1;					
-            end
-				
-        end
     end
 
 endmodule

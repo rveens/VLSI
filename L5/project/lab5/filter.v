@@ -8,7 +8,7 @@ module filter
 	parameter M = 147,
 	parameter M_LOG = 8,
 	parameter CWIDTH = 4*L,
-	parameter NR_STREAMS = 16,
+	parameter NR_STREAMS = 1024,
     parameter NR_STREAMS_LOG = 4)
   (input clk,
    input rst,
@@ -27,8 +27,8 @@ module filter
 
 	// memory
 	bufferinput #( .DWIDTH(DWIDTH), .NR_STREAMS(NR_STREAMS), .NR_STREAMS_LOG(NR_STREAMS_LOG) )
-	memory_inst (clk, rst, ack_in, req_in, data_in, mem_ack_out, mem_req_out, 
-					 mem_data_out[0], mem_data_out[1], mem_data_out[2], mem_data_out[3]);
+	memory_inst (clk, rst, req_in, ack_in, data_in, mem_req_out, mem_ack_out, 
+	mem_data_out[0], mem_data_out[1], mem_data_out[2], mem_data_out[3]);
 
 	// Instantiation of Passivator2
 	passivator_4d #(.DWIDTH(DWIDTH)) 

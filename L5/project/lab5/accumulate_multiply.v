@@ -58,6 +58,11 @@ module accumulate_multiply
             data_out_buf <= 0;
 				i	 <= 0;
 				j	 <= 0;
+				
+				coef_temp_buf[0] <= 0;
+				coef_temp_buf[1] <= 0;
+				coef_temp_buf[2] <= 0;
+				coef_temp_buf[3] <= 0;
         end
         // !Reset => run
         else begin
@@ -79,6 +84,7 @@ module accumulate_multiply
 						coef_temp_buf[1] <= coef[1*L + lookup_coefIdx[i+1]];
 						coef_temp_buf[2] <= coef[2*L + lookup_coefIdx[i+1]];
 						coef_temp_buf[3] <= coef[3*L + lookup_coefIdx[i+1]];
+						j <= (j + 1) % NR_STREAMS;
 					end
 					else begin
 						j <= (j + 1) % NR_STREAMS;	

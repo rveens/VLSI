@@ -30,12 +30,17 @@ module bufferinput
     reg req_in_buf;
     assign req_in = req_in_buf;
 	 
+	 // state
+	 reg [1:0] state;
+	 parameter shift 	 = 1,
+				  noshift = 2;
+	 
 	 // RAM wires
 	 wire [0:DWIDTH-1] ram_data_out[0:3],
 							 ram_data_in[0:2]; //+ data_in wire
   
 	 reg [0:10-1] write_ptr, read_ptr, feedback_ptr;
-	 integer i;
+	 integer lookup_shift_index, streamcounter;
 
 	 // Output + shift buffers
 	 reg signed [0:DWIDTH-1] data_out_buf[0:3],
@@ -68,6 +73,7 @@ module bufferinput
 
 	 // shift LUT similar to lab4
 	 reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
+	 integer i;
 	 initial begin
 		 // define lookup tables
 		 for(i=0;i<L;i=i+1) begin
@@ -84,6 +90,8 @@ module bufferinput
 		ram_in_buf[0]	 	<= 0;
 		ram_in_buf[1]  	<= 0;
 		ram_in_buf[2]  	<= 0;
+		state 				<= 0;									
+		streamcounter 		<= 0;
 	 end
 
     always @(posedge clk) begin
@@ -91,7 +99,7 @@ module bufferinput
         if (rst) begin
             req_in_buf <= 0;
             req_out_buf <= 0;
-
+				lookup_shift_index <= 0;
 				write_enable_buf <= 1; // staat even op 1
 
 				write_ptr <= 0;
@@ -100,48 +108,75 @@ module bufferinput
         end
         // !Reset => run
         else begin
-					// Read handshake complete
-					if (req_in && ack_in) begin		              					 
-					    // 1) write sample into ram
-						 // direct pin (data_in)
-						 // 2) read four samples from ram for calculation
-						 data_out_buf[0] <= ram_data_out[0];
-						 data_out_buf[1] <= ram_data_out[1];
-						 data_out_buf[2] <= ram_data_out[2];
-						 data_out_buf[3] <= ram_data_out[3];
-						 // 3) write back three of the four samples back into ram
-						 ram_in_buf[0] <= ram_data_out[0];
-						 ram_in_buf[1] <= ram_data_out[1];
-						 ram_in_buf[2] <= ram_data_out[2];
-						 // 4) increment index_ptr
-						 write_ptr <= (write_ptr+1)%NR_STREAMS;
-						 read_ptr  <= write_ptr;
-						 feedback_ptr <= read_ptr;
-						 
-						 req_out_buf <= 1;
-					end			   				
-					
-					//Read handshake is pending then stop producing output
-					if (req_in && !ack_in) begin              
-						req_out_buf <= 0;
-					end 
-									
-					// Write handshake complete
-					if (req_out && ack_out) begin                				   
-						req_in_buf <= 1; 
-					end 
+					case (state)
+						noshift: begin
+							
+							state <= shift;
+						end
+						
+						shift: begin
+							// Read handshake complete
+							if (req_in && ack_in) begin		              					 
+								 // 1) write sample into ram
+								 // direct pin (data_in)
+								 // 2) read four samples from ram for calculation
+								 data_out_buf[0] <= ram_data_out[0];
+								 data_out_buf[1] <= ram_data_out[1];
+								 data_out_buf[2] <= ram_data_out[2];
+								 data_out_buf[3] <= ram_data_out[3];
+								 // 3) write back three of the four samples back into ram
+								 ram_in_buf[0] <= ram_data_out[0];
+								 ram_in_buf[1] <= ram_data_out[1];
+								 ram_in_buf[2] <= ram_data_out[2];
+								 // 4) increment index_ptr
+								 write_ptr <= (write_ptr+1)%NR_STREAMS;
+								 read_ptr  <= write_ptr;
+								 feedback_ptr <= read_ptr;
+								 
+								 req_out_buf <= 1;
+							end			   				
+							
+							//Read handshake is pending then stop producing output
+							if (req_in && !ack_in) begin              
+								req_out_buf <= 0;
+							end 
+											
+							// Write handshake complete
+							if (req_out && ack_out) begin                				   
+								req_in_buf <= 1; 
+							end 
 
-					//Write handshake is pending then stop acquiring output.
-					if (req_out && !ack_out) begin                			                  
-						req_in_buf <= 0;
-					end 			            			  
-					
-					// Idle state
-					if (!req_in && !ack_in && !req_out && !ack_out) begin                		
-					  req_in_buf <= 1;					
-					end
-				
-				end
+							//Write handshake is pending then stop acquiring output.
+							if (req_out && !ack_out) begin                			                  
+								req_in_buf <= 0;
+							end 			            			  
+							
+							// Idle state
+							if (!req_in && !ack_in && !req_out && !ack_out) begin                		
+							  req_in_buf <= 1;					
+							end
+							
+							//state <= noshift; FIXME
+							streamcounter <= (streamcounter+1)%NR_STREAMS;
+							if (streamcounter == NR_STREAMS-1) begin
+								state <= 0; // go to default
+								req_in_buf <= 0;
+								req_out_buf <= 0;
+							end
+								
+						end
+						
+						default: begin
+							// calc initial
+							lookup_shift_index <= (lookup_shift_index + 1)%L;
+							if (lookup_shift[lookup_shift_index] == 1) begin
+								state <= shift;
+							end else begin
+								state <= shift;
+							end
+						end	
+				endcase
+			end
     end
 
 endmodule

@@ -74,6 +74,7 @@ module bufferinput
 
 	 // shift LUT similar to lab4
 	 reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
+	 reg last_state;
 	 integer i;
 	 initial begin
 		 // define lookup tables
@@ -103,7 +104,7 @@ module bufferinput
 				lookup_shift_index <= 0;
 				write_enable_buf <= 1; // staat even op 1
 				feedback_enable_buf <= 1; // staat even op 1
-
+				last_state <= 0;
 				write_ptr <= 0;
 				read_ptr <= 0;
 				feedback_ptr <= 0;
@@ -112,16 +113,16 @@ module bufferinput
         else begin
 					case (state)
 						noshift: begin
-							if (req_out && ack_out) begin
+							// Read handshake complete
+							if (req_out && ack_out) begin		              					 
 								 // 1) write sample into ram
-									// nothing because of noshift
+								 // direct pin (data_in)
 								 // 2) read four samples from ram for calculation
 								 data_out_buf[0] <= ram_data_out[0];
 								 data_out_buf[1] <= ram_data_out[1];
 								 data_out_buf[2] <= ram_data_out[2];
 								 data_out_buf[3] <= ram_data_out[3];
 								 // 3) write back three of the four samples back into ram
-									// read anyway
 								 ram_in_buf[0] <= ram_data_out[0];
 								 ram_in_buf[1] <= ram_data_out[1];
 								 ram_in_buf[2] <= ram_data_out[2];
@@ -130,26 +131,31 @@ module bufferinput
 								 read_ptr  <= write_ptr;
 								 feedback_ptr <= read_ptr;
 								 // 5) update feedback enable
-								 if (feedback_ptr == NR_STREAMS-1) begin
+								 
+								 if(read_ptr == 0) begin
 									feedback_enable_buf <= 0;
 								 end
-							end
+								 
+								 streamcounter <= (streamcounter+1)%NR_STREAMS;
+								 req_out_buf <= 1;
+							end			   				
 							
-							if (req_out && !ack_out) begin
-								// do nothing
-							end
-						
-							// Idle state
-							if (!req_in && !ack_in && !req_out && !ack_out) begin                		
-								req_out_buf <= 1;
-							end
-							
-							streamcounter <= (streamcounter+1)%NR_STREAMS;
 							if (streamcounter == NR_STREAMS-1) begin
-								state <= 0; // go to default
-								req_in_buf <= 0;
-								req_out_buf <= 0;
-								write_enable_buf <= 0;
+								lookup_shift_index <= (lookup_shift_index + 1)%L;
+								last_state <= state;
+								
+								if (lookup_shift[lookup_shift_index] == 1) begin
+									state <= shift;
+									write_enable_buf <= 1;
+									req_in_buf <= 1;
+								end else begin
+									state <= noshift;	 //no shift
+									ram_in_buf[0] <= ram_data_out[1];
+									ram_in_buf[1] <= ram_data_out[2];
+									ram_in_buf[2] <= ram_data_out[3];
+									req_in_buf <= 0;
+									write_enable_buf <= 0;
+								end
 							end
 						end
 						
@@ -172,10 +178,12 @@ module bufferinput
 								 read_ptr  <= write_ptr;
 								 feedback_ptr <= read_ptr;
 								 // 5) update feedback enable
-								 //if (feedback_ptr == NR_STREAMS-1) begin
-								 //feedback_enable_buf <= 1;
-								 //end
 								 
+								 if(read_ptr == 0) begin
+									feedback_enable_buf <= 1;
+								 end
+								 
+								 streamcounter <= (streamcounter+1)%NR_STREAMS;
 								 req_out_buf <= 1;
 							end			   				
 							
@@ -199,14 +207,21 @@ module bufferinput
 							  req_in_buf <= 1;					
 							end
 							
-							streamcounter <= (streamcounter+1)%NR_STREAMS;
 							if (streamcounter == NR_STREAMS-1) begin
-								//state <= 0; // go to default
-								//req_in_buf <= 0;
-								//req_out_buf <= 0;
-								//write_enable_buf <= 0;
-							end
+								lookup_shift_index <= (lookup_shift_index + 1)%L;
+								last_state <= state;
 								
+								if (lookup_shift[lookup_shift_index] == 1) begin
+									state <= shift;
+									write_enable_buf <= 1;
+								end else begin
+									state <= noshift;	 //no shift
+									ram_in_buf[0] <= ram_data_out[1];
+									ram_in_buf[1] <= ram_data_out[2];
+									ram_in_buf[2] <= ram_data_out[3];
+									write_enable_buf <= 0;
+								end
+							end
 						end
 						
 						default: begin
@@ -216,7 +231,8 @@ module bufferinput
 							if (lookup_shift[lookup_shift_index] == 1) begin
 								state <= shift;
 							end else begin
-								state <= shift;						
+								state <= noshift;
+								req_out_buf <= 1;								
 							end
 						end	
 				endcase

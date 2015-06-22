@@ -39,7 +39,7 @@ module bufferinput
 	 wire [0:DWIDTH-1] ram_data_out[0:3],
 							 ram_data_in[0:2]; //+ data_in wire
   
-	 reg [0:10-1] write_ptr, read_ptr, feedback_ptr;
+	 reg [0:NR_STREAMS_LOG-1] write_ptr, read_ptr, feedback_ptr;
 	 integer lookup_shift_index, streamcounter;
 
 	 // Output + shift buffers
@@ -102,6 +102,7 @@ module bufferinput
             req_out_buf <= 0;
 				lookup_shift_index <= 0;
 				write_enable_buf <= 1; // staat even op 1
+				feedback_enable_buf <= 1; // staat even op 1
 
 				write_ptr <= 0;
 				read_ptr <= 0;
@@ -171,9 +172,9 @@ module bufferinput
 								 read_ptr  <= write_ptr;
 								 feedback_ptr <= read_ptr;
 								 // 5) update feedback enable
-								 if (feedback_ptr == NR_STREAMS-1) begin
-									feedback_enable_buf <= 1;
-								 end
+								 //if (feedback_ptr == NR_STREAMS-1) begin
+								 //feedback_enable_buf <= 1;
+								 //end
 								 
 								 req_out_buf <= 1;
 							end			   				
@@ -200,10 +201,10 @@ module bufferinput
 							
 							streamcounter <= (streamcounter+1)%NR_STREAMS;
 							if (streamcounter == NR_STREAMS-1) begin
-								state <= 0; // go to default
-								req_in_buf <= 0;
-								req_out_buf <= 0;
-								write_enable_buf <= 0;
+								//state <= 0; // go to default
+								//req_in_buf <= 0;
+								//req_out_buf <= 0;
+								//write_enable_buf <= 0;
 							end
 								
 						end
@@ -214,10 +215,8 @@ module bufferinput
 							lookup_shift_index <= (lookup_shift_index + 1)%L;
 							if (lookup_shift[lookup_shift_index] == 1) begin
 								state <= shift;
-								write_enable_buf <= 1;
 							end else begin
-								state <= noshift;
-								write_enable_buf <= 0;								
+								state <= shift;						
 							end
 						end	
 				endcase

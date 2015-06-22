@@ -7,8 +7,8 @@ parameter DWIDTH = 16;
 parameter FILTER_DWIDTH = 16;
 parameter C_SLV_DWIDTH  = 32;
 //Vary these parameters for testing the scalability
-parameter NR_STREAMS = 1;
-parameter NR_STREAMS_LOG = 0;
+parameter NR_STREAMS = 16;
+parameter NR_STREAMS_LOG = 4;
 parameter STR_IND = 0;
 
 

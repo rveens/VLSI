@@ -15,8 +15,8 @@ module rom_mod
 	wire [RAM_ADDR_BITS-1:0] ram_wr_address, ram_rd_address;
 	
 	// output buffer
-	reg [0:RAM_WIDTH-1] data_out_buf;
-	assign out_data = data_out_buf;
+	//reg [0:RAM_WIDTH-1] data_out_buf;
+	assign out_data = bram[ram_rd_address];
 	
 	// reverse all address wires
 	generate
@@ -35,13 +35,13 @@ module rom_mod
 
 	always @(posedge clk) begin
 		if(rst) begin
-			data_out_buf <= 0;
+			//data_out_buf <= 0;
 		end
 		else begin
 			if (write_enable) begin
 				bram[ram_wr_address] <= in_data;
 			end
-			data_out_buf <= bram[ram_rd_address];
+			//data_out_buf <= bram[ram_rd_address];
 		end
 	 end
 endmodule

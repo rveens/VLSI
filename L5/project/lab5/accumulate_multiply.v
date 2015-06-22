@@ -71,13 +71,13 @@ module accumulate_multiply
             if (req_in && ack_in) begin
 				
 					// use buffered samples for faster processing
-               data_out_buf <= data_in_0*coef_temp_buf[0] + 
-										 data_in_1*coef_temp_buf[1] + 
-										 data_in_2*coef_temp_buf[2] + 
-										 data_in_3*coef_temp_buf[3];		
+               data_out_buf <= data_in_0;//*coef_temp_buf[0] + 
+										 //data_in_1*coef_temp_buf[1] + 
+										// data_in_2*coef_temp_buf[2] + 
+										 //data_in_3*coef_temp_buf[3];		
 					
 					// if all samples of one sample time are calculated, shift one index
-					if(j == NR_STREAMS - 1) begin
+					/*if(j == NR_STREAMS - 1) begin
 						i <= (i + 1) % L;
 						// load new buffer samples
 						coef_temp_buf[0] <= coef[0*L + lookup_coefIdx[i+1]]; //[i+1] because not yet update
@@ -88,7 +88,7 @@ module accumulate_multiply
 					end
 					else begin
 						j <= (j + 1) % NR_STREAMS;	
-					end	
+					end	*/
 					
 					req_out_buf <= 1;
             end			   				
@@ -100,7 +100,6 @@ module accumulate_multiply
 								
             // Write handshake complete
             if (req_out && ack_out) begin
-					data_out_buf <= 0;
 				   req_in_buf <= 1; 
             end 
 

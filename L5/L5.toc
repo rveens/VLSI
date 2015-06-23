@@ -1,2 +1,10 @@
-\contentsline {section}{\numberline {1}Appendix A: Matlab coefficients script}{3}
-\contentsline {section}{\numberline {2}Appendix B: Verilog Code}{4}
+\contentsline {section}{\numberline {1}Requirements}{3}
+\contentsline {subsection}{\numberline {1.1}Analysis of requirements}{3}
+\contentsline {section}{\numberline {2}System architecture}{3}
+\contentsline {section}{\numberline {3}Design choices}{4}
+\contentsline {section}{\numberline {4}Functional correctness}{4}
+\contentsline {section}{\numberline {5}Resource usage}{4}
+\contentsline {section}{\numberline {6}System throughput and latency}{4}
+\contentsline {section}{\numberline {7}Offline project results}{4}
+\contentsline {section}{\numberline {8}Appendix A: Matlab coefficients script}{5}
+\contentsline {section}{\numberline {9}Appendix B: Verilog Code}{7}

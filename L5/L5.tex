@@ -42,7 +42,7 @@
 
 %-------------------------------- Title ----------------------------------
 
-\title{\vspace{-\baselineskip}\sffamily\bfseries Assignment 4}
+\title{\vspace{-\baselineskip}\sffamily\bfseries Assignment 5}
 \author{
 	Rick Veens \qquad Studentno: 0912292\\
 	\texttt{r.veens@student.tue.nl}
@@ -101,6 +101,13 @@ Four DSP units are used to calculated one sample in one cycle. Because of the fa
 
 \newpage
 \section{Design choices}
+The design is based on lab 4. This implies that we use the direct equation to calculate samples. This also means that it uses the same coefficient index and shift index LUTs to point to the correct coefficients, and to know when to re-use samples. For lab 4 we used a single register to store 4 samples, which were used to calculated output samples sequentially.\\
+
+For lab 5 we extended this 4-sample FIFO to memory modules that scale with the amount of streams. We use 4 DSP units in parallel to increase the performance.\\
+
+The stream delay buffer is implemented to take care of the calculation pipeline. Without pipelining the calculation, the throughput would suffer. The pipeline introduces a delay, which causes misalignment with the output stream. Therefore we delay the output sample by one full stream of samples minus the pipeline delay time.\\
+
+Similar to lab 4, we use a 34 bit buffer to store the intermediate calculation. When we output the sample, we will discard the 15 LSBs to de-quantize the data.
 
 \newpage
 \section{Resource usage}

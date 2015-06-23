@@ -7,7 +7,5 @@
 \contentsline {section}{\numberline {4}Resource usage}{6}
 \contentsline {section}{\numberline {5}System throughput and latency}{7}
 \contentsline {section}{\numberline {6}Offline project results}{8}
-\contentsline {subsection}{\numberline {6.1}256 Streams}{8}
-\contentsline {subsection}{\numberline {6.2}1024 Streams}{8}
-\contentsline {section}{\numberline {7}Appendix A: Matlab coefficients script}{9}
-\contentsline {section}{\numberline {8}Appendix B: Verilog Code}{10}
+\contentsline {section}{\numberline {7}Appendix A: Matlab coefficients script}{10}
+\contentsline {section}{\numberline {8}Appendix B: Verilog Code}{11}

@@ -66,7 +66,7 @@ module filter
 	 reg shift_enable;
 	 integer shift_idx;
 	 reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
-	 reg signed [0:DWIDTH-1] coef [0:CWIDTH-1], lookup_coefIdx[0:L-1][0:3];
+	 reg signed [0:DWIDTH-1] coef [0:CWIDTH-1], lookup_coefIdx[0:L-1][0:3], coef_preproc[0:3];
 	 
 	 reg signed [0:DDWIDTH+1] circ_buf[0:NR_STREAMS-1];
 	 integer buf_ptr;
@@ -120,8 +120,6 @@ module filter
             // Read handshake complete
             if (req_in && ack_in) begin
 					 // shift data in.
-					 
-
 					 data_in_buf <= data_in; 
 					 ram_enable_buf <= 1;
 					 
@@ -159,10 +157,10 @@ module filter
 					 ram_data_out_buf[3] <= ram_data_out[3];
 					 
 					 //multiply with coefficients **todo**
-					 pl_mul_to_add_buf[0] <= ram_data_out_buf[0]*coef[lookup_coefIdx[shift_idx][0]];
-					 pl_mul_to_add_buf[1] <= ram_data_out_buf[1]*coef[lookup_coefIdx[shift_idx][1]];
-					 pl_mul_to_add_buf[2] <= ram_data_out_buf[2]*coef[lookup_coefIdx[shift_idx][2]];
-					 pl_mul_to_add_buf[3] <= ram_data_out_buf[3]*coef[lookup_coefIdx[shift_idx][3]];
+					 pl_mul_to_add_buf[0] <= ram_data_out_buf[0]*coef_preproc[0];
+					 pl_mul_to_add_buf[1] <= ram_data_out_buf[1]*coef_preproc[1];
+					 pl_mul_to_add_buf[2] <= ram_data_out_buf[2]*coef_preproc[2];
+					 pl_mul_to_add_buf[3] <= ram_data_out_buf[3]*coef_preproc[3];
 					 
 					 //accumulate and output
 					 circ_buf[buf_ptr]	<= 	pl_mul_to_add_buf[0] +  
@@ -174,6 +172,12 @@ module filter
 					 sum <= circ_buf[(buf_ptr+2)%NR_STREAMS][3:DWIDTH+2];		 
 					 ram_address_ptr <= (ram_address_ptr + 1) % NR_STREAMS;		
 					 buf_ptr <= (buf_ptr + 1)%((NR_STREAMS));	
+					 
+					 // preprocess next coefficients
+					  coef_preproc[0] <= coef[lookup_coefIdx[shift_idx][0]];
+					  coef_preproc[1] <= coef[lookup_coefIdx[shift_idx][1]];
+					  coef_preproc[2] <= coef[lookup_coefIdx[shift_idx][2]];
+					  coef_preproc[3] <= coef[lookup_coefIdx[shift_idx][3]];
 
 			       req_out_buf <= 1;	
             end

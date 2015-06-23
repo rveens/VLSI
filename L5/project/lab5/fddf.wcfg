@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/BarrydeBruin/Documents/L5_orig/project/lab5/multitest_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="multitest" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="16" />
+   <wvobject fp_name="/multitest/filter_inst/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/req_in" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">req_in</obj_property>
+      <obj_property name="ObjectShortName">req_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/ack_in" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ack_in</obj_property>
+      <obj_property name="ObjectShortName">ack_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/data_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_in[0:15]</obj_property>
+      <obj_property name="ObjectShortName">data_in[0:15]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/req_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">req_out</obj_property>
+      <obj_property name="ObjectShortName">req_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/ack_out" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ack_out</obj_property>
+      <obj_property name="ObjectShortName">ack_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/data_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_out[0:15]</obj_property>
+      <obj_property name="ObjectShortName">data_out[0:15]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/ram_data_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ram_data_out[0:3,0:15]</obj_property>
+      <obj_property name="ObjectShortName">ram_data_out[0:3,0:15]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/ram_data_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ram_data_in[0:2,0:15]</obj_property>
+      <obj_property name="ObjectShortName">ram_data_in[0:2,0:15]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/shift_enable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">shift_enable</obj_property>
+      <obj_property name="ObjectShortName">shift_enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/write_enable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">write_enable</obj_property>
+      <obj_property name="ObjectShortName">write_enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/req_out_buf" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">req_out_buf</obj_property>
+      <obj_property name="ObjectShortName">req_out_buf</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/req_in_buf" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">req_in_buf</obj_property>
+      <obj_property name="ObjectShortName">req_in_buf</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/rd_ptr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rd_ptr[0:9]</obj_property>
+      <obj_property name="ObjectShortName">rd_ptr[0:9]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/wr_ptr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">wr_ptr[0:9]</obj_property>
+      <obj_property name="ObjectShortName">wr_ptr[0:9]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

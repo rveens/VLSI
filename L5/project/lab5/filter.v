@@ -64,6 +64,8 @@ module filter
 		bram_3 (clk, rst, ram_enable, ram_address, ram_data_out[2], ram_data_out[3]);
 
 	 // intialize buffers
+	 reg shift_enable;
+	 integer shift_idx;
 	 reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
 	 reg signed [0:DWIDTH-1] coef [0:CWIDTH-1], lookup_coefIdx[0:L-1];
 	 
@@ -104,9 +106,9 @@ module filter
             req_in_buf <= 0;
             req_out_buf <= 0;
             sum <= 0;	
-				
+				shift_idx <=0;
 				buf_ptr <= 0;
-
+				shift_enable <= 0;
 				data_in_buf <= 0;
 				data_ready <= 0;
 				ram_enable_buf <= 1;
@@ -118,19 +120,32 @@ module filter
             // Read handshake complete
             if (req_in && ack_in) begin
 					 // shift data in.
+					 
+
 					 data_in_buf <= data_in; 
 					 ram_enable_buf <= 1;
 					 
 					 req_in_buf <= 0;
             end
 				
+				// data shifted in
 				if (ram_enable_buf== 1) begin
 					ram_enable_buf <= 0;
 				end
 								
             // Write handshake complete
             if (req_out && ack_out) begin                				   
-				   req_in_buf <= 1;
+				   if(ram_address_ptr == NR_STREAMS-1) begin
+						shift_enable <= lookup_shift[shift_idx];
+						shift_idx <= (shift_idx + 1) % L;
+					end
+
+				   if(shift_enable == 1) begin
+						req_in_buf <= 1;
+					end
+					else begin
+						// nothing to do
+					end
 					req_out_buf <= 0;					
             end             			  
 				
@@ -157,9 +172,7 @@ module filter
 					
 					 // put data from previous stream on output
 					 sum <= circ_buf[(buf_ptr+3)%NR_STREAMS];		 
-								
-					 //increment pointers
-					 ram_address_ptr <= (ram_address_ptr + 1) % NR_STREAMS;
+					 ram_address_ptr <= (ram_address_ptr + 1) % NR_STREAMS;		
 					 buf_ptr <= (buf_ptr + 1)%((NR_STREAMS));	
 
 			       req_out_buf <= 1;	

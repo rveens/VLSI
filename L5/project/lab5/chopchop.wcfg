@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/BarrydeBruin/Documents/L5_orig/project/lab5/multitest_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="multitest" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="6" />
+   <wvobject fp_name="/multitest/filter_inst/bram_0/bram" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">bram[1023:0,15:0]</obj_property>
+      <obj_property name="ObjectShortName">bram[1023:0,15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/bram_1/bram" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">bram[1023:0,15:0]</obj_property>
+      <obj_property name="ObjectShortName">bram[1023:0,15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/bram_2/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/bram_2/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/bram_2/bram" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">bram[1023:0,15:0]</obj_property>
+      <obj_property name="ObjectShortName">bram[1023:0,15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/filter_inst/bram_3/bram" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">bram[1023:0,15:0]</obj_property>
+      <obj_property name="ObjectShortName">bram[1023:0,15:0]</obj_property>
+   </wvobject>
+</wave_config>

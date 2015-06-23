@@ -30,20 +30,16 @@ module bufferinput
     reg req_in_buf;
     assign req_in = req_in_buf;
 	 
-	 // state
-	 reg [0:1] state;
-	 parameter shift 	 = 1,
-				  noshift = 2;
-	 
 	 // RAM wires
 	 wire [0:DWIDTH-1] ram_data_out[0:3],
-							 ram_data_in[0:2]; //+ data_in wire
+							 ram_data_in[0:3]; //+ data_in wire
   
-	 reg [0:NR_STREAMS_LOG-1] write_ptr, read_ptr, feedback_ptr;
-	 integer lookup_shift_index, streamcounter;
+	 reg [0:10-1] rd_ptr, wr_ptr, shift_ptr;
+	 integer i;
 
 	 // Output + shift buffers
 	 reg signed [0:DWIDTH-1] data_out_buf[0:3],
+									 data_in_buf,
 									 ram_in_buf[0:2];
 	 
 	 assign data_out_0 = data_out_buf[0];
@@ -51,31 +47,30 @@ module bufferinput
 	 assign data_out_2 = data_out_buf[2];
 	 assign data_out_3 = data_out_buf[3];
 	 
-	 assign ram_data_in[0] = ram_in_buf[0];
-	 assign ram_data_in[1] = ram_in_buf[1];	
-	 assign ram_data_in[2] = ram_in_buf[2];	
+	 assign ram_data_in[0] = data_in_buf;
+	 assign ram_data_in[1] = ram_in_buf[0];
+	 assign ram_data_in[2] = ram_in_buf[1];	
+	 assign ram_data_in[3] = ram_in_buf[2];	
 				 
 	 // RAM enable wires + registers
-	 reg write_enable_buf, feedback_enable_buf;
-	 wire write_enable, feedback_enable;
+	 reg shift_enable_buf, write_enable_buf;
+	 wire shift_enable, write_enable;
+	 assign shift_enable = shift_enable_buf;
 	 assign write_enable = write_enable_buf;
-	 assign feedback_enable = feedback_enable_buf;
 			 
 	 // Instantiate the RAM modules
 	 // RAM_WIDTH, ADDRESS BITS
-	 rom_mod #(16, NR_STREAMS_LOG)
-		bram_0 (clk, rst, write_enable, write_ptr, data_in, read_ptr, ram_data_out[0]);
-	 rom_mod #(16, NR_STREAMS_LOG)
-		bram_1 (clk, rst, feedback_enable, feedback_ptr, ram_data_in[0], read_ptr, ram_data_out[1]);
-    rom_mod #(16, NR_STREAMS_LOG)
-		bram_2 (clk, rst, feedback_enable, feedback_ptr, ram_data_in[1], read_ptr, ram_data_out[2]);
-    rom_mod #(16, NR_STREAMS_LOG)
-		bram_3 (clk, rst, feedback_enable, feedback_ptr, ram_data_in[2], read_ptr, ram_data_out[3]);
+	 rom_mod #(16, 10)
+		bram_0 (clk, rst, write_enable, wr_ptr, ram_data_in[0], rd_ptr, ram_data_out[0]);
+	 rom_mod #(16, 10)
+		bram_1 (clk, rst, shift_enable, shift_ptr, ram_data_in[0], rd_ptr, ram_data_out[1]);
+    rom_mod #(16, 10)
+		bram_2 (clk, rst, shift_enable, shift_ptr, ram_data_in[1], rd_ptr, ram_data_out[2]);
+    rom_mod #(16, 10)
+		bram_3 (clk, rst, shift_enable, shift_ptr, ram_data_in[2], rd_ptr, ram_data_out[3]);
 
 	 // shift LUT similar to lab4
 	 reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
-	 reg last_state;
-	 integer i;
 	 initial begin
 		 // define lookup tables
 		 for(i=0;i<L;i=i+1) begin
@@ -92,8 +87,7 @@ module bufferinput
 		ram_in_buf[0]	 	<= 0;
 		ram_in_buf[1]  	<= 0;
 		ram_in_buf[2]  	<= 0;
-		state 				<= 0;									
-		streamcounter 		<= 0;
+		data_in_buf 		<= 0;
 	 end
 
     always @(posedge clk) begin
@@ -101,142 +95,82 @@ module bufferinput
         if (rst) begin
             req_in_buf <= 0;
             req_out_buf <= 0;
-				lookup_shift_index <= 0;
-				write_enable_buf <= 1; // staat even op 1
-				feedback_enable_buf <= 1; // staat even op 1
-				last_state <= 0;
-				write_ptr <= 0;
-				read_ptr <= 0;
-				feedback_ptr <= 0;
+
+				shift_enable_buf <= 0;
+				write_enable_buf <= 1;
+
+				rd_ptr <= 0;
+				wr_ptr <= 0;
+				shift_ptr <= 0;
         end
         // !Reset => run
         else begin
-					case (state)
-						noshift: begin
-							// Read handshake complete
-							if (req_out && ack_out) begin		              					 
-								 // 1) write sample into ram
-								 // direct pin (data_in)
-								 // 2) read four samples from ram for calculation
-								 data_out_buf[0] <= ram_data_out[0];
-								 data_out_buf[1] <= ram_data_out[1];
-								 data_out_buf[2] <= ram_data_out[2];
-								 data_out_buf[3] <= ram_data_out[3];
-								 // 3) write back three of the four samples back into ram
-								 ram_in_buf[0] <= ram_data_out[0];
-								 ram_in_buf[1] <= ram_data_out[1];
-								 ram_in_buf[2] <= ram_data_out[2];
-								 // 4) increment index_ptr
-								 write_ptr <= (write_ptr+1)%NR_STREAMS;
-								 read_ptr  <= write_ptr;
-								 feedback_ptr <= read_ptr;
-								 // 5) update feedback enable
-								 
-								 if(read_ptr == 0) begin
-									feedback_enable_buf <= 0;
-								 end
-								 
-								 streamcounter <= (streamcounter+1)%NR_STREAMS;
-								 req_out_buf <= 1;
-							end			   				
-							
-							if (streamcounter == NR_STREAMS-1) begin
-								lookup_shift_index <= (lookup_shift_index + 1)%L;
-								last_state <= state;
-								
-								if (lookup_shift[lookup_shift_index] == 1) begin
-									state <= shift;
-									write_enable_buf <= 1;
-									req_in_buf <= 1;
-								end else begin
-									state <= noshift;	 //no shift
-									ram_in_buf[0] <= ram_data_out[1];
-									ram_in_buf[1] <= ram_data_out[2];
-									ram_in_buf[2] <= ram_data_out[3];
-									req_in_buf <= 0;
-									write_enable_buf <= 0;
-								end
-							end
-						end
+						// Read handshake complete
+						if (req_in && ack_in ) begin
 						
-						shift: begin
-							// Read handshake complete
-							if (req_in && ack_in) begin		              					 
-								 // 1) write sample into ram
-								 // direct pin (data_in)
-								 // 2) read four samples from ram for calculation
-								 data_out_buf[0] <= ram_data_out[0];
-								 data_out_buf[1] <= ram_data_out[1];
-								 data_out_buf[2] <= ram_data_out[2];
-								 data_out_buf[3] <= ram_data_out[3];
-								 // 3) write back three of the four samples back into ram
-								 ram_in_buf[0] <= ram_data_out[0];
-								 ram_in_buf[1] <= ram_data_out[1];
-								 ram_in_buf[2] <= ram_data_out[2];
-								 // 4) increment index_ptr
-								 write_ptr <= (write_ptr+1)%NR_STREAMS;
-								 read_ptr  <= write_ptr;
-								 feedback_ptr <= read_ptr;
-								 // 5) update feedback enable
-								 
-								 if(read_ptr == 0) begin
-									feedback_enable_buf <= 1;
-								 end
-								 
-								 streamcounter <= (streamcounter+1)%NR_STREAMS;
-								 req_out_buf <= 1;
-							end			   				
-							
-							//Read handshake is pending then stop producing output
-							if (req_in && !ack_in) begin              
-								req_out_buf <= 0;
-							end 
-											
-							// Write handshake complete
-							if (req_out && ack_out) begin                				   
-								req_in_buf <= 1; 
-							end 
-
-							//Write handshake is pending then stop acquiring output.
-							if (req_out && !ack_out) begin                			                  
+							// if full
+							if ((wr_ptr + 1) %1024 == rd_ptr) begin
 								req_in_buf <= 0;
-							end 			            			  
-							
-							// Idle state
-							if (!req_in && !ack_in && !req_out && !ack_out) begin                		
-							  req_in_buf <= 1;					
 							end
 							
-							if (streamcounter == NR_STREAMS-1) begin
-								lookup_shift_index <= (lookup_shift_index + 1)%L;
-								last_state <= state;
+							// new RAM input data
+							data_in_buf <= data_in;
+							
+							wr_ptr <= (wr_ptr + 1) % 1024;
+							 				              					 
+							req_out_buf <= 1;                					  
+						end			   				
+				
+						//Read handshake is pending then stop producing output. array is empty
+						if ((req_in && !ack_in)) begin  
+						
+							req_out_buf <= 0;
+						end 
+										
+						// Write handshake complete
+						if (req_out && ack_out) begin  
+							
+							 // if empty
+							 if (wr_ptr == rd_ptr) begin
+								 req_out_buf <= 0; 
+							 end
+	
+							 // RAM output data
+							 data_out_buf[0] <= ram_data_out[0];
+							 data_out_buf[1] <= ram_data_out[1];
+							 data_out_buf[2] <= ram_data_out[2];
+							 data_out_buf[3] <= ram_data_out[3];
+							 
+							 // RAM shift data
+							 ram_in_buf[0] <= ram_data_out[0];
+							 ram_in_buf[1] <= ram_data_out[1];
+							 ram_in_buf[2] <= ram_data_out[2];
+							 
+							 // if the read pointer has made one round-trip of NR_STAGES, update.
+							 if(rd_ptr == 0) begin
+								shift_enable_buf <= lookup_shift[i];
 								
-								if (lookup_shift[lookup_shift_index] == 1) begin
-									state <= shift;
-									write_enable_buf <= 1;
-								end else begin
-									state <= noshift;	 //no shift
-									ram_in_buf[0] <= ram_data_out[1];
-									ram_in_buf[1] <= ram_data_out[2];
-									ram_in_buf[2] <= ram_data_out[3];
-									write_enable_buf <= 0;
-								end
+								// shift array index
+								i <= (i + 1) % L;
 							end
+							 
+							 rd_ptr <= (rd_ptr + 1) % 1024;
+							 shift_ptr <= rd_ptr;
+						
+							 req_in_buf <= 1; 
+						end 
+
+						//Write handshake is pending then stop acquiring output. array is full
+						if ((req_out && !ack_out)) begin 
+							req_in_buf <= 0;
+						end 			            			  
+						
+						// Idle state
+						if (!req_in && !ack_in && !req_out && !ack_out) begin                		
+						  req_in_buf <= 1;					
 						end
-						
-						default: begin
-						
-							// calc initial
-							lookup_shift_index <= (lookup_shift_index + 1)%L;
-							if (lookup_shift[lookup_shift_index] == 1) begin
-								state <= shift;
-							end else begin
-								state <= noshift;
-								req_out_buf <= 1;								
-							end
-						end	
-				endcase
-			end
+				
+				end
     end
 
 endmodule

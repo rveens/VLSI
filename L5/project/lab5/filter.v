@@ -41,14 +41,13 @@ module filter
 	 assign ram_address = ram_address_ptr;
 	 
 	 wire [0:DWIDTH-1] ram_data_out[0:3];
-	 reg [0:DWIDTH-1] ram_data_out_buf[0:3];
+	 reg signed [0:DWIDTH-1] ram_data_out_buf[0:3];
 	 
 	 // pipeline stage
-	 reg [0:DWIDTH-1] pl_mul_to_add_buf[0:3];
+	 reg signed [0:DDWIDTH-1] pl_mul_to_add_buf[0:3];
 	 
 	 // input buffer
-	 reg data_ready;
-	 reg [0:DWIDTH-1] data_in_buf;
+	 reg signed [0:DWIDTH-1] data_in_buf;
 	 wire [0:DWIDTH-1] data_in_wire;
 	 assign data_in_wire = data_in_buf;
 	 
@@ -67,12 +66,12 @@ module filter
 	 reg shift_enable;
 	 integer shift_idx;
 	 reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
-	 reg signed [0:DWIDTH-1] coef [0:CWIDTH-1], lookup_coefIdx[0:L-1];
+	 reg signed [0:DWIDTH-1] coef [0:CWIDTH-1], lookup_coefIdx[0:L-1][0:3];
 	 
-	 reg [0:DWIDTH-1] circ_buf[0:NR_STREAMS-1];
+	 reg signed [0:DDWIDTH+1] circ_buf[0:NR_STREAMS-1];
 	 integer buf_ptr;
 	 
-	 integer i;
+	 integer i, j;
 	 initial begin
 		for(i = 0; i < 4; i = i + 1) begin
 			pl_mul_to_add_buf[i] <= 0;
@@ -89,10 +88,12 @@ module filter
 		
 		// define coef LUT
 	   for (i = 0; i < L; i = i + 1) begin
-			 lookup_coefIdx[i] = i*M%L;
+			for(j = 0; j < 4; j = j + 1) begin
+				lookup_coefIdx[i][j] = j*L + i*M%L;
+			end
 	   end
 		
-		for (i = 0; i < NR_STREAMS+1; i = i + 1) begin
+		for (i = 0; i < NR_STREAMS; i = i + 1) begin
 			circ_buf[i] <= 0;
 		end
 		
@@ -110,7 +111,6 @@ module filter
 				buf_ptr <= 0;
 				shift_enable <= 0;
 				data_in_buf <= 0;
-				data_ready <= 0;
 				ram_enable_buf <= 1;
 				ram_address_ptr <= 0;
         end
@@ -159,19 +159,19 @@ module filter
 					 ram_data_out_buf[3] <= ram_data_out[3];
 					 
 					 //multiply with coefficients **todo**
-					 pl_mul_to_add_buf[0] <= ram_data_out_buf[0];
-					 pl_mul_to_add_buf[1] <= ram_data_out_buf[1];
-					 pl_mul_to_add_buf[2] <= ram_data_out_buf[2];
-					 pl_mul_to_add_buf[3] <= ram_data_out_buf[3];
+					 pl_mul_to_add_buf[0] <= ram_data_out_buf[0]*coef[lookup_coefIdx[shift_idx][0]];
+					 pl_mul_to_add_buf[1] <= ram_data_out_buf[1]*coef[lookup_coefIdx[shift_idx][1]];
+					 pl_mul_to_add_buf[2] <= ram_data_out_buf[2]*coef[lookup_coefIdx[shift_idx][2]];
+					 pl_mul_to_add_buf[3] <= ram_data_out_buf[3]*coef[lookup_coefIdx[shift_idx][3]];
 					 
 					 //accumulate and output
-					 circ_buf[buf_ptr]	<= 	pl_mul_to_add_buf[0];// +  
-													//pl_mul_to_add_buf[1] + 
-													//pl_mul_to_add_buf[2] + 
-													//pl_mul_to_add_buf[3];
+					 circ_buf[buf_ptr]	<= 	pl_mul_to_add_buf[0] +  
+													   pl_mul_to_add_buf[1] + 
+													   pl_mul_to_add_buf[2] + 
+													   pl_mul_to_add_buf[3];
 					
 					 // put data from previous stream on output
-					 sum <= circ_buf[(buf_ptr+3)%NR_STREAMS];		 
+					 sum <= circ_buf[(buf_ptr+2)%NR_STREAMS][3:DWIDTH+2];		 
 					 ram_address_ptr <= (ram_address_ptr + 1) % NR_STREAMS;		
 					 buf_ptr <= (buf_ptr + 1)%((NR_STREAMS));	
 

@@ -10,7 +10,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="18" />
+   <WVObjectSize size="20" />
    <wvobject fp_name="/multitest/filter_inst/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -75,8 +75,8 @@
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/multitest/filter_inst/circ_buf" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">circ_buf[0:15,0:15]</obj_property>
-      <obj_property name="ObjectShortName">circ_buf[0:15,0:15]</obj_property>
+      <obj_property name="ElementShortName">circ_buf[0:15,0:33]</obj_property>
+      <obj_property name="ObjectShortName">circ_buf[0:15,0:33]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/multitest/filter_inst/buf_ptr" type="array" db_ref_id="1">
@@ -92,5 +92,15 @@
    <wvobject fp_name="/multitest/filter_inst/shift_enable" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">shift_enable</obj_property>
       <obj_property name="ObjectShortName">shift_enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/s2p0/data_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_in[0:15]</obj_property>
+      <obj_property name="ObjectShortName">data_in[0:15]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/multitest/s2p0/data_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_out[0:31]</obj_property>
+      <obj_property name="ObjectShortName">data_out[0:31]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
 </wave_config>

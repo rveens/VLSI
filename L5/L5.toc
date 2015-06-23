@@ -1,0 +1,2 @@
+\contentsline {section}{\numberline {1}Appendix A: Matlab coefficients script}{3}
+\contentsline {section}{\numberline {2}Appendix B: Verilog Code}{4}

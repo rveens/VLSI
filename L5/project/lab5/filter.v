@@ -43,38 +43,37 @@ module filter
 	 wire [0:DWIDTH-1] ram_data_out[0:3];
 	 reg signed [0:DWIDTH-1] ram_data_out_buf[0:3];
 	 
-	 // pipeline stage
-	 reg signed [0:DDWIDTH-1] pl_mul_to_add_buf[0:3];
-	 
 	 // input buffer
 	 reg signed [0:DWIDTH-1] data_in_buf;
 	 wire [0:DWIDTH-1] data_in_wire;
 	 assign data_in_wire = data_in_buf;
 	 
 	 // Instantiate the RAM modules
-	 // RAM_WIDTH, ADDRESS BITS
-	 rom_mod #(16, NR_STREAMS_LOG)
+	 rom_mod #(DWIDTH, NR_STREAMS_LOG)
 		bram_0 (clk, rst, ram_enable, ram_address, data_in_wire, ram_data_out[0]);
-	 rom_mod #(16, NR_STREAMS_LOG)
+	 rom_mod #(DWIDTH, NR_STREAMS_LOG)
 		bram_1 (clk, rst, ram_enable, ram_address, ram_data_out[0], ram_data_out[1]);
-    rom_mod #(16, NR_STREAMS_LOG)
+    rom_mod #(DWIDTH, NR_STREAMS_LOG)
 		bram_2 (clk, rst, ram_enable, ram_address, ram_data_out[1], ram_data_out[2]);
-    rom_mod #(16, NR_STREAMS_LOG)
+    rom_mod #(DWIDTH, NR_STREAMS_LOG)
 		bram_3 (clk, rst, ram_enable, ram_address, ram_data_out[2], ram_data_out[3]);
+		
+	 // pipeline stage
+	 reg signed [0:DDWIDTH-1] pl_mul_to_acc_buf[0:3];
 
 	 // intialize buffers
 	 reg shift_enable;
-	 integer shift_idx;
+	 integer sample_index, buf_ptr;
 	 reg [0:L-1]lookup_shift; //'1' means shift, '0' means no shift
 	 reg signed [0:DWIDTH-1] coef [0:CWIDTH-1], lookup_coefIdx[0:L-1][0:3], coef_preproc[0:3];
 	 
-	 reg signed [0:DDWIDTH+1] circ_buf[0:NR_STREAMS-1];
-	 integer buf_ptr;
+	 reg signed [0:DDWIDTH+1] stream_delay_buf[0:NR_STREAMS-1];
+
 	 
 	 integer i, j;
 	 initial begin
 		for(i = 0; i < 4; i = i + 1) begin
-			pl_mul_to_add_buf[i] <= 0;
+			pl_mul_to_acc_buf[i] <= 0;
 			ram_data_out_buf[i] <= 0;
 		end
 		
@@ -94,7 +93,7 @@ module filter
 	   end
 		
 		for (i = 0; i < NR_STREAMS; i = i + 1) begin
-			circ_buf[i] <= 0;
+			stream_delay_buf[i] <= 0;
 		end
 		
 		// import coefficients
@@ -107,7 +106,7 @@ module filter
             req_in_buf <= 0;
             req_out_buf <= 0;
             sum <= 0;	
-				shift_idx <=0;
+				sample_index <=0;
 				buf_ptr <= 0;
 				shift_enable <= 0;
 				data_in_buf <= 0;
@@ -126,28 +125,31 @@ module filter
 					 req_in_buf <= 0;
             end
 				
-				// data shifted in
+				// data shifted in ram
 				if (ram_enable_buf== 1) begin
 					ram_enable_buf <= 0;
 				end
 								
             // Write handshake complete
             if (req_out && ack_out) begin                				   
-				   if(ram_address_ptr == NR_STREAMS-1) begin
-						shift_enable <= lookup_shift[shift_idx];
-						shift_idx <= (shift_idx + 1) % L;
+				   
+					// See if we have to shift next stream of samples
+					if(ram_address_ptr == NR_STREAMS-1) begin
+						shift_enable <= lookup_shift[sample_index];
+						sample_index <= (sample_index + 1) % L;
 					end
 
+					// if so, ask for new input data
 				   if(shift_enable == 1) begin
 						req_in_buf <= 1;
 					end
 					else begin
-						// nothing to do
+						// do NOT ask for new input data, re-use buffered data (stream_delay_buf)
 					end
 					req_out_buf <= 0;					
             end             			  
 				
-            // Idle state
+            // Processing state
             if (!req_in && !ack_in && !req_out && !ack_out && ram_enable_buf == 0) begin   
 				
 					 //retrieve samples
@@ -156,29 +158,32 @@ module filter
 					 ram_data_out_buf[2] <= ram_data_out[2];
 					 ram_data_out_buf[3] <= ram_data_out[3];
 					 
-					 //multiply with coefficients **todo**
-					 pl_mul_to_add_buf[0] <= ram_data_out_buf[0]*coef_preproc[0];
-					 pl_mul_to_add_buf[1] <= ram_data_out_buf[1]*coef_preproc[1];
-					 pl_mul_to_add_buf[2] <= ram_data_out_buf[2]*coef_preproc[2];
-					 pl_mul_to_add_buf[3] <= ram_data_out_buf[3]*coef_preproc[3];
+					 //multiply with coefficients
+					 pl_mul_to_acc_buf[0] <= ram_data_out_buf[0]*coef_preproc[0];
+					 pl_mul_to_acc_buf[1] <= ram_data_out_buf[1]*coef_preproc[1];
+					 pl_mul_to_acc_buf[2] <= ram_data_out_buf[2]*coef_preproc[2];
+					 pl_mul_to_acc_buf[3] <= ram_data_out_buf[3]*coef_preproc[3];
 					 
-					 //accumulate and output
-					 circ_buf[buf_ptr]	<= 	pl_mul_to_add_buf[0] +  
-													   pl_mul_to_add_buf[1] + 
-													   pl_mul_to_add_buf[2] + 
-													   pl_mul_to_add_buf[3];
+					 //accumulate and put into delay buffer
+					 stream_delay_buf[buf_ptr]	<= 	pl_mul_to_acc_buf[0] +  
+																pl_mul_to_acc_buf[1] + 
+																pl_mul_to_acc_buf[2] + 
+																pl_mul_to_acc_buf[3];
 					
-					 // put data from previous stream on output
-					 sum <= circ_buf[(buf_ptr+2)%NR_STREAMS][3:DWIDTH+2];		 
+					 // increment pointers
 					 ram_address_ptr <= (ram_address_ptr + 1) % NR_STREAMS;		
-					 buf_ptr <= (buf_ptr + 1)%((NR_STREAMS));	
+					 buf_ptr <= (buf_ptr + 1)%((NR_STREAMS));
+					 
+					 // output data (+2 offset is the delay of the pipeline)
+					 sum <= stream_delay_buf[(buf_ptr+2)%NR_STREAMS][3:DWIDTH+2];			
 					 
 					 // preprocess next coefficients
-					  coef_preproc[0] <= coef[lookup_coefIdx[shift_idx][0]];
-					  coef_preproc[1] <= coef[lookup_coefIdx[shift_idx][1]];
-					  coef_preproc[2] <= coef[lookup_coefIdx[shift_idx][2]];
-					  coef_preproc[3] <= coef[lookup_coefIdx[shift_idx][3]];
+					 coef_preproc[0] <= coef[lookup_coefIdx[sample_index][0]];
+					 coef_preproc[1] <= coef[lookup_coefIdx[sample_index][1]];
+					 coef_preproc[2] <= coef[lookup_coefIdx[sample_index][2]];
+					 coef_preproc[3] <= coef[lookup_coefIdx[sample_index][3]];
 
+					 // request output
 			       req_out_buf <= 1;	
             end
 				

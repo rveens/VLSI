@@ -70,28 +70,22 @@
 \section{Requirements}
 \subsection{Analysis of requirements}
 \section{System architecture}
-The system is implemented in two modules: $filter.v$ and $bram\_mod.v$. $bram\_mod.v$ is but a wrapper around the initialization of a block ram.
-The $filter.v$ module contains four block ram modules that store the input samples. Each clock the top values of the block ram's are used to compute a tap. 
-
-This tap is stored in a \textit{Stream delay buffer} that is used to delay an entire stream.
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale = 1.0]{Images/5_blockdiagram.eps}
-    \caption{Abstract functionality of filter.v of the multiple-stream sample rate converter}
-    \label{fig:flow}
-\end{figure}
-
 \section{Design choices}
 \section{Functional correctness}
 \section{Resource usage}
 \section{System throughput and latency}
 \section{Offline project results}
+We managed to get the multiple-stream scaler running on 256 and 512 streams in real-time on the board. With 1024 streams the output audio was noticeably slowed. \\ This likely occurred because we process a few cycles too much before outputting a tap. \\
+
+Next to real-time, we also ran the offline version of the project for 256 and 1024 streams. See Figure~\ref{fig:output} and Figure~\ref{fig:spectrum}.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale = 0.6]{Images/output_offline.png}
     \caption{Input, and output of 256 and 1024 offline after running on the board.}
-    \label{fig:flow}
+    \label{fig:output}
 \end{figure}
+
+\newpage
 
 \begin{figure}[h]
 	\begin{subfigure}[b]{0.5\textwidth}	
@@ -108,9 +102,11 @@ This tap is stored in a \textit{Stream delay buffer} that is used to delay an en
 	\end{subfigure}
 	
     \caption{Comparison of the input spectrum and output spectrums.}
+    \label{fig:spectrum}
 \end{figure}
 
-\newpage
+
+\clearpage
 
 \section{Appendix A: Matlab coefficients script}
 \begin{lstlisting}

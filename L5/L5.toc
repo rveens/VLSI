@@ -1,2 +1,13 @@
-\contentsline {section}{\numberline {1}Appendix A: Matlab coefficients script}{3}
-\contentsline {section}{\numberline {2}Appendix B: Verilog Code}{4}
+\contentsline {section}{\numberline {1}Inline questions}{3}
+\contentsline {subsection}{\numberline {1.1}Inline question 1}{3}
+\contentsline {subsection}{\numberline {1.2}Inline question 2}{3}
+\contentsline {subsection}{\numberline {1.3}Inline question 3}{3}
+\contentsline {section}{\numberline {2}System architecture}{4}
+\contentsline {section}{\numberline {3}Design choices}{5}
+\contentsline {section}{\numberline {4}Resource usage}{6}
+\contentsline {section}{\numberline {5}System throughput and latency}{7}
+\contentsline {section}{\numberline {6}Offline project results}{8}
+\contentsline {subsection}{\numberline {6.1}256 Streams}{8}
+\contentsline {subsection}{\numberline {6.2}1024 Streams}{8}
+\contentsline {section}{\numberline {7}Appendix A: Matlab coefficients script}{9}
+\contentsline {section}{\numberline {8}Appendix B: Verilog Code}{10}
